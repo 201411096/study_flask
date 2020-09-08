@@ -1,0 +1,2 @@
+windows powershell(관리자권한) ->  Set-ExecutionPolicy Unrestricted -> y -> 가상환경이 정상적으로 실행됨
+windows powershell(관리자권한) ->  Set-ExecutionPolicy restricted -> n -> 가상환경이 정상적으로 실행되지 않음
