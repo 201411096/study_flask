@@ -1,0 +1,5 @@
+window
+	ㄴ C:\Windows\System32\drivers\etc
+	ㄴ type hosts
+linux
+/etc/hosts
