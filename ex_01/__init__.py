@@ -7,8 +7,24 @@ app.debug = True # use only debug # app.config['debug']=True ..
 
 # app.config['SERVER_NAME'] = 'local.com:5000' # hosts파일 수정해서 해봤는데 안됨
 
+@app.route('/wc') # write cookie ...
+def wc():
+    key = request.args.get('key')
+    val = request.args.get('val')
+    res = Response("SET COOKIE")
+    res.set_cookie(key, val)
+    return make_response(res)
+
+@app.route('/rc') # read cookie ...
+def rc():
+    key = request.args.get('key')
+    val = request.cookies.get(key)
+    return "cookie['"+key+"'] = " + val
+
 @app.route('/reqenv') # request environment ...
 def reqenv():
+    print(">> is_xhr=", request.is_xhr)
+    print(">> json =", request.get_json())
     return ('REQUEST_METHOD: %(REQUEST_METHOD) s <br>'
     'SCRIPT_NAME: %(SCRIPT_NAME) s <br>'
     'PATH_INFO: %(PATH_INFO) s <br>'
@@ -71,8 +87,8 @@ def res1():
 @app.route("/gg")
 def hello_world2():
     # getattr() -> (-, -, default_value)
-    return 'musicplaylist...' + getattr(g, 'str', '111') # return -> response_value
+    return 'ex01...' + getattr(g, 'str', '111') # return -> response_value
 
 @app.route("/")
 def hello_world():
-    return 'musicplaylist...'
+    return 'ex01...'
