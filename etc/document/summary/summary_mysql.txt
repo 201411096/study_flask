@@ -1,0 +1,18 @@
+----------------------------------------------------------------------------------------------------
+환경변수 추가
+	ㄴ C:\Program Files\MySQL\MySQL Server 8.0\bin
+	ㄴ cmd에서 실행
+		ㄴ mysql -u username -p password
+			ㄴ mysql -u root -p root
+----------------------------------------------------------------------------------------------------
+mysql 서버실행
+	ㄴ 윈도우 우측 하단 - mysql notifier를 이용
+	ㄴ workbench - instance - startup/shutdown
+	ㄴ cmd - net
+		ㄴ net start mysql
+		ㄴ net stop mysql
+	ㄴ 리눅스
+		ㄴ service mysql start
+		ㄴ service mysql stop
+		ㄴ service mysql restart
+		ㄴ service mysql status

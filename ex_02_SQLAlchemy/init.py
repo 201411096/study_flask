@@ -6,3 +6,5 @@ from sqlalchemy.dialects.postgresql import JSON
 app = Flask(__name__)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
