@@ -1,0 +1,10 @@
+가상환경 생성
+	ㄴ python -m venv venv_name(본인이 원하는 폴더이름)
+가상환경 활성화
+	ㄴ .\venv_name\Scripts\activate
+가상환경 비활성화
+	ㄴ deactivate
+------------------------------------------------------------------------------------------------------------------------
+windows 가상환경 설정
+windows powershell(관리자권한) ->  Set-ExecutionPolicy Unrestricted -> y -> 가상환경이 정상적으로 실행됨
+windows powershell(관리자권한) ->  Set-ExecutionPolicy restricted -> y -> 가상환경이 정상적으로 실행되지 않음
