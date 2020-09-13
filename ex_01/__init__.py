@@ -1,5 +1,5 @@
-from flask import Flask, Response, make_response, g, request
-from datetime import datetime, date
+from flask import Flask, Response, make_response, g, request, session
+from datetime import datetime, date, timedelta
 # from flask import g # 글로벌 객체(application context ... ) <-> request context
 
 app = Flask(__name__) # 바로 실행될경우 __name__은 main...
@@ -7,19 +7,32 @@ app.debug = True # use only debug # app.config['debug']=True ..
 
 # app.config['SERVER_NAME'] = 'local.com:5000' # hosts파일 수정해서 해봤는데 안됨
 
+app.config.update(
+    SECRET_KEY="X12343yRH!mMwf", # 암호화에 사용하는 값
+    SESSION_COOKIE_NAME='pyweb_flask_session',
+    PERMANENT_SESSION_LIFETIME=timedelta(31) # 31일동안 유지 ... 
+)
+
 @app.route('/wc') # write cookie ...
 def wc():
     key = request.args.get('key')
     val = request.args.get('val')
     res = Response("SET COOKIE")
     res.set_cookie(key, val)
+    session['Token'] = '123X' # session  ...
     return make_response(res)
 
 @app.route('/rc') # read cookie ...
 def rc():
     key = request.args.get('key')
     val = request.cookies.get(key)
-    return "cookie['"+key+"'] = " + val
+    return "cookie['"+key+"'] = " + val + ", " + session.get('Token')
+
+@app.route('/delsess')
+def delsess():
+    if session.get('Token'):
+        del session['Token']
+    return "Session이 삭제되었습니다!"
 
 @app.route('/reqenv') # request environment ...
 def reqenv():

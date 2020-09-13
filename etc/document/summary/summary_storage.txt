@@ -3,9 +3,10 @@ web storage
 	ㄴ key - value 형태로 데이터를 저장하고, key를 기반으로 데이터를 조회
 	ㄴ localStorage : 영구저장소?..
 	ㄴ sessoinStorage : 임시저장소(페이지 세션이 끝날 떄 제거)
+		ㄴ session? sessionstorage?..
 	ㄴ cookie와의 차이점 
 		ㄴ 쿠키는 매번 서버로 전송됨
-		ㄴ 용량의 제한이 존재하지 않음(쿠키는 개수와 용량에 제한이 있음)
+		ㄴ 쿠키는 개수의 제한이 존재하며 용량의 제한이 더 심함
 		ㄴ 단순 문자열을 넘어 객체정보 저장이 가능
 			ㄴ 객체 저장 시
 				ㄴ sessionStorage.setitem(keyname, JSON.stringify(objectData));
