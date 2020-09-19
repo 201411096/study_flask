@@ -1,0 +1,190 @@
+----------------------------------------------------------------------------------------------------
+select
+----------------------------------------------------------------------------------------------------
+session.query(Model).all() # SELECT * FROM model
+session.query(Model.id, Model.name, Model.age).all() # SELECT id, name, age FROM model
+session.query(Model).first() # SELECT * FROM model LIMIT 1
+
+from sqlalchemy import func # count 함수
+session.query(func.count(Model.id))
+# SELECT COUNT(id) FROM model
+
+# AS 
+session.query(Model.id.label('model_id')).all()
+# SELECT id AS model_id FROM model
+----------------------------------------------------------------------------------------------------
+where
+----------------------------------------------------------------------------------------------------
+session.query(Model).filter(Model.name == 'lowell').all() 
+# SELECT * FROM model WHERE name = 'lowell'
+
+session.query(Model).filter(Model.name == 'lowell', Model.age == 20).all() 
+# SELECT * FROM model WHERE name = 'lowell' AND age = 20
+
+from sqlalchemy import or_ # OR 연산자
+session.query(Model).filter(or_(Model.mame == 'lowell', Model.age == 20)).all()
+# SELECT * FORM model WHERE name = 'lowell' OR age = 20
+----------------------------------------------------------------------------------------------------
+insert
+----------------------------------------------------------------------------------------------------
+user = Model(name='lowell', age=20)
+session.add(user)
+session.commit() # session.rollback()
+
+# INSERT INTO model(name, age) VALUES ('lowell', 20)
+# COMMIT
+----------------------------------------------------------------------------------------------------
+update
+----------------------------------------------------------------------------------------------------
+user = session.query(Model).filter(Model.name == 'lowell').first()
+user.age += 1
+session.commit()
+
+# select 후 update 함
+
+user = session.query(Model).filter(Model.name == 'lowell').update({'age': User.age + 1});
+session.commit()
+
+# select를 하지 않는 update 방법
+# UPDATE model SET age = age + 1 WHERE name = 'lowell'
+----------------------------------------------------------------------------------------------------
+delete
+----------------------------------------------------------------------------------------------------
+user = session.query(Model).filter(Model.name == 'lowell').first()
+session.delete(user)
+session.commit()
+----------------------------------------------------------------------------------------------------
+order by
+----------------------------------------------------------------------------------------------------
+session.query(Model).filter(Model.name == 'lowell').order_by(Model.created_at)
+# SELECT * FROM model WHERE name = 'lowell' ORDER BY created_at
+
+session.query(Model).filter(Model.name == 'lowell').order_by(Model.created_at.desc(), Model.status) 
+# SELECT * FROM model WHERE name = 'lowell' ORDER BY created_at DESC, status
+----------------------------------------------------------------------------------------------------
+inner join
+----------------------------------------------------------------------------------------------------
+session.query(Model1, Model2).filter(Model1.id == Model2.id).all() 
+# SELECT * FROM model1 JOIN model2 ON model1.id = model2.id
+
+session.query(Model1).join(Model2, Model1.id == Model2.id).all()
+# SELECT * FROM model1 JOIN model2 ON model1.id = model2.id
+----------------------------------------------------------------------------------------------------
+outer join
+----------------------------------------------------------------------------------------------------
+session.query(Model1). \
+    outerjoin(Model2, Model1.id == Model2.id).\
+    all()
+    
+# SELECT * FROM model1 LEFT JOIN model2 ON model1.id = model2.id 
+----------------------------------------------------------------------------------------------------
+join 여러개
+----------------------------------------------------------------------------------------------------
+session.query(Model1.name, Model2.student_id, Model3.account).\
+	outerjoin(Model2, Model1.id == Model2.id).\
+	outerjoin(Model3, Model1.id == Model3.id).\
+	all()
+	
+# SELECT model1.name, model2.student_id , model3.account 
+# FROM model1
+# LEFT JOIN model2 ON model1.id = model2.id
+# LEFT JOIN model3 ON model1.id = model3.id
+----------------------------------------------------------------------------------------------------
+self join
+----------------------------------------------------------------------------------------------------
+model2 = aliased(Model)
+
+self.session.query(Model).\
+    join(model2, model2.id == Model.id).\
+    all()
+    
+# SELECT model.* FROM model JOIN model model2 ON model2.id = model.id;
+----------------------------------------------------------------------------------------------------
+group by
+----------------------------------------------------------------------------------------------------
+session.query(Model).group_by(Model.id).all()
+
+# SELECT * FROM model GROUP BY id
+----------------------------------------------------------------------------------------------------
+subquery
+----------------------------------------------------------------------------------------------------
+from sqlalchemy import subquery
+
+stmt = query.session(Model2).filter(Model2.grade == 'A').subquery() 
+# SELECT id, grade FROM model2 WHERE grade = 'A'
+
+session.query(Model1, stmt.c.id, stmt.c.grade).\
+	outerjoin(stmt, stmt.c.id = Model1.id)
+	
+# SELECT model1.*, model2.id, model2.grade
+# FROM mode1l LEFT JOIN (SELECT id, grade FROM model2 WHERE grade = 'A') model2 
+# ON model1.id = model2.id
+----------------------------------------------------------------------------------------------------
+case
+----------------------------------------------------------------------------------------------------
+from sqlalchemy import case
+	
+session.query(
+	case(
+        	[
+            	(Model.age >= 20, 'adult'),
+                (Model.age >= 10, 'teenager')
+        	], 
+        	else_='not adult, not teenager'
+    	)
+    ).\
+    filter(Model.sex='female').\
+    all()
+
+# SELECT CASE WHEN age >= 20 THEN 'adult' WHEN age >= 10 THEN 'teenager' ELSE 'not adult, not teenager' FROM model WHERE sex = 'female';
+	
+----------------------------------------------------------------------------------------------------
+last row id 얻기
+----------------------------------------------------------------------------------------------------
+user = Model(name='lowell', age=20)
+session.add(user)
+session.flush() # DB connection 일어남
+
+id = user.id # auto_encrement로 생성된 id
+
+session.commit()
+----------------------------------------------------------------------------------------------------
+like 검색
+----------------------------------------------------------------------------------------------------
+results = session.query(Model).\
+	filter(Model.name.like('김%')).all() # 성이 김씨인 사람 찾음
+    
+# 응용 
+
+keyword = kwargs.get('keyword', '')
+search = True 
+
+if keyword:
+    search = Model.name.like(f'{keyword}%')
+    
+results = session.query(Model).\
+	filter(search).all() # 검색어가 있으면 검색, 없으면 모두 가져옴
+----------------------------------------------------------------------------------------------------
+in, not in
+----------------------------------------------------------------------------------------------------
+session.query(Model).filter(Model.name.in_(('lowell', 'yejin'))).all() 
+# SELECT * FROM model WHERE name IN ('lowell', 'yejin');
+
+session.query(Model).filter(~Model.name.in_(('lowell', 'yejin'))).all() 
+# SELECT * FROM model WHERE name NOT IN ('lowell', 'yejin');
+----------------------------------------------------------------------------------------------------
+commit, rollback
+----------------------------------------------------------------------------------------------------
+session.commit() # commit
+session.rollback() # rollback
+----------------------------------------------------------------------------------------------------
+DATE 계산하기 (DATE_ADD)
+----------------------------------------------------------------------------------------------------
+today = datetime.datetime.now().strftime('%Y-%m-%d')
+session.query(Model).filter(today >= func.ADDDATE(Model.created_at, 30)).all()
+# SELECT * FROM model WHERE NOW() >= DATE_ADD(created_at, INTERVAL 30 DAY);
+----------------------------------------------------------------------------------------------------
+reference
+----------------------------------------------------------------------------------------------------
+https://stackoverflow.com/questions/9667138/how-to-update-sqlalchemy-row-entry
+----------------------------------------------------------------------------------------------------

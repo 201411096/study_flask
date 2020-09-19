@@ -18,6 +18,10 @@ INSERT INTO emp(id, name, gender, age, location, deptno, hiredate, salary) VALUE
 INSERT INTO emp(id, name, gender, age, location, deptno, hiredate, salary) VALUES(8, 'hhh', 'm', 60, 'busan', 11, '2010-03-03', 22000);
 INSERT INTO emp(id, name, gender, age, location, deptno, hiredate, salary) VALUES(9, 'iii', 'm', 36, 'incheon', 21, '2015-05-15', 25000);
 
+
+
+
+
 /*
 case_01_01_단순 group query
 	ㄴ mysql : select count(id) from emp group by location

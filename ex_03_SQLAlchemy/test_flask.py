@@ -30,7 +30,7 @@ class emp(db.Model):
     salary = db.Column(db.Integer)
 
 def makeJsonWithCaseOption(orm_result, caseOption):
-    exceptionCase = ['06_02', '06_03', '06_04', '06_05']
+    exceptionCase = ['06_02', '06_03', '06_04']
     if caseOption not in exceptionCase:
         return ormConvertToJson(orm_result)
     else: # .all(), .first(), .scalar()
@@ -116,17 +116,27 @@ def testCase(case):
         except MultipleResultsFound:
             print('두개 이상의 결과가 발견되었습니다.')
     # case_06_05 추가적인예시(연령대(30대미만, 30대, 40대, 50대이상)별 평균연봉)
+    # case-when을 사용하기 전 query
     # SELECT tmp1.avg_sal AS '30대미만 평균연봉', tmp2.avg_sal AS '30대 평균연봉', tmp3.avg_sal AS '40대 평균연봉', tmp4.avg_sal AS '50대이상 평균연봉' FROM 
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age < 30) tmp1,
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age >=30 AND age <40) tmp2,
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age >=40 AND age <50) tmp3,
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age >= 50) tmp4    
     elif case=='06_05':
-        tmp1 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age<30).one()
-        tmp2 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=30).filter(emp.age<40).one()
-        tmp3 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=40).filter(emp.age<50).one()
-        tmp4 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=50).one()
-        results = {'30대미만 평균연봉': tmp1.avg_sal, '30대 평균연봉':tmp2.avg_sal, '40대 평균연봉':tmp3.avg_sal, '50대이상 평균연봉':tmp4.avg_sal}
+        tmp1 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age<30).subquery()
+        tmp2 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=30).filter(emp.age<40).subquery()
+        tmp3 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=40).filter(emp.age<50).subquery()
+        tmp4 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=50).subquery()
+        results = db.session.query(tmp1, tmp2, tmp3, tmp4).with_entities(tmp1.c.avg_sal.label('30대 미만 연봉'), tmp2.c.avg_sal.label('30대 연봉'), tmp3.c.avg_sal.label('40대 연봉'), tmp4.c.avg_sal.label('50대 이상 연봉'))
+    # case_06_05_02 추가적인예시(연령대(30대미만, 30대, 40대, 50대이상)별 평균연봉) - case-when 사용
+    # select 
+    # avg(case when age<30 then salary end) as '30대 미만 연봉',
+    # avg(case when (age>=30 and age<40) then salary end) as '30대 연봉',
+    # avg(case when (age>=40 and age<50) then salary end) as '40대 연봉',
+    # avg(case when age>=50 then salary end) as '50대 이상 연봉'
+    # from emp;
+    elif case=='06_05_02':
+
     # case_06_06 추가적인예시(전체나이 합계에 차지하는 개별나이의 비율) - subquery
 	# SELECT a.age AS age, a.age*a.countid/b.agesum*100 as rate FROM
 	# (SELECT COUNT(id) AS countid, age FROM emp GROUP BY age) a,
