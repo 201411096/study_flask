@@ -12,13 +12,13 @@ checklist
 2. case-when 06_5
 3. 06_3 first() <-> limit
 4. orm 실행시 쿼리로 어떻게 변환해서 보내는지
-5. 06_04 scalar 반환값확인(한가지 반환시 object가 아닌 int, str인지)
 6. orm 에서 sql직접 사용해보기(orm쪽으로 매핑이 힘들경우에)
 10. __tablename__ -> 어디다 쓰는건지
-
+13. datetime serializalbe 문제
 ------------------------------------
 finish
 ------------------
+5. 06_04 scalar 반환값확인(한가지 반환시 object가 아닌 int, str인지)
 7. SQLALCHEMY_TRACK_MODIFICATIONS : 설명 찾아서 주석달기
 8. db 빨간 줄 뜨는거 해결하기
 9. utcnow -> 글로벌표준시간 맞는지
