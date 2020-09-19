@@ -1,7 +1,7 @@
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func, distinct, case
+from sqlalchemy.sql import func, distinct, case, between
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import datetime
 import json
@@ -36,9 +36,34 @@ if __name__ == '__main__':
     results = db.session.query(emp).with_entities(
         func.avg(
             case(
-                [emp.age <30, emp.salary],
-                else_=0
+                [
+                    (emp.age <30, emp.salary)
+                ]
+                # ,else_='null'
             )
-         ).label('30대 이하 연봉 평균')    
+         ).label('30대 이하 연봉 평균'),
+        func.avg(
+            case(
+                [
+                    (between(emp.age, 30, 39), emp.salary)
+                ]
+            )
+         ).label('30대 연봉 평균'),
+        func.avg(
+            case(
+                [
+                    (between(emp.age, 40, 49), emp.salary)
+                ]
+            )
+         ).label('40대 연봉 평균'),
+        func.avg(
+            case(
+                [
+                    (emp.age >=50, emp.salary)
+                ]
+            )
+         ).label('50대 이상 연봉 평균')    
     )
     print(results)
+    for result in results:
+        print(result)

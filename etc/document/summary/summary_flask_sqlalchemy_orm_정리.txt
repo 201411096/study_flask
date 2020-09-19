@@ -184,6 +184,27 @@ today = datetime.datetime.now().strftime('%Y-%m-%d')
 session.query(Model).filter(today >= func.ADDDATE(Model.created_at, 30)).all()
 # SELECT * FROM model WHERE NOW() >= DATE_ADD(created_at, INTERVAL 30 DAY);
 ----------------------------------------------------------------------------------------------------
+SQLAlchemy Boolean value of this clause is not defined - 이부분 사실 도움 안 됨
+----------------------------------------------------------------------------------------------------
+Python does not allow overriding the behaviour of boolean operations and and or.
+You can influence them to some extent with __bool__ in Python 3 and __nonzero__ in Python 2, but all that does is that it defines the truth value of your object.
+This could and would lead to hair pulling in the form of incorrect SQL expressions:
+To produce boolean SQL expressions either use the and_(), or_(), and not_() sql expression functions, or the binary &, |, and ~ operator overloads:
+
+ex1)
+# Parentheses required due to operator precedence
+filter((News.label == None) & (f(News.title) == 'good'))
+
+ex2)
+filter(and_(News.label == None, f(News.title) == 'good'))
+
+ex3)
+filter(News.label == None, f(News.title) == 'good')
+
+ex4)
+filter(News.label == None).filter(f(News.title) == 'good')
+
+----------------------------------------------------------------------------------------------------
 reference
 ----------------------------------------------------------------------------------------------------
 https://stackoverflow.com/questions/9667138/how-to-update-sqlalchemy-row-entry
