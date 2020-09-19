@@ -76,9 +76,15 @@ if __name__ == '__main__':
     # tmp1 = db.session.query(emp).with_entities(func.count(emp.id).label('countid'), emp.age.label('age')).group_by(emp.age)
     # results = db.session.query(emp).with_entities(emp.location, func.count(emp.id)).group_by(emp.location)
 
-    results = emp.query.with_entities(emp.location, func.count(emp.id).label('count')).group_by(emp.location)
+    subq1 = db.session.query(emp).with_entities(func.count(emp.id).label('countid'), emp.age.label('age')).group_by(emp.age).subquery()
+    subq2 = db.session.query(emp).with_entities(func.sum(emp.age).label('agesum')).subquery()
+    results = db.session.query(subq1, subq2).with_entities(subq1.c.age, (subq1.c.age*subq1.c.countid/subq2.c.agesum*100).label('rate'))
+    print(results)
 
-    result = ormConvertToJson(results)
-    print(result)
-    # for result in results:
-    #     print(result)
+    #1
+    # result = ormConvertToJson(results)
+    # print(result)
+
+    #2
+    for result in results:
+        print(result)

@@ -76,9 +76,11 @@ case_06_05 추가적인예시(연령대(30대미만, 30대, 40대, 50대이상)�
     results = {'30대미만 평균연봉': tmp1.avg_sal, '30대 평균연봉':tmp2.avg_sal, '40대 평균연봉':tmp3.avg_sal, '50대이상 평균연봉':tmp4.avg_sal}
 case_06_06 추가적인예시(전체나이 합계에 차지하는 개별나이의 비율)
 	ㄴ mysql :
-	SELECT a.age AS age, a.age*a.countid/b.agesum*100 FROM
+	SELECT a.age AS age, a.age*a.countid/b.agesum*100 as rate FROM
 	(SELECT COUNT(id) AS countid, age FROM emp GROUP BY age) a,
 	(SELECT SUM(age) AS agesum FROM emp) b;
 	ㄴ orm :
-
+    subq1 = db.session.query(emp).with_entities(func.count(emp.id).label('countid'), emp.age.label('age')).group_by(emp.age).subquery()
+    subq2 = db.session.query(emp).with_entities(func.sum(emp.age).label('agesum')).subquery()
+    results = db.session.query(subq1, subq2).with_entities(subq1.c.age, (subq1.c.age*subq1.c.countid/subq2.c.agesum*100).label('rate'))
 */
