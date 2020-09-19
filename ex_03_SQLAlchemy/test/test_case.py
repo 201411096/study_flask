@@ -30,6 +30,22 @@ class emp(db.Model):
     deptno = db.Column(db.Integer)
     hiredate = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     salary = db.Column(db.Integer)
+def makeJsonWithCaseOption(orm_result, caseOption):
+    exceptionCase = ['06_02', '06_03', '06_04']
+    if caseOption not in exceptionCase:
+        return ormConvertToJson(orm_result)
+    else: # .all(), .first(), .scalar()
+        return orm_result
+
+# orm의 결과를 받아서 json형태로 바꿔주는 함수
+# .all(), .first(), .scalar()등의 함수를 사용할 경우 orm_result.statement부분이 사라져 사용할 수 없음
+def ormConvertToJson(orm_result):
+    df = pd.read_sql(orm_result.statement, orm_result.session.bind)
+
+    #orient='index'(json format의 default값) -> dict like {index -> {column->value}}
+    #orient='records' -> list like [{column -> value}, ... ]
+    result = json.loads(df.to_json(orient='records'))
+    return result
 
 if __name__ == '__main__':
     # results = db.session.query(emp).with_entities(emp.location, func.count(emp.id)).group_by(emp.location)
@@ -45,6 +61,8 @@ if __name__ == '__main__':
         func.avg(
             case(
                 [
+                    #between은 왼쪽 오른쪽 값들을 다 포함함(target, left, right)
+                    #정확히 left, right값일 경우에도 true로 판별(초과, 미만이아닌 이상, 이하로..)
                     (between(emp.age, 30, 39), emp.salary)
                 ]
             )
@@ -67,3 +85,5 @@ if __name__ == '__main__':
     print(results)
     for result in results:
         print(result)
+    result = ormConvertToJson(results)
+    print(result)

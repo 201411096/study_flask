@@ -1,7 +1,7 @@
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func, distinct
+from sqlalchemy.sql import func, distinct, case, between
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import datetime
 import json
@@ -23,7 +23,7 @@ class emp(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     gender = db.Column(db.String(16))
-    age = db.Column(db.String(32))
+    age = db.Column(db.Integer)
     location = db.Column(db.Integer)
     deptno = db.Column(db.Integer)
     hiredate = db.Column(db.DateTime, default=datetime.datetime.utcnow())
@@ -62,52 +62,52 @@ def test():
         mimetype="application/json"
     )
 
-def testCase(case):
+def testCase(caseOption):
     results = {}
     # case_01_01_단순 group query
     # select count(id) from emp group by location
-    if case=='01_01':
+    if caseOption=='01_01':
         results = db.session.query(emp).with_entities(emp.location, func.count(emp.id)).group_by(emp.location)
     # case_01_02_group query with distinct count
     # SELECT gender, COUNT(gender), COUNT(DISTINCT location) FROM emp GROUP BY gender
-    elif case=='01_02':
+    elif caseOption=='01_02':
         results = db.session.query(emp).with_entities(emp.gender, func.count(distinct(emp.location)), func.count(emp.id)).group_by(emp.gender)
     # case_02_having절을 포함한 group query
     # select count(id), location from emp group by location HAVING COUNT(id)>2;
-    elif case=='02':
+    elif caseOption=='02':
         results = db.session.query(emp).with_entities(emp.location, func.count(emp.id)).group_by(emp.location).having(func.count(emp.id)>1)
     # case_03_order by절을 포함한 group query
     # select count(id), location from emp group by location HAVING COUNT(id)>1 ORDER BY COUNT(id) desc;
-    elif case=='03':
+    elif caseOption=='03':
         results = db.session.query(emp).with_entities(emp.location, func.count(emp.id)).group_by(emp.location).having(func.count(emp.id)>1).order_by(func.count(emp.id).desc())
     # case_04 where절을 포함한 group query
     # select count(id), location from emp WHERE gender = 'm' group by location HAVING COUNT(id)>1 ORDER BY COUNT(id) desc;
-    elif case=='04':
+    elif caseOption=='04':
         results = db.session.query(emp).filter(emp.gender=='m').with_entities(emp.location, func.count(emp.id)).group_by(emp.location).having(func.count(emp.id)>1).order_by(func.count(emp.id).desc())
     # case_05_01 다중 컬럼 group query
     # SELECT COUNT(id), location, deptno FROM emp GROUP BY location, deptno;
-    elif case=='05_01':
+    elif caseOption=='05_01':
         results = db.session.query(emp).with_entities(func.count(emp.id), emp.location, emp.deptno).group_by(emp.location, emp.deptno)
     # case_05_02 다중 컬럼 group query(지역, 연령별 평균연봉)
     # SELECT location,concat(FLOOR(age/10), '0대' ) AS '연령대', AVG(salary) AS 'salary_average', count(id) FROM emp GROUP BY location, FLOOR(age/10);
-    elif case=='05_02':
+    elif caseOption=='05_02':
         results = db.session.query(emp).with_entities(func.count(emp.id).label('count'), func.avg(emp.salary).label('salary_average'), emp.location.label('location'), (func.floor((emp.age)/10)*10).label('연령대별')).group_by(emp.location, func.floor((emp.age)/10))
     # case_06_01 추가적인예시(평균 대비 편차구하기)
     # SELECT e.age-a.avg_age FROM emp e, (SELECT AVG(age) AS avg_age FROM emp) a
-    elif case=='06_01':
+    elif caseOption=='06_01':
         avg_age = db.session.query(emp).with_entities(func.avg(emp.age).label('age')).first()
         results = db.session.query(emp).with_entities((emp.age-avg_age).label('평균나이 별 편차'), emp.age, emp.id)
     # case_06_02 추가적인예시(특정 조건의 전체자료 가져오기 )
     # SELECT id, name FROM emp WHERE gender='m'
-    elif case=='06_02':
+    elif caseOption=='06_02':
         results = db.session.query(emp).filter(emp.gender=='m').with_entities(emp.id, emp.name).all()   
     # case_06_03 추가적인예시(특정 조건의 첫번쨰자료 가져오기 )
     # SELECT id, name FROM emp WHERE gender='m' LIMIT 1
-    elif case=='06_03':
+    elif caseOption=='06_03':
         results =db.session.query(emp).filter(emp.gender=='m').with_entities(emp.id, emp.name).first()
     # case_06_04 scalar()를 활용한 조건검색(한가지 값을 검색하며 검색결과가 없거나 두개 이상일 경우 예외처리)
     # SELECT id, name FROM emp WHERE gender='m' LIMIT 1
-    elif case=='06_04':
+    elif caseOption=='06_04':
         try:
             results = db.session.query(emp).filter(emp.name=='aaa').with_entities(emp.id, emp.name).scalar()    
             print(results)
@@ -122,7 +122,7 @@ def testCase(case):
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age >=30 AND age <40) tmp2,
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age >=40 AND age <50) tmp3,
     # (SELECT AVG(salary) AS avg_sal FROM emp WHERE age >= 50) tmp4    
-    elif case=='06_05':
+    elif caseOption=='06_05':
         tmp1 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age<30).subquery()
         tmp2 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=30).filter(emp.age<40).subquery()
         tmp3 = db.session.query(emp).with_entities(func.avg(emp.salary).label('avg_sal')).filter(emp.age>=40).filter(emp.age<50).subquery()
@@ -135,13 +135,43 @@ def testCase(case):
     # avg(case when (age>=40 and age<50) then salary end) as '40대 연봉',
     # avg(case when age>=50 then salary end) as '50대 이상 연봉'
     # from emp;
-    elif case=='06_05_02':
-
+    elif caseOption=='06_05_02':
+        print('check in case 06_05_02 ...')
+        results = db.session.query(emp).with_entities(
+            func.avg(
+                case(
+                    [
+                        (emp.age <30, emp.salary)
+                    ]
+                )
+            ).label('30대 이하 연봉 평균'),
+            func.avg(
+                case(
+                    [
+                        (between(emp.age, 30, 39), emp.salary)
+                    ]
+                )
+            ).label('30대 연봉 평균'),
+            func.avg(
+                case(
+                    [
+                        (between(emp.age, 40, 49), emp.salary)
+                    ]
+                )
+            ).label('40대 연봉 평균'),
+            func.avg(
+                case(
+                    [
+                        (emp.age >=50, emp.salary)
+                    ]
+                )
+            ).label('50대 이상 연봉 평균')    
+        )
     # case_06_06 추가적인예시(전체나이 합계에 차지하는 개별나이의 비율) - subquery
 	# SELECT a.age AS age, a.age*a.countid/b.agesum*100 as rate FROM
 	# (SELECT COUNT(id) AS countid, age FROM emp GROUP BY age) a,
 	# (SELECT SUM(age) AS agesum FROM emp) b;    
-    elif case=='06_06':
+    elif caseOption=='06_06':
         subq1 = db.session.query(emp).with_entities(func.count(emp.id).label('countid'), emp.age.label('age')).group_by(emp.age).subquery()
         subq2 = db.session.query(emp).with_entities(func.sum(emp.age).label('agesum')).subquery()
         results = db.session.query(subq1, subq2).with_entities(subq1.c.age, (subq1.c.age*subq1.c.countid/subq2.c.agesum*100).label('rate'))
