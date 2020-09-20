@@ -9,6 +9,7 @@ CREATE TABLE emp(
     hiredate date,
     salary INT
 );
+
 -- 샘플데이터1 데이터
 INSERT INTO emp(id, name, gender, age, location, deptno, hiredate, salary) VALUES(1, 'aaa', 'm', 21, 'seoul', 11, '2005-03-02', 15000);
 INSERT INTO emp(id, name, gender, age, location, deptno, hiredate, salary) VALUES(2, 'bbb', 'w', 25, 'seoul', 12, '2011-02-05', 12000);
@@ -28,6 +29,7 @@ create table board(
 	title varchar(128),
 	content longtext
 );
+
 -- 샘플데이터2 데이터
 INSERT INTO board(id, writer_id, title, content) VALUES (1, 'abc123', 'title1', 'content1');
 INSERT INTO board(id, writer_id, title, content) VALUES (2, 'abc123', 'title2', 'content2');

@@ -44,7 +44,7 @@ class board(db.Model):
     title = db.Column(db.String(128))
     content = db.Column(LONGTEXT)
 
-def makeJsonWithCaseOption(orm_result, caseOption):
+def makeJsonWithCaseOption(orm_result):
     try:
         return ormConvertToJson(orm_result)
     # .scalar(), .all(), .first(), .one()함수를 사용할 경우 .statement attribute가 존재하지 않아 attributeError가 발생함
@@ -223,6 +223,25 @@ def testCase(caseOption):
 
     return results
 
+@app.route('/test_raw_sql')
+def test_raw_sql():
+    arg_sql_query = request.args.get('query')
+
+    checkQueryInConsole(arg_sql_query, 'raw_sql')
+
+    results = db.session.execute(arg_sql_query)
+
+    # resultProxy -> dict
+    result = []
+    for row in results:
+        result.append(dict(row))
+
+    return Response(
+        response = json.dumps(result),
+        status = 200,
+        mimetype="application/json"
+    )
+
 # test 예시
 # http://192.168.56.1:5000/test_orm?case=07_01
 @app.route('/test_orm')
@@ -232,8 +251,8 @@ def test_orm():
     # ORM에서 변환된 SQL문을 콘솔로 확인
     checkQueryInConsole(results, caseOption)
 
-    result = makeJsonWithCaseOption(results, caseOption)
-
+    result = makeJsonWithCaseOption(results)
+    
     return Response(
         response = json.dumps(result),
         status = 200,
