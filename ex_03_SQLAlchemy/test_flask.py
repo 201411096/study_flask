@@ -244,6 +244,15 @@ def test_raw_sql():
         mimetype="application/json"
     )
 
+@app.route('/test_clob_data')
+def test_clob_data():
+    results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content.like("%aaaaa%"))
+    result = makeJsonWithCaseOption(results)
+    return Response(
+        response = result,
+        status = 200,
+        mimetype="application/json"
+    )
 # test 예시
 # http://192.168.56.1:5000/test_orm?case=07_01
 @app.route('/test_orm')

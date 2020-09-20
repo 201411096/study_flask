@@ -52,16 +52,17 @@ def checkQueryInConsole(orm_result, caseOption):
 
 def test_raw_sql():
     lines = ''
-    myfile = open("./ex_03_SQLAlchemy/test/test_file/sample.txt")
+    # myfile = open("./ex_03_SQLAlchemy/test/test_file/sample.txt")
+    myfile = open("./ex_03_SQLAlchemy/test/test_file/sample_1.txt")
     lines = myfile.read()
     myfile.close()
     board_content=lines
     print('lines : ' + board_content)
-    arg_sql_query ="INSERT INTO board(id, writer_id, title, content) VALUES (23, 'abc1237', 'title23',"+ board_content +")"
+    # arg_sql_query ="INSERT INTO board(id, writer_id, title, content) VALUES (23, 'abc1237', 'title23','"+ board_content +"');"
+    arg_sql_query ="INSERT INTO board(id, writer_id, title, content) VALUES (24, 'abc1237', 'title24','"+ board_content +"');"
 
     results = db.session.execute(arg_sql_query)
     db.session.commit()
-    print('result : ' + results)
 
     return Response(
         response = json.dumps({'test':'testtt'}),
