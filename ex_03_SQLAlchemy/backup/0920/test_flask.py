@@ -45,9 +45,20 @@ class board(db.Model):
     content = db.Column(LONGTEXT)
 
 def makeJsonWithCaseOption(orm_result, caseOption):
+    # 11111111111111111111111
+    # exceptionCase = ['06_02', '06_03', '06_04']
+    # if caseOption not in exceptionCase:
+    #     return ormConvertToJson(orm_result)
+    # else: # .all(), .first(), .scalar()
+    #     return orm_result
+    # 222222222222222222222
+    # if orm_result.statement is not None:
+    #     return ormConvertToJson(orm_result)
+    # else:
+    #     return orm_result
+    # 333333333333333333333333333
     try:
         return ormConvertToJson(orm_result)
-    # .scalar(), .all(), .first(), .one()함수를 사용할 경우 .statement attribute가 존재하지 않아 attributeError가 발생함
     except AttributeError:
         return orm_result
 

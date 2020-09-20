@@ -6,6 +6,12 @@ from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import datetime
 import json
 import pandas as pd
+from sqlalchemy.dialects.mysql import \
+        BIGINT, BINARY, BIT, BLOB, BOOLEAN, CHAR, DATE, \
+        DATETIME, DECIMAL, DECIMAL, DOUBLE, ENUM, FLOAT, INTEGER, \
+        LONGBLOB, LONGTEXT, MEDIUMBLOB, MEDIUMINT, MEDIUMTEXT, NCHAR, \
+        NUMERIC, NVARCHAR, REAL, SET, SMALLINT, TEXT, TIME, TIMESTAMP, \
+        TINYBLOB, TINYINT, TINYTEXT, VARBINARY, VARCHAR, YEAR
 
 
 app = Flask(__name__)
@@ -31,17 +37,26 @@ class emp(db.Model):
     hiredate = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     salary = db.Column(db.Integer)
 
+class board(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    writer_id = db.Column(db.String(64))
+    title = db.Column(db.String(128))
+    content = db.Column(LONGTEXT)
+
+def ormConvertToJson(orm_result):
+    df = pd.read_sql(orm_result.statement, orm_result.session.bind)
+
+    #orient='index'(json format의 default값) -> dict like {index -> {column->value}}
+    #orient='records' -> list like [{column -> value}, ... ]
+    result = json.loads(df.to_json(orient='records'))
+    return result
+
 if __name__ == '__main__':
-    # results = db.session.query(emp).with_entities(emp.location, func.count(emp.id)).group_by(emp.location)
-    results = db.session.query(emp).with_entities(
-        func.avg(
-            case(
-                [
-                    (between(emp.age, 21, 22), emp.salary)
-                ]
-            )
-         ).label('30대 연봉 평균'),
-    )
-    print(results)
-    for result in results:
-        print(result)
+    results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content == None)
+
+    result = ormConvertToJson(results)
+    print(result)
+
+    # print(results)
+    # for result in results:
+    #     print(result)
