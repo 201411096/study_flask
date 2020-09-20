@@ -49,7 +49,7 @@ def makeJsonWithCaseOption(orm_result):
         return ormConvertToJson(orm_result)
     # .scalar(), .all(), .first(), .one()함수를 사용할 경우 .statement attribute가 존재하지 않아 attributeError가 발생함
     except AttributeError:
-        return orm_result
+        return json.dumps(orm_result)
 
 # orm의 결과를 받아서 json형태로 바꿔주는 함수
 # .all(), .first(), .scalar()등의 함수를 사용할 경우 orm_result.statement부분이 사라져 사용할 수 없음
@@ -58,7 +58,8 @@ def ormConvertToJson(orm_result):
 
     #orient='index'(json format의 default값) -> dict like {index -> {column->value}}
     #orient='records' -> list like [{column -> value}, ... ]
-    result = json.loads(df.to_json(orient='records'))
+    result = df.to_json(orient='records')
+
     return result
 
 def checkQueryInConsole(orm_result, caseOption):
@@ -115,7 +116,8 @@ def testCase(caseOption):
     # case_06_02 추가적인예시(특정 조건의 전체자료 가져오기 )
     # SELECT id, name FROM emp WHERE gender='m'
     elif caseOption=='06_02':
-        results = db.session.query(emp).filter(emp.gender=='m').with_entities(emp.id, emp.name).all()   
+        # results = db.session.query(emp).filter(emp.gender=='m').with_entities(emp.id, emp.name).all()   
+        results = db.session.query(emp).filter(emp.gender=='m').with_entities(emp.id.label('id'), emp.name.label('name')).all()   
     # case_06_03 추가적인예시(특정 조건의 첫번쨰자료 가져오기 )
     # SELECT id, name FROM emp WHERE gender='m' LIMIT 1
     elif caseOption=='06_03':
@@ -250,11 +252,11 @@ def test_orm():
     results = testCase(caseOption)
     # ORM에서 변환된 SQL문을 콘솔로 확인
     checkQueryInConsole(results, caseOption)
-
+    # ORM결과를 
     result = makeJsonWithCaseOption(results)
     
     return Response(
-        response = json.dumps(result),
+        response = result,
         status = 200,
         mimetype="application/json"
     )
