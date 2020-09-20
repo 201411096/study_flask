@@ -196,7 +196,33 @@ def testCase(caseOption):
     elif caseOption=='07_01':
         results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content == None)
 
+    # case_07_02_01 '' 검색
+    # select * from board where content is '';
+    elif caseOption=='07_02_01':
+        results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content == '')
+    
+    # case_07_02_02 ' ' 검색
+    # select * from board where content is ' ';
+    elif caseOption=='07_02_02':
+        results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content == ' ')
+
+    # case_07_03 ifnull()
+    # select id, writer_id, title, ifnull(content, 'default_board_content') as content from board where content is null;
+    elif caseOption=='07_03':
+        results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, func.ifnull(board.content, 'default_board_content').label('content')).filter(board.content == None)
+
+    # case_07_04 between()
+    # select * from board where id >=5 and id<=10;
+    elif caseOption=='07_04':
+        results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(between(board.id, 5, 10))
+
+    # case_07_05 like()
+    # select * from board where content like '%aaa%';
+    elif caseOption=='07_05':
+        results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content.like("%aaa%"))
+
     return results
+
 # test 예시
 # http://192.168.56.1:5000/test_orm?case=07_01
 @app.route('/test_orm')

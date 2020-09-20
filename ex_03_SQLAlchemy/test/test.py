@@ -52,7 +52,7 @@ def ormConvertToJson(orm_result):
     return result
 
 if __name__ == '__main__':
-    results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(board.content == None)
+    results = db.session.query(board).with_entities(board.id, board.writer_id, board.title, board.content).filter(between(board.id, 5, 10))
 
     result = ormConvertToJson(results)
     print(result)
