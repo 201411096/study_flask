@@ -1,0 +1,413 @@
+------------------------------------------------------------
+HTML Introduction
+
+	<DOCTYPE html> : html5문서 정의
+	<html> : html page의 root element
+	<head> : html page에 관한 meta information을 포함
+------------------------------------------------------------
+HTML Elements
+
+	HTML 태그는 대소문자 구분이 없지만 w3c는 소문자 사용을 권장
+------------------------------------------------------------
+HTML Attributes
+
+	lang : html 태그 안에서 사용 (web page의 언어 선언, 검색엔진 혹은 브라우저를 도움)
+	""를 주로 사용하지만 ''도 사용이 가능하며, 상황에 따라서는 ''가 필요
+------------------------------------------------------------
+HTML Paragraphs
+
+	<hr> : horizontal rule
+	<br> : break
+	<pre> : preformatted text, 공백과 띄어쓰기를 유지함
+------------------------------------------------------------
+HTML Formatting
+
+	<b> : bold text, 굵은 글씨
+	<strong text> : important text, 일반적으로 굵은 글씨
+	<i> : Italic text, 기울임, 기술적인 용어 등에 사용
+	<em> : Emphasized text, 기울임
+	<mark> : Marked text, 형광색
+	<small> : Smaller text
+	<del> : Deleted text, 글씨 가운데에 줄 그어짐
+	<ins> : Inserted text, 글씨 밑에 줄 그어짐
+	<sub> : Subscript text, 글씨가 아래로,,
+	<sup> : Superscript text, 글씨가 위로,,
+------------------------------------------------------------
+HTML Quotations
+	
+	<blockquote> : 인용한 문단임을 표시, 들여쓰기
+		cite : 출처 표시
+	<q> : 인용한 줄 -> 큰따옴표로 묶임
+	<abbr> : abbreviations(약어)
+	<address>
+	<cite> : 창작활동의 제목(book, poem, song, movie ...)
+	<bdo> : bi-directional override
+		ex)<bdo dir="rtl"></bdo> ==> 안의 텍스트가 거꾸로 써짐
+------------------------------------------------------------
+HTML Comments
+	
+	<!-- -->
+------------------------------------------------------------
+HTML Color
+
+	rgb
+		ex) rgb(255, 99, 71)
+	rgba(red, green, blue, alpha) -> alpha : opacity(투명도)
+		ex) rgba(255, 99, 71, 0.5)
+	hex
+		ex) #ff6347
+	hsl : hsl(hue, saturation, ligntness) -> (색상, 채도, 명도)
+		hsl(9, 100%, 64%)
+------------------------------------------------------------
+HTML CSS
+	
+	Internal CSS
+		<style>
+	External CSS
+		<link rel="stylesheet" href="..">
+
+	Padding : text <-> border 사이의 공간
+	Margin : border 바깥의 여백
+------------------------------------------------------------
+HTML Links
+
+	<a>
+		href : hypertext reference
+		style
+			color
+			background-color
+			text-decoration
+				underline
+				none
+
+	target attribute
+		_self : 새로운 탭에
+		_blank : 새로운 창에
+		_parent : 부모 프레임에
+		_top : 최상위 프레임에
+
+	bookmark
+		ex) <a href="#target_id"></a>
+------------------------------------------------------------
+HTML Images
+
+	Image Map
+		<map> - image Map을 생성
+		<area> - clickable area를 생성
+			shape
+				rect
+				circle
+				poly
+				default
+			ex)	<area shape="rect" coords="34, 44, 270, 350" href="computer.htm">
+				<area shape="circle" coords="337, 300, 44" href="coffee.htm">
+				<area shape="poly" coords="140,121,181,116,204,160,204,222,191,270,140,329,85,355,58,352,37,322,40,259,103,161,128,147" href="croissant.htm">
+	style - background-image
+		background-image
+		background-repeat
+		background-attachment
+		background-size
+		ex) <style>
+			body {
+			  background-image: url('example_img_girl.jpg');
+			  background-repeat: no-repeat;
+			  background-attachment: fixed;
+			  background-size: cover;
+			}
+		     </style>
+	<picture> : image resources를 담는 container
+	<source> : image를 담음
+		media : 
+		srcset : 소스 위치
+------------------------------------------------------------
+HTML Tables
+
+	구조
+		table
+			tr th th th tr
+			tr td td td tr
+			tr td td td tr
+		table
+	rowspan : 행병합
+	colspan : 열병합
+	<caption> : 테이블의 설명, <table>태그 바로 뒤에 들어와야됨
+ 
+------------------------------------------------------------
+HTML Lists
+	
+	ul - unordered list
+	ol - ordered list
+	li - list item : 새로운 리스트 혹은 다른 html element, 이미지 혹은 링크들을 포함할 수 있음
+	dl - description list
+		dt : description term
+		dd : description definition
+		구조
+			dl
+				dt dd
+				dt dd
+				dt dd
+			dl
+------------------------------------------------------------
+HTML Block & Inline
+
+	Block-level Elements : 항상 새로운 라인에서 시작
+		종류 : address article aside blockquote canvase dd div dl dt fieldset figcaption figure footer form h1~h6 header hr li main nav noscript
+		ol p pre section table tfoot ul video
+	Inline Elements
+		종류 : a abbr acronym b bdo big br button cite code dfn em i img input kbd label map object output q samp script select small span
+		strong sub sup textarea time tt var
+------------------------------------------------------------
+HTML Iframe
+	
+	현재 html 문서에 다른 문서를 넣는데 사용
+------------------------------------------------------------
+HTML Head
+	
+	<title> <style> <meta> <link> <script> <base>를 담는 container element
+
+	<meta>
+		ex)	<meta charset="UTF-8">
+			<meta name="keywords" content="HTML, CSS, JavaScript">
+			<meta name="description" content="Free Web tutorials">
+			<meta name="author" content="John Doe">
+			<meta http-equiv="refresh" content="30">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<base>
+		document에는 하나의 base element만 존재해야함
+		ex)	<base href="https://www.w3schools.com/" target="_blank">
+			...
+			<a href="tags/tag_base.asp">HTML base Tag</a>
+------------------------------------------------------------
+HTML Layout Elements
+
+	<header>
+	<nav> : navigation link 정의
+	<section>
+	<article> : document에서 독립적인 부분 저으이
+	<aside>
+	<footer>
+	<details>
+	<summary> : details element의 heading을 정의
+------------------------------------------------------------
+HTML Responsive
+
+	setting viewport
+		ex) <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	media query
+		ex) @media screen and (max-width: 800px){...}
+------------------------------------------------------------
+HTML Computercode
+
+	<code>
+	<kbd> : keyboard input 표시에 사용
+	<samp> : sample output 표시에 사용
+	<var> : 변수 표시에 사용
+------------------------------------------------------------
+HTML Semantic Elements
+	
+	non-semantic elements - div, span
+	semantic elements - form, table, article
+
+	<figure> : self-contained content (ex illustration, photo, diagram ..)
+	<figcaption> : figure element의 caption
+	<time>
+------------------------------------------------------------
+HTML Entities
+
+	HTML Entities - Reserved characters in HTML must be replaced with character entities.
+
+	Result	Description		Entity Name	Entity Number
+		non-breaking space	&nbsp;		&#160;
+	<	less than			&lt;		&#60;
+	>	greater than		&gt;		&#62;
+	&	ampersand		&amp;		&#38;
+	"	double quotation mark	&quot;		&#34;
+	'	single quotation mark 	&apos;		&#39;
+	¢	cent			&cent;		&#162;
+	£	pound			&pound;		&#163;
+	¥	yen			&yen;		&#165;
+	€	euro			&euro;		&#8364;
+	©	copyright			&copy;		&#169;
+	®	registered trademark	&reg;		&#174;
+------------------------------------------------------------
+HTML Emojis
+
+	HTML charset Attribute - <meta charset="UTF-8">가 필요
+
+	&#로 시작하며 ;(semicolon)으로 끝나면 됨
+		A, B, C -> &#65; &#66; &#67
+------------------------------------------------------------
+HTML URL Encode
+
+	URL은 web address의 다른 단어, Uniform Resource Locator
+
+	scheme://prefix.domain:port/path/filename
+		scheme : internet service의 종류 (대부분 http or https)
+		prefix : domain의 prefix (http의 default는 www)
+		domain : domain name(like w3schools.com)
+		port : port number at the host(http의 default는 80)
+
+	common url schemes
+		http	(hypertext transfer protocol)		common web page, not encrypted
+		https	(secure hypertext transfer protocol)	secure web page, encrypted
+		ftp	(file transfer protocol)		downloading or uploading files
+		file					file on your computer
+
+	url encoding
+		url은 ASCII character-set을 사용해서만 넘어감, 따라서 url이  ASCII character-set이 아닌 character를 포함한다면 convert가 필요
+------------------------------------------------------------
+HTML vs. XHTML
+
+	XHTML - Extensible HyperText Markup Language
+
+	HTML과의 차이점
+		<!DOCTYPE>이 필요
+		<html>에 xmlns attribute가 필요
+		<html> <head> <title> <body>가 필요
+		elements는 적절히 nested되야하며, 닫혀야되고 소문자여야됨
+		attributes는 소문자여야되고, 값은 quoted(따옴표처리)되야함
+------------------------------------------------------------
+HTML Forms
+
+	<form>
+	<input> : 가장 많이 사용되는 form element
+	<label> : form elements의 label을 정의해줌(input의 id값과 for값을 맞춰야만 함)
+------------------------------------------------------------
+HTML Form Attributes
+
+	The Autocomplete Attribute
+	The Novalidate Attribute - submit 시 유효성 검사를 하지 않음
+------------------------------------------------------------
+HTML Form Elements
+
+	<input>
+	<label>
+	<select> : drop-down list
+		size : 한번에 볼 수 있는 개수를 정함
+		multiple : 여러개 선택 가능
+		<option> : 선택할 수 있는 옵션들을 정의
+	<textarea>
+	<button>
+	<fieldset>
+	<legend>
+	<datalist> : <input> element를 위한 사전에 정의된 옵션들, select와 약간 다름
+	<output>
+	<option>
+	<optgroup>
+------------------------------------------------------------
+HTML Input Types
+
+	<input type="button">
+	<input type="checkbox">
+	<input type="color">
+	<input type="date">
+	<input type="datetime-local">
+	<input type="email">
+	<input type="file">
+	<input type="hidden">
+	<input type="image">
+	<input type="month">
+	<input type="number">
+	<input type="password">
+	<input type="radio">
+	<input type="range">
+	<input type="reset">
+	<input type="search">
+	<input type="submit">
+	<input type="tel">
+	<input type="text">
+	<input type="time">
+	<input type="url">
+	<input type="week">
+	<input type="reset"> : form의 모든 값들을 default value로 초기화
+
+	Input Restrictions
+		checked		Specifies that an input field should be pre-selected when the page loads (for type="checkbox" or type="radio")
+		disabled		Specifies that an input field should be disabled
+		max		Specifies the maximum value for an input field
+		maxlength	Specifies the maximum number of character for an input field
+		min		Specifies the minimum value for an input field
+		pattern		Specifies a regular expression to check the input value against
+		readonly		Specifies that an input field is read only (cannot be changed)
+		required		Specifies that an input field is required (must be filled out)
+		size		Specifies the width (in characters) of an input field
+		step		Specifies the legal number intervals for an input field
+		value		Specifies the default value for an input field
+------------------------------------------------------------
+HTML Input Attributes		
+
+	The value Attribute
+	The readonly Attribute
+	The disabled Attribute
+	The size Attribute
+	The maxlength Attribute
+	The min and max Attributes
+	The multiple Attribute
+	The pattern Attribute
+	The placeholder Attribute
+	The required Attribute
+	The step Attribute
+	The autofocus Attribute
+	The list Attribute			dataliset element를 참조하는 속성
+	The autocomplete Attribute
+------------------------------------------------------------
+HTML Input Form Attributes
+
+	formaction
+	formenctype : form-data를 제출시에 어떻게 encoding할지
+	formtarget
+		_blank, ...
+	formnovalidate(input의 attribute) : 제출시에 유효성 검사를 하지 않음
+	novalidate(form의 attribute) : 제출시에 유효성 검사를 하지 않음
+------------------------------------------------------------
+HTML Canvas
+	
+	js를 이용한 그래픽 그리기
+------------------------------------------------------------
+HTML SVG
+
+	SVG : scalable vector graphics
+	path, box, circle, text, graphic image들을 그릴 수 있는 메소드들을 가지고 있음
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

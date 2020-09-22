@@ -1,0 +1,589 @@
+------------------------------------------------------------
+JS Output
+
+	innerHTML : HTML content를 정의
+	document.write() : 사용시에 기존의 html은 전부 지워짐
+	window.alert() : window는 생략가능
+	console.log()
+	window.print()
+------------------------------------------------------------
+JS Statements
+
+
+	Keyword		Description
+	break		Terminates a switch or a loop
+	continue		Jumps out of a loop and starts at the top
+	debugger	Stops the execution of JavaScript, and calls (if available) the debugging function
+	do ... while	Executes a block of statements, and repeats the block, while a condition is true
+	for		Marks a block of statements to be executed, as long as a condition is true
+	function		Declares a function	
+	if ... else		Marks a block of statements to be executed, depending on a condition
+	return		Exits a function
+	switch		Marks a block of statements to be executed, depending on different cases
+	try ... catch	Implements error handling to a block of statements
+	var		Declares a variable
+------------------------------------------------------------
+JS Variables
+
+	Value = undefined
+		따로 값을 초기화하지 않을 경우 undefined라는 값을 갖게 됨
+
+	Re-Declaring JavaScript Variables
+		값을 갖고 있는 상태로 변수를 다시 선언해도 이전의 값을 그대로 가지고 있음
+------------------------------------------------------------
+JS Operators
+
+	instanceof
+		ex) object instance of constructor
+			object : 판별할 객체
+			constructor : 판별 목표 함수
+------------------------------------------------------------
+JS data types
+
+	Null
+		js에서의 null은 객체, 객체를 비울때 null을 사용 (undefined와 다르게 값은 없어도 여전히 객체인 상태를 유지함)
+
+	Difference Between Undefined and Null
+		typeof undefined           // undefined
+		typeof null                // object
+
+		null === undefined         // false
+		null == undefined          // true
+	Primitive Data - string, number, boolean, undefined
+------------------------------------------------------------
+JS Strings
+
+	String Can be Objects
+		var x = "John";
+		var y = new String("John");
+
+		// typeof x will return string
+		// typeof y will return object
+		// (x == y) is true because x and y have equal values
+		// (x === y) is false because x and y have different types (string and object)
+------------------------------------------------------------
+JS String methods
+
+	String length
+		length(property)
+	Finding a String in a String
+		indexOf()
+			return -1 if the text is not found
+		lastIndexOf()
+			return -1 if the text is not found
+
+	Searching for a String in a String
+		search()
+			search() <-> indexOf()
+				The search() method cannot take a second start position argument.
+				The indexOf() method cannot take powerful search values (regular expressions).
+
+	Extracting String Parts
+		slice(start, end) : start ~ end-1
+		substring(start, end) : start ~ end-1
+		substr(start, length)
+
+	Replacing String Content
+		replace(target_string, replace_string) : 맨 처음 match되는 것만 replace
+		대소문자 구분없이 교체하려면... /i를 이용한 regular expression 사용
+			ㄴ ex)	str = "Please visit Microsoft!";
+				var n = str.replace(/MICROSOFT/i, "W3Schools");
+	toUpperCase()
+	toLowerCase()
+	concat(str1, str2)
+	trim() : string 양 옆의 공백을 지움
+
+	Extracting String Characters
+		charAt(position) : 해당 index의 character를 반환
+		charCodeAt(position) : 해당 index의 utf-16 code를 반환
+		property access ([]를 이용)
+	
+	Converting a String to an Array
+		split(seperator)
+------------------------------------------------------------
+JS Numbers
+
+	JavaScript Numbers are Always 64-bit Floating Point
+		Value		Exponent		Sign
+		52 bits (0 - 51) 	11 bits (52 - 62)	1 bit (63)
+
+	Precision : Integers (numbers without a period or exponent notation) are accurate up to 15 digits.
+		var x = 999999999999999;   // x will be 999999999999999
+		var y = 9999999999999999;  // y will be 10000000000000000
+
+	NaN - Not a Number
+
+	Infinity - Infinity (or -Infinity) is the value JavaScript will return if you calculate a number outside the largest possible number.
+		var x =  2 / 0;       // x will be Infinity
+		var y = -2 / 0;       // y will be -Infinity
+		typeof Infinity;     // returns "number"
+
+	Hexadecimal
+		var x = 0xFF;        // x will be 255
+------------------------------------------------------------
+JavaScript Number Methods
+
+	The toString() Method
+		var x = 123;
+		x.toString();            // returns 123 from variable x
+		(123).toString();        // returns 123 from literal 123
+		(100 + 23).toString();   // returns 123 from expression 100 + 23
+
+	The toExponential() Method
+		var x = 9.656;
+		x.toExponential(2);     // returns 9.66e+0
+		x.toExponential(4);     // returns 9.6560e+0
+		x.toExponential(6);     // returns 9.656000e+0
+
+	The toFixed() Method
+		var x = 9.656;
+		x.toFixed(0);           // returns 10
+		x.toFixed(2);           // returns 9.66
+		x.toFixed(4);           // returns 9.6560
+		x.toFixed(6);           // returns 9.656000
+
+	The toPrecision() Method
+		var x = 9.656;
+		x.toPrecision();        // returns 9.656
+		x.toPrecision(2);       // returns 9.7
+		x.toPrecision(4);       // returns 9.656
+		x.toPrecision(6);       // returns 9.65600
+------------------------------------------------------------
+JS Arrays
+
+	Adding Array Elements
+		var fruits = ["Banana", "Orange", "Apple", "Mango"];
+		fruits.push("Lemon");    // adds a new element (Lemon) to fruits
+		var fruits = ["Banana", "Orange", "Apple", "Mango"];
+		fruits[fruits.length] = "Lemon";    // adds a new element (Lemon) to fruits
+------------------------------------------------------------
+JS Array Methods
+
+	Converting Arrays to Strings
+		toString() : 배열 요소들을 ","로 구분해서 string으로 반환
+		join(seperator) : 배열 요소들을 seperator로 구분해서 string으로 반환
+
+	Popping and Pushing
+		pop() : 배열의 마지막 요소를 제거하고 반환
+		push() : 배열의 새로운 요소를 마지막에 추가하고 새로운 길이를 반환
+		shift() : 배열의 맨 앞 요소를 제거하고 반환
+		unshift() : 배열의 새로운 요소를 맨 앞에 추가하고 새로운 길이를 반환
+		pop, push (배열의 뒤에서 추가 제거) <-> shift, unshift (배열의 앞에서 추가 제거)
+
+	Deleting Elements
+		해당 요소를 undefined로 바꿈 -> pop shift 사용을 권장
+
+	Splicing an Array
+		splice(삽입할_위치, 몇개나_지울지, 삽입할 인자들..)
+
+	Merging (Concatenating) Arrays
+		ex) var myChildren = myGirls.concat(myBoys);   // Concatenates (joins) myGirls and myBoys
+
+	Slicing an Array
+		slice(start_index)
+		slice(start_index, end_index) : start_index ~ end_index-1
+------------------------------------------------------------
+JS Array Sort
+
+	Sorting an Array
+		sort() : 사전순으로 정렬
+		reverse() : 사전반대순으로 정렬
+
+	Numeric Sort
+		sort()는 기본적으로 사전순 정렬 -> 25가 100보다 큰 순으로 정렬됨(2>1)
+		오름차순 예시
+			points.sort(function(a, b){return a - b});
+		내림차순 예시
+			points.sort(function(a, b){return b - a});
+
+	Sorting Object Arrays
+		var cars = [
+		  {type:"Volvo", year:2016},
+		  {type:"Saab", year:2001},
+		  {type:"BMW", year:2010}
+		];
+		cars.sort(function(a, b){return a.year - b.year});
+------------------------------------------------------------
+JS Array Iteration
+
+	Array.forEach() : 각 요소마다 callback function을 부름
+		arr.forEach(callback(currentvalue[, index[, array]])[, thisArg])
+		ex)
+			var txt = "";
+			var numbers = [45, 4, 9, 16, 25];
+			numbers.forEach(myFunction);
+
+			function myFunction(value, index, array) {
+			  txt = txt + value + "<br>";
+			}
+	Array.filter() : 조건에 맞는 새로운 배열을 만듬
+		arr.filter(callback(element[, index[, array]])[, thisArg])
+		ex)
+			var numbers = [45, 4, 9, 16, 25];
+			var over18 = numbers.filter(myFunction);
+		
+			function myFunction(value, index, array) {
+			  return value > 18;
+			}
+	Array.map() : 각 요소마다 함수를 적용시켜 새로운 배열을 만듬(original array를 변화시키지 않음)
+		arr.map(callback(currentValue[, index[, array]])[, thisArg])
+		ex)
+			var numbers1 = [45, 4, 9, 16, 25];
+			var numbers2 = numbers1.map(myFunction);
+
+			function myFunction(value, index, array) {
+			  return value * 2;
+			}
+	Array.reduce() : 각 요소마다 함수를 적용시키며 하나의 값으로 만듬
+		arr.reduce(callback[, accumulator[, value,[ index,[ array]]]])
+		ex)
+			var numbers1 = [45, 4, 9, 16, 25];
+			var sum = numbers1.reduce(myFunction);
+
+			function myFunction(total, value, index, array) {
+			  return total + value;
+			}
+	Array.every() : 배열이 test문을 전부 만족하는지 -> true false 반환
+	Array.some() : 배열의 일부가 test문을 만족하는지 -> true false 반환
+	Array.indexOf(item, start) : start 인덱스부터 찾아서 item이 없다면 -1반환
+	Array.lastIndexOf(item, start) : start 인덱스부터 찾아서 item이 없다면 -1반환(뒤에서부터 찾음)
+	Array.find() : 조건을 만족하는 첫번째 요소를 반환
+	Array.findIndex() : 조건을 만족하는 첫번째 요소의 인덱스를 반환
+		ex)
+			var numbers = [4, 9, 16, 25, 29];
+			var first = numbers.findIndex(myFunction);
+
+			function myFunction(value, index, array) {
+			  return value > 18;
+			}
+
+	추가자료
+		https://yuddomack.tistory.com/entry/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-Array-forEach
+		https://victorydntmd.tistory.com/48
+		https://victorydntmd.tistory.com/49
+------------------------------------------------------------
+JS Dates
+	
+	Displaying Dates
+		toUTCString()
+		toDateString()
+		toISOString()
+------------------------------------------------------------
+JS Date Get Methods
+
+	Method		Description
+	getFullYear()	Get the year as a four digit number (yyyy)
+	getMonth()	Get the month as a number (0-11)
+	getDate()		Get the day as a number (1-31)
+	getHours()	Get the hour (0-23)
+	getMinutes()	Get the minute (0-59)
+	getSeconds()	Get the second (0-59)
+	getMilliseconds()	Get the millisecond (0-999)
+	getTime()		Get the time (milliseconds since January 1, 1970)
+	getDay()		Get the weekday as a number (0-6)
+	Date.now()	Get the time. ECMAScript 5.	
+
+	UTC Date Methods
+	Method			Description
+	getUTCDate()		Same as getDate(), but returns the UTC date
+	getUTCDay()		Same as getDay(), but returns the UTC day
+	getUTCFullYear()		Same as getFullYear(), but returns the UTC year
+	getUTCHours()		Same as getHours(), but returns the UTC hour
+	getUTCMilliseconds()	Same as getMilliseconds(), but returns the UTC milliseconds
+	getUTCMinutes()		Same as getMinutes(), but returns the UTC minutes
+	getUTCMonth()		Same as getMonth(), but returns the UTC month
+	getUTCSeconds()		Same as getSeconds(), but returns the UTC seconds
+------------------------------------------------------------
+JS Math
+
+	Math.PI
+	Math.round() : 반올림
+	Math.pow() : 제곱
+	Math.sqrt() : 제곱근
+	Math.abs() : 절대값
+	Math.ceil() : 올림
+	Math.floor() : 내림
+	Math.sin()
+	Math.cos()
+	...
+------------------------------------------------------------
+JS Random
+
+	Math.random : returns a random number between 0 (inclusive),  and 1 (exclusive), 0이상 1미만
+------------------------------------------------------------
+JS Break
+
+	JavaScript Labels : The break and the continue statements are the only JavaScript statements that can "jump out of" a code block.
+	ex)
+		var cars = ["BMW", "Volvo", "Saab", "Ford"];
+		list: {
+		  text += cars[0] + "<br>";
+		  text += cars[1] + "<br>";
+		  break list;
+		  text += cars[2] + "<br>";
+		  text += cars[3] + "<br>";
+		}
+------------------------------------------------------------
+JS Bitwise
+
+	Operator	Name		Description
+	&	AND		Sets each bit to 1 if both bits are 1
+	|	OR		Sets each bit to 1 if one of two bits is 1
+	^	XOR		Sets each bit to 1 if only one of two bits is 1
+	~	NOT		Inverts all the bits
+	<<	Zero fill left shift	Shifts left by pushing zeros in from the right and let the leftmost bits fall off
+	>>	Signed right shift	Shifts right by pushing copies of the leftmost bit in from the left, and let the rightmost bits fall off
+	>>>	Zero fill right shift	Shifts right by pushing zeros in from the left, and let the rightmost bits fall off
+------------------------------------------------------------
+JS RegExp
+
+	A regular expression is a sequence of characters that forms a search pattern.
+	Syntax : /pattern/modifiers
+	ex) var patt = /w3schools/i;
+
+	search()
+		ex)	var str = "Visit W3Schools";
+			var n = str.search(/w3schools/i);
+	replace()
+
+	Regular Expression Modifiers
+	Modifier	Description
+	i	Perform case-insensitive matching	
+	g	Perform a global match (find all matches rather than stopping after the first match)	
+	m	Perform multiline matching
+
+	Regular Expression Patterns
+	Expression	Description
+	[abc]		Find any of the characters between the brackets	
+	[0-9]		Find any of the digits between the brackets	
+	(x|y)		Find any of the alternatives separated with |
+
+	Metacharacter	Description
+	\d		Find a digit	
+	\s		Find a whitespace character	
+	\b		Find a match at the beginning of a word like this: \bWORD, or at the end of a word like this: WORD\b	
+	\uxxxx		Find the Unicode character specified by the hexadecimal number xxxx
+	n+		Matches any string that contains at least one n
+	n*		Matches any string that contains zero or more occurrences of n
+	n?		Matches any string that contains zero or one occurrences of n
+
+	test() : regexp에 해당하는 내용을 찾으면 true를 반환
+	ex)	var patt = /e/;
+		patt.test("The best things in life are free!");
+
+	exec() : 찾은 결과를 배열, 없으면 null object 반환
+------------------------------------------------------------
+JS Errors
+
+	try, catch, throw, finally
+
+	The throw Statement : allow you to create a custom error
+
+	The Error Object
+		name : sets or return an error name
+		message : sets or returns an error message
+
+	Error Name Values
+	Error Name	Description
+	EvalError		An error has occurred in the eval() function
+	RangeError	A number "out of range" has occurred
+	ReferenceError	An illegal reference has occurred
+	SyntaxError	A syntax error has occurred
+	TypeError	A type error has occurred
+	URIError		An error in encodeURI() has occurred
+------------------------------------------------------------
+JS Hoisting
+
+	Hoisting is JavaScript's default behavior of moving declarations to the top. (hoist : 끌어올리다, 변수를 사용이후에 선언을 하는 것이 가능)
+------------------------------------------------------------
+JS Strict Mode
+
+	"use strict"; Defines that JavaScript code should be executed in "strict mode"
+------------------------------------------------------------
+JS this Keyword
+
+	What is this?
+		In a method, this refers to the owner object.
+		Alone, this refers to the global object. -> (object window)
+		In a function, this refers to the global object. -> (object window)
+		In a function, in strict mode, this is undefined.
+		In an event, this refers to the element that received the event.
+		Methods like call(), and apply() can refer this to any object.
+
+	Explicit Function Binding
+		The call() and apply() methods are predefined JavaScript methods.
+		They can both be used to call an object method with another object as argument.
+
+	call() 
+	func.call(thisArg[, arg1[, arg2[, ...]]])
+
+	apply() : call과 유사하지만 두번째 인자부터를 배열로 만들어서 전달
+	func.apply(thisArg, [argsArray])
+
+	bind() : this 키워드를 설정한 후 바인드된 함수를 반환
+------------------------------------------------------------
+JS Arrow Function
+
+	Arrow Function
+	Before:
+	hello = function() {
+	  return "Hello World!";
+	}
+	With Arrow Function:
+	hello = () => {
+	  return "Hello World!";
+	}
+
+	regular function <-> arrow function this 차이점
+		arrow function에서는 this의 binding이 없음
+		regular function -> 함수를 부른 object가 this(window, document, button ...)
+		arrow function -> arrow function을 정의한 오브젝트가 this
+------------------------------------------------------------
+JS Debugging
+
+	The debugger Keyword : js의 실행을 멈춤
+------------------------------------------------------------
+JS Best Practices
+
+	Avoid Global Variables
+	Always Declare Local Variables
+	Declarations on Top
+	Initialize Variables
+	Never Declare Number, String, or Boolean Objects (오브젝트가 아닌 primitive value로 사용할 것 -> 성능)
+	Don't Use new Object()
+		Use {} instead of new Object()
+		Use "" instead of new String()
+		Use 0 instead of new Number()
+		Use false instead of new Boolean()
+		Use [] instead of new Array()
+		Use /()/ instead of new RegExp()
+		Use function (){} instead of new Function()
+	Beware of Automatic Type Conversions (자동형변환 인지)
+	Use === Comparison
+	Use Parameter Defaults
+	End Your Switches with Defaults
+	Avoid Using eval()
+------------------------------------------------------------
+JS Mistakes
+	
+	Expecting Loose Comparison (==가 아닌 ===를 사용할 것)
+	Confusing Addition & Concatenation(+ 연산시 주의할 것(string + number, number + string))
+	Misunderstanding Floats(floating point에서의 정확도 실수)
+	ex)
+		var x = 0.1;
+		var y = 0.2;
+		var z = x + y            // the result in z will not be 0.3
+		var z = (x * 10 + y * 10) / 10;       // z will be 0.3
+	Breaking a JavaScript String ( backslash를 활용한 코드 분리)
+	ex)
+		//example1 allowed
+		var x =
+		"Hello World!";
+		//example2 not allowed
+		var x = "Hello
+		World!";
+		//example3 allowed
+		var x = "Hello \
+		World!";
+	Misplacing Semicolon
+	Breaking a Return Statement
+	ex)
+		function myFunction(a) {
+		  var
+		  power = 10; 
+		  return
+		  a * power;
+		}
+		function myFunction(a) {
+		  var
+		  power = 10; 
+		  return; // 위의 코드를 아래코드처럼 인식함
+		  a * power;
+		}
+	Ending Definitions with a Comma
+		object example
+			person = {firstName:"John", lastName:"Doe", age:46,}
+		array example
+			points = [40, 100, 1, 5, 25, 10,];
+------------------------------------------------------------
+JS Performance
+
+	Reduce Activity in Loops
+	Reduce DOM Access
+	Avoid Unnecessary Variables
+	Avoid Using with
+------------------------------------------------------------
+JS version ES5
+
+	ECMAScript 5 Features
+		"use strict"
+		String.trim()
+		Array.isArray()
+		Array.forEach()
+		Array.map()
+		Array.filter()
+		Array.reduce()
+		Array.reduceRight()
+		Array.every()
+		Array.some()
+		Array.indexOf()
+		Array.lastIndexOf()
+		JSON.parse()
+		JSON.stringify()
+		Date.now()
+		Property Getters and Setters
+		New Object Property Methods
+
+	ECMAScript 5 Syntactical Changes
+		Property access [ ] on strings
+		Trailing commas in array and object literals
+		Multiline string literals
+		Reserved words as property names
+------------------------------------------------------------
+JS version ES6
+
+	JavaScript let
+	JavaScript const
+	JavaScript Arrow Functions
+	JavaScript Classes
+	Default parameter values
+	Array.find()
+	Array.findIndex()
+	Exponentiation (**) (EcmaScript 2016)
+------------------------------------------------------------
+JS JSON
+
+	JSON stands for JavaScript Object Notation
+	JSON is a lightweight data interchange format
+	JSON is language independent *
+
+	JSON.parse() : JSON -> JS Object
+	JSON.stringfy() : JS Object -> JSON
+------------------------------------------------------------
+JS Forms
+
+	ex) 	document.forms["myForm"]["fname"].value;
+		<form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
+			Name: <input type="text" name="fname">
+			<input type="submit" value="Submit">
+		</form>
+------------------------------------------------------------
+Object Definitions
+
+	JS Objects are Mutable : call by reference, not by value
+	ex)
+		var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"}
+	
+		var x = person;
+		x.age = 10;           // This will change both x.age and person.age
+------------------------------------------------------------
+Object Properties
+
+	JavaScript for...in Loop
+	ex)
+		for (variable in object) {
+		  // code to be executed
+		}
+	Deleting Properties
+		The delete keyword deletes both the value of the property and the property itself.
+------------------------------------------------------------
