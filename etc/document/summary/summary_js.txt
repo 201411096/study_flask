@@ -587,3 +587,135 @@ Object Properties
 	Deleting Properties
 		The delete keyword deletes both the value of the property and the property itself.
 ------------------------------------------------------------
+Obejct Methods
+
+	The this keyword => 'this' refers to the 'owner' of the function
+------------------------------------------------------------
+Object Display
+
+	Using Object.values()
+		','로 구분되어 string화
+
+	Using JSON.stringfy()
+		object도 JSON.stringfy를 이용하여 js string으로 변환 가능
+		JSON.stringify converts dates into strings
+		JSON.stringify will not stringify functions
+			This can be "fixed" if you convert the functions into strings before stringifying.
+			ex)
+				var person = {name:"John", age:function () {return 30;}};
+				person.age = person.age.toString();
+
+				var myString = JSON.stringify(person);
+				document.getElementById("demo").innerHTML = myString;
+
+	Stringify Arrays => 배열도 변환 가능
+------------------------------------------------------------
+Object Accessors
+
+	Obejct.defineProperty() => getter, setter 역할 가능
+	ex)
+		// Define object
+		var obj = {counter : 0};
+
+		// Define setters
+		Object.defineProperty(obj, "reset", {
+		get : function () {this.counter = 0;}
+		});
+		Object.defineProperty(obj, "increment", {
+		get : function () {this.counter++;}
+		});
+		Object.defineProperty(obj, "decrement", {
+		get : function () {this.counter--;}
+		});
+		Object.defineProperty(obj, "add", {
+		set : function (value) {this.counter += value;}
+		});
+		Object.defineProperty(obj, "subtract", {
+		set : function (value) {this.counter -= value;}
+		});
+
+		// Play with the counter:
+		obj.reset;
+		obj.add = 5;
+		obj.subtract = 1;
+		obj.increment;
+		obj.decrement;
+------------------------------------------------------------
+Object Constructors
+
+	constructor function
+		ex)
+			function Person(first, last, age, eye) {
+			this.firstName = first;
+			this.lastName = last;
+			this.age = age;
+			this.eyeColor = eye;
+			}
+
+			var myFather = new Person("John", "Doe", 50, "blue");
+
+	reg exp constructor => Use pattern literals /()/ instead of new RegExp().
+		ex) var x6 = /()/           // new regexp object
+
+	Using the prototype Property => object constructor에 새로운 속성을 추가하는 것을 허용함
+
+		ex)
+			function Person(first, last, age, eyecolor) {
+			this.firstName = first;
+			this.lastName = last;
+			this.age = age;
+			this.eyeColor = eyecolor;
+			}
+
+			Person.prototype.name = function() {
+			return this.firstName + " " + this.lastName;
+			};
+------------------------------------------------------------
+Object ECMAScript 5
+
+	ES5 New Object Methods
+		// Adding or changing an object property
+		Object.defineProperty(object, property, descriptor)
+
+		// Adding or changing many object properties
+		Object.defineProperties(object, descriptors)
+
+		// Accessing Properties
+		Object.getOwnPropertyDescriptor(object, property)
+
+		// Returns all properties as an array
+		Object.getOwnPropertyNames(object)
+
+		// Returns enumerable properties as an array
+		Object.keys(object)
+
+		// Accessing the prototype
+		Object.getPrototypeOf(object)
+
+		// Prevents adding properties to an object
+		Object.preventExtensions(object)
+		// Returns true if properties can be added to an object
+		Object.isExtensible(object)
+
+		// Prevents changes of object properties (not values)
+		Object.seal(object)
+		// Returns true if object is sealed
+		Object.isSealed(object)
+
+		// Prevents any changes to an object
+		Object.freeze(object)
+		// Returns true if object is frozen
+		Object.isFrozen(object)
+------------------------------------------------------------
+------------------------------------------------------------
+etc
+
+	Element.classList : 엘리먼트의 클래스 목록에 접근
+		method
+			add(String [, String [, ...]]) : 지정한 클래스 값을 추가, 이미 존재한다면 무시
+			remove(String [, String [, ...]]) : 지정한 클래스 값을 제거
+			item(Number) : collection의 index를 이용하여 클래스 값을 반환
+			toggle(String [, force]) : 하나의 인수만 있을 경우 해당 클래스 값을 토글링한다
+				(클래스가 존재한다면 제거하고 false를 반환하며, 존재하지 않을 경우 클래스를 추가하고 true를 반환)
+			contains(String) : 지정한 클래스 값이 엘리먼트의 class 속성에 존재하는지를 확인
+			replace(oldClass, newClass) : 존재하는 클래스를 새로운 클래스로 교체
