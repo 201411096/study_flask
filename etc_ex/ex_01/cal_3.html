@@ -11,7 +11,10 @@
                 width: 40px;
                 height: 40px;
             }
-            #cal_1{
+            custom-calculator.hide{
+                display:none;
+            }
+            custom-calculator.show{
                 display:block;
             }
         </style>
@@ -52,25 +55,19 @@
             </div>
         </div>
         <br>
-        <custom-calculator id='cal_1'></custom-calculator>
-        <script src="cal2.js"></script>
+        <custom-calculator id='cal_1' class='show'></custom-calculator>
+        <script src="cal3.js"></script>
         <script>
             document.addEventListener('click', function(e){
                 let calculator_element = document.getElementById("cal_1");
-                // calculator_element.innerHTML='aa';
-                if(e.target.matches('button.btn-success')){
+                if(e.target.matches('button.btn-success')  && (Calculator.callee==='') || Calculator.callee===e.target.id ){
                     Calculator.callee = e.target.id;
-                    console.log('let 확인 : ' + calculator_element);
-                    console.log('계산기 display option : ' + calculator_element.style.display);
-                    calculator_element.style.display=='none';
-                    if(calculator_element.style.display=='none'){
-                        calculator_element.style.display = 'block';
-                    }else if(calculator_element.style.display=='block'){
-                        calculator_element.style.display = 'none';
+                    if(calculator_element.classList.contains('show')){
+                        Calculator.callee = '';
                     }
+                    calculator_element.classList.toggle('hide');
+                    calculator_element.classList.toggle('show');
                 }
-
-
             });
             document.addEventListener('custom_01', function(e){
                 console.log('check custom event');
