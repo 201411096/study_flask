@@ -59,22 +59,38 @@
             </div>
         </div>
         <br>
+
         <custom-calculator id='cal_1' class='hide'></custom-calculator>
+
         <script src="cal3.js"></script>
+
         <script>
             document.addEventListener('click', function(e){
                 let calculator_element = document.getElementById("cal_1");
-                if(e.target.matches('button.btn-success')  && ( (Calculator.callee==='' || Calculator.callee===undefined) || Calculator.callee===e.target.id ) ){
-                    Calculator.callee = e.target.id;
-                    if(calculator_element.classList.contains('show')){
-                        Calculator.callee = '';
+                if(e.target.matches('button.btn-success')  && ( (Calculator.caller_element==='' || Calculator.caller_element===undefined) || Calculator.caller_element===e.target.id ) ){
+                    let target_attach_component = document.querySelector('[data-calculator="'+ e.target.id +'"]');
+                    Calculator.caller_element = e.target.id;
+                    
+                    // show -> hide로 갈 경우 caller_element 초기화
+                    if(calculator_element.classList.contains('show')){ 
+                        Calculator.caller_element = '';
                     }
+
+                    // show, hide 토글링
                     calculator_element.classList.toggle('hide');
                     calculator_element.classList.toggle('show');
-                    let target_attach_component = document.querySelector('[data-calculator="'+ e.target.id +'"]');
 
+                    // caculator 위치 이동
                     calculator_element.style.top = target_attach_component.getBoundingClientRect().bottom +'px';
                     calculator_element.style.left = target_attach_component.getBoundingClientRect().left +'px';
+
+                    
+                    // input[text]=>calculator
+                    // target_attach_component.style.backgroundColor = 'red';
+                    // console.log('target attach component :' + target_attach_component);
+                    
+                    // Calculator.resultArea.value = 100;
+                    // Calculator.resultArea.value = target_attach_component.value;
                 }
             });
             document.addEventListener('custom_01', function(e){
