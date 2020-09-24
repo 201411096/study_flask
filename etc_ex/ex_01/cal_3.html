@@ -98,9 +98,7 @@
 
             //계산 완료 시에 input에 영향을 주는 이벤트
             document.addEventListener('custom_01', function(e){
-                console.log('check event_result : ' + e.detail);
                 document.querySelector('[data-calculator="'+ Calculator.caller_element +'"]').value = e.detail;
-                console.log('check Calculator.caller_element in custom event : ' +Calculator.caller_element);
             });
         </script>
     </body>
