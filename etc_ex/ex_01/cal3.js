@@ -18,6 +18,7 @@ class Calculator extends HTMLElement{
         this.componentList = [];
         this.rowList = [];
         this.resultArea = document.createElement('textarea');
+        this.resultArea.setAttribute('id', 'calculator_resultarea');
         this.appendChild(this.resultArea);
         for (var i=0; i<20; i++ ){
             this.componentList[i] = document.createElement('button');
@@ -155,6 +156,10 @@ class Calculator extends HTMLElement{
         return this.cal_withNewFunc(cal_unit);
         // return this.cal_withEval(cal_unit);
         // return this.calculate_withCalUnit(cal_unit);
+    }
+
+    set_ResultArea(param_number){
+        this.resultArea.value = param_number;
     }
 }
 
