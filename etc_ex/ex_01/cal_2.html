@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <style>
+            button.calculator{
+                width: 40px;
+                height: 40px;
+            }
+            #cal_1{
+                display:block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="input-group col-6">
+            <input type="text" class="form-control" placeholder="number ..." id="input_1">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="submit" id='btn_1'>calculate ..</button>
+            </div>
+        </div>
+        <br>
+        <div class="input-group col-6">
+            <input type="text" class="form-control" placeholder="number ..." id="input_2">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="submit" id='btn_2'>calculate ..</button>
+            </div>
+        </div>
+        <br>
+        <div class="input-group col-6">
+            <input type="text" class="form-control" placeholder="number ..." id="input_3">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="submit" id='btn_3'>calculate ..</button>
+            </div>
+        </div>
+        <br>
+        <div class="input-group col-6">
+            <input type="text" class="form-control" placeholder="number ..." id="input_4">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="submit" id='btn_4'>calculate ..</button>
+            </div>
+        </div>
+        <br>
+        <div class="input-group col-6">
+            <input type="text" class="form-control" placeholder="number ..." id="input_5">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="submit" id='btn_5'>calculate ..</button>
+            </div>
+        </div>
+        <br>
+        <custom-calculator id='cal_1'></custom-calculator>
+        <script src="cal2.js"></script>
+        <script>
+            document.addEventListener('click', function(e){
+                let calculator_element = document.getElementById('cal_1');
+                if(e.target.matches('button.btn-success')){
+                    Calculator.callee = e.target.id;
+                    console.log('let 확인' + calculator_element);
+                    console.log('계산기 display option ...' + calculator_element.style.display);
+                    if(calculator_element.style.display==='none'){
+                        calculator_element.style.display = 'block';
+                    }else if(calculator_element.style.display==='block'){
+                        calculator_element.style.display = 'none';
+                    }
+                }
+
+
+            });
+            document.addEventListener('custom_01', function(e){
+                console.log('check custom event');
+            });
+        </script>
+    </body>
+</html>

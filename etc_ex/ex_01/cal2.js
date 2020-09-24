@@ -82,7 +82,6 @@ class Calculator extends HTMLElement{
         for(var i=0; i<cal_unit.length; i++){
             resultValue += cal_unit[i];
         }
-        console.log('resultValue in statusFunc ...' + resultValue);
         this.resultArea.value = resultValue;
     }
 
