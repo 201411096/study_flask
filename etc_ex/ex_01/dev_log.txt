@@ -1,0 +1,3 @@
+element.getBoundingClientRect() => 상하좌우 값을 구해줌
+    ex) element.getBoundingClientRect().top ...
+element.style.top = ... => element 좌표 설정

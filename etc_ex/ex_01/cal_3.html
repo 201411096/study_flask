@@ -11,6 +11,10 @@
                 width: 40px;
                 height: 40px;
             }
+            custom-calculator{
+                position : absolute;
+                display: none;
+            }
             custom-calculator.hide{
                 display:none;
             }
@@ -21,52 +25,56 @@
     </head>
     <body>
         <div class="input-group col-6">
-            <input type="text" class="form-control" placeholder="number ..." id="input_1">
+            <input type="text" class="form-control" placeholder="number ..." id="input_1" data-calculator='btn_1'>
             <div class="input-group-append">
               <button class="btn btn-success" type="submit" id='btn_1'>calculate ..</button>
             </div>
         </div>
         <br>
         <div class="input-group col-6">
-            <input type="text" class="form-control" placeholder="number ..." id="input_2">
+            <input type="text" class="form-control" placeholder="number ..." id="input_2" data-calculator='btn_2'>
             <div class="input-group-append">
               <button class="btn btn-success" type="submit" id='btn_2'>calculate ..</button>
             </div>
         </div>
         <br>
         <div class="input-group col-6">
-            <input type="text" class="form-control" placeholder="number ..." id="input_3">
+            <input type="text" class="form-control" placeholder="number ..." id="input_3" data-calculator='btn_3'>
             <div class="input-group-append">
               <button class="btn btn-success" type="submit" id='btn_3'>calculate ..</button>
             </div>
         </div>
         <br>
         <div class="input-group col-6">
-            <input type="text" class="form-control" placeholder="number ..." id="input_4">
+            <input type="text" class="form-control" placeholder="number ..." id="input_4" data-calculator='btn_4'>
             <div class="input-group-append">
               <button class="btn btn-success" type="submit" id='btn_4'>calculate ..</button>
             </div>
         </div>
         <br>
         <div class="input-group col-6">
-            <input type="text" class="form-control" placeholder="number ..." id="input_5">
+            <input type="text" class="form-control" placeholder="number ..." id="input_5" data-calculator='btn_5'>
             <div class="input-group-append">
               <button class="btn btn-success" type="submit" id='btn_5'>calculate ..</button>
             </div>
         </div>
         <br>
-        <custom-calculator id='cal_1' class='show'></custom-calculator>
+        <custom-calculator id='cal_1' class='hide'></custom-calculator>
         <script src="cal3.js"></script>
         <script>
             document.addEventListener('click', function(e){
                 let calculator_element = document.getElementById("cal_1");
-                if(e.target.matches('button.btn-success')  && (Calculator.callee==='') || Calculator.callee===e.target.id ){
+                if(e.target.matches('button.btn-success')  && ( (Calculator.callee==='' || Calculator.callee===undefined) || Calculator.callee===e.target.id ) ){
                     Calculator.callee = e.target.id;
                     if(calculator_element.classList.contains('show')){
                         Calculator.callee = '';
                     }
                     calculator_element.classList.toggle('hide');
                     calculator_element.classList.toggle('show');
+                    let target_attach_component = document.querySelector('[data-calculator="'+ e.target.id +'"]');
+
+                    calculator_element.style.top = target_attach_component.getBoundingClientRect().bottom +'px';
+                    calculator_element.style.left = target_attach_component.getBoundingClientRect().left +'px';
                 }
             });
             document.addEventListener('custom_01', function(e){
