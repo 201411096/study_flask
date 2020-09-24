@@ -4,6 +4,14 @@ class Calculator extends HTMLElement{
         this.render();
         this.setEvent();
     }
+
+    check_num(params) {
+        return params.match(/[\d .]/);
+    }
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     render(){
         this.result = 0;
         this.value_array = ['(', ')', '%', 'AC', 7, 8, 9, '/', 4, 5, 6, '*', 1, 2, 3, '-', 0, '.', '=', '+'];
@@ -25,6 +33,7 @@ class Calculator extends HTMLElement{
             this.appendChild(this.rowList[i]);
         }
     }
+
     setEvent(){
         this.addEventListener('click', function(e){
             console.log(e.target.value)
@@ -35,19 +44,43 @@ class Calculator extends HTMLElement{
                 let cal_result = this.calculate();
                 this.resultArea.value = cal_result;
             }
-
             //초기화
             if(e.target.value == 'AC'){
                 this.resultArea.value = '';
             }
+            this.statusFunc();
         });
     }
-    calculate(){
-        let resultAreaValue = this.resultArea.value;
+
+    statusFunc(){
+        let resultAreaValue = this.resultArea.value.replaceAll(',', '');
+        let resultValue = '';
         let cal_unit = [0,];
-        // console.log('check resultarea value in calculate ...' + this.resultArea.value);
-        console.log('check resultarea value in calculate ...' + resultAreaValue);
-        console.log('typecheck in calculate ' + typeof(resultAreaValue));
+
+        for (var i=0; i<resultAreaValue.length; i++){
+            if(this.check_num(resultAreaValue.charAt(i)) && i==0){
+                cal_unit[0]=resultAreaValue.charAt(i);
+            }else if(this.check_num(resultAreaValue.charAt(i))){
+                cal_unit[cal_unit.length-1]=cal_unit[cal_unit.length-1]+resultAreaValue.charAt(i);
+            }else{
+                cal_unit.push(resultAreaValue.charAt(i));
+                cal_unit.push('');
+            }
+        }
+        for(var i=0; i<cal_unit.length; i++){
+            if(this.check_num(cal_unit[i]))
+                cal_unit[i]= this.numberWithCommas(cal_unit[i]);
+        }
+        for(var i=0; i<cal_unit.length; i++){
+            resultValue += cal_unit[i];
+        }
+        console.log('resultValue in statusFunc ...' + resultValue);
+        this.resultArea.value = resultValue;
+    }
+
+    calculate(){
+        let resultAreaValue = this.resultArea.value.replaceAll(',', '');
+        let cal_unit = [0,];
 
         for (var i=0; i<resultAreaValue.length-1; i++){
             if(this.check_num(resultAreaValue.charAt(i)) && i==0){
@@ -59,11 +92,13 @@ class Calculator extends HTMLElement{
                 cal_unit.push('');
             }
         }
-        return this.calculate_withCalUnit(cal_unit);
+        return this.cal_method(cal_unit);
     }
+
     calculate_withCalUnit(cal_unit){
         let return_value = 0;
         let temp_operator = '';
+
         if(cal_unit.length>=1 && this.check_num(cal_unit[0])){
             return_value = parseFloat(cal_unit[0]);
         }
@@ -90,11 +125,30 @@ class Calculator extends HTMLElement{
                 }
             }
         }
-        console.log('return_value = ' + return_value );
         return return_value;
     }
-    check_num(params) {
-        return params.match(/[\d]/);
+
+    cal_withEval(cal_unit){
+        let cal_string = '';
+        for(var i=0; i<cal_unit.length; i++){
+            cal_string += cal_unit[i];
+        }
+        return eval(cal_string);
+    }
+
+    cal_withNewFunc(cal_unit){
+        let cal_string = '';
+        for(var i=0; i<cal_unit.length; i++){
+            cal_string += cal_unit[i];
+        }
+        console.log('check cal_string ... ' + cal_string);
+        return new Function('return ' + cal_string)();
+    }
+
+    cal_method(cal_unit){
+        return this.cal_withNewFunc(cal_unit);
+        // return this.cal_withEval(cal_unit);
+        // return this.calculate_withCalUnit(cal_unit);
     }
 }
 
