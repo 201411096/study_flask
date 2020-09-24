@@ -48,7 +48,7 @@ class Calculator extends HTMLElement{
                     this.resultArea.value = cal_result;
 
                     this.dispatchEvent(new CustomEvent('custom_01', {
-                        "event_result": this.resultArea.value,
+                        "detail": this.resultArea.value,
                         bubbles:true
                     }));
                 }
@@ -156,10 +156,6 @@ class Calculator extends HTMLElement{
         return this.cal_withNewFunc(cal_unit);
         // return this.cal_withEval(cal_unit);
         // return this.calculate_withCalUnit(cal_unit);
-    }
-
-    set_ResultArea(param_number){
-        this.resultArea.value = param_number;
     }
 }
 

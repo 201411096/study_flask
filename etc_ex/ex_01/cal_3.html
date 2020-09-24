@@ -83,21 +83,25 @@
                     // caculator 위치 이동
                     calculator_element.style.top = target_attach_component.getBoundingClientRect().bottom +'px';
                     calculator_element.style.left = target_attach_component.getBoundingClientRect().left +'px';
-
-                    console.log('check text value : ' + target_attach_component.value);
                     
                     // 버튼 클릭시에 target_attach_component의 값이 전달됨
                     document.querySelector('#calculator_resultarea').value=target_attach_component.value;
                 }
             });
 
+            //input 이벤트 시 계산기에 변화를 주는 이벤트
             document.addEventListener('input', function(e){
                 if(document.getElementById(e.target.id).getAttribute('data-calculator') === Calculator.caller_element){
                     document.querySelector('#calculator_resultarea').value=document.getElementById(e.target.id).value;
                 }
             });
 
+            //계산 완료 시에 input에 영향을 주는 이벤트
             document.addEventListener('custom_01', function(e){
+                console.log('check event_result : ' + e.detail);
+                
+
+                console.log('check Calculator.caller_element in custom event : ' +Calculator.caller_element);
                 console.log('check custom event');
             });
         </script>
