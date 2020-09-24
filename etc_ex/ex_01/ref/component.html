@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <style>
+           app-drawer{
+               position: relative;
+               display: block;
+               width: 100px;
+               xheight:100px;
+               border: 1px solid #ccc;
+           }     
+        </style>
+    </header>
+    <body>
+        <app-drawer>1</app-drawer>
+        <app-drawer>2</app-drawer>
+        <app-drawer id="t1">3</app-drawer>
+        <input type="range" id="t2" />
+
+        <script>
+            //-------------------------------
+            // 컴포넌트 생성
+            //-------------------------------
+            class AppDrawer extends HTMLElement {
+                get value() {
+                    return this._value;
+                }
+                set value(v) {
+                    this._value = v;
+                    this.querySelector('h3').innerText = v;
+                }
+
+                constructor() {
+                    super();
+                    // Setup a click listener on <app-drawer> itself.
+                    this.render2();
+                    this.setEvent2();        
+                }
+
+                render1(){
+                    const html = `
+                      <input type="number" class="t1" />  
+                      <input type="number" class="t2" />  
+                      <button>cal</button>
+                      <h3></h3>
+                    `;
+                    this.innerHTML = html;
+                }
+                render2(){
+                    this.a = document.createElement('input');
+                    this.a.setAttribute("type", "number");
+                    this.a.setAttribute("class", "t1");
+
+                    this.b = document.createElement('input');
+                    this.b.setAttribute("type", "number");
+                    this.b.setAttribute("class", "t2");
+
+                    this.btn = document.createElement('button');
+                    this.btn.appendChild(document.createTextNode('Cal'))
+
+                    this.h3 = document.createElement('h3');
+
+                    this.appendChild(this.a);
+                    this.appendChild(this.b);
+                    this.appendChild(this.btn);
+                    this.appendChild(this.h3);
+                }
+                render3(){
+                    let t = document.createElement('input');
+                    t.setAttribute("type", "number");
+
+                    this.a = t; //.cloneNode();
+                    this.a.setAttribute("class", "t1");
+                    this.b = t ; //.cloneNode();
+                    this.b.setAttribute("class", "t2");
+
+                    this.btn = document.createElement('button');
+                    this.btn.appendChild(document.createTextNode('Cal'))
+
+                    this.h3 = document.createElement('h3');
+
+                    this.appendChild(this.a);
+                    this.appendChild(this.b);
+                    this.appendChild(this.btn);
+                    this.appendChild(this.h3);
+                }
+
+                setEvent(){
+                    this.addEventListener('click', e => {
+                        //alert(this.innerText);
+                        if(e.target.matches('button')){
+                            let a = this.querySelector('.t1').value;
+                            let b = this.querySelector('.t2').value;
+                            this.querySelector('h3').innerText = 
+                            parseInt(a)+parseInt(b);        
+
+                        }
+                    });
+
+                }
+
+                setEvent2(){
+                    this.btn.addEventListener("click", e=>{
+                        this._value = parseInt(this.a.value) +
+                                    parseInt(this.b.value);        
+
+                        this.querySelector('h3').innerText = this.value;
+
+                        this.dispatchEvent(new CustomEvent('ffChange', {
+                            "detail": {
+                                value: this.value
+                            },
+                            bubbles: true
+                        }));    
+
+                    })      
+                }
+            }
+
+            customElements.define('app-drawer', AppDrawer);
+            
+
+
+            document.body.addEventListener("ffChange", e=>{
+                //document.querySelector('#t2').value = e.detail.value;
+                document.querySelector('#t2').value = 
+                    document.querySelector('#t1').value         
+            })
+            document.querySelector('#t2').addEventListener("input", e=>{
+                document.querySelector('#t1').value = e.target.value         
+            })
+
+
+        </script>
+    </body>
+</html>
