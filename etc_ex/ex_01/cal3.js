@@ -55,6 +55,10 @@ class Calculator extends HTMLElement{
                 //초기화
                 if(e.target.value == 'AC'){
                     this.resultArea.value = '';
+                    this.dispatchEvent(new CustomEvent('custom_01', {
+                        "detail": this.resultArea.value,
+                        bubbles:true
+                    }));
                 }
                 this.statusFunc();
             }
