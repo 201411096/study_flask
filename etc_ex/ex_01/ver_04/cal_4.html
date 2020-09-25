@@ -105,6 +105,7 @@
             //계산 완료 시에 input에 영향을 주는 이벤트
             document.addEventListener('custom_01', function(e){
                 document.querySelector('[data-calculator="'+ Calculator.caller_element +'"]').value = e.detail;
+                Calculator.statusFunc();
             });
         </script>
     </body>
