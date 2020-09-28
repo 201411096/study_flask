@@ -73,6 +73,9 @@
             var temp = document.createElement('custom-calculator');
             temp.setAttribute('id', 'cal_1');
             temp.setAttribute('class', 'hide');
+
+            // error : Uncaught DOMException: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+            // document.appendChild(temp);
             document.body.append(temp);
 
             let calculator_element = document.getElementById("cal_1");

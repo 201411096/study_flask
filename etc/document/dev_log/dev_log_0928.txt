@@ -1,0 +1,11 @@
+------------------------------------------------------------
+custom element 생성 시..
+------------------------------------------------------------
+error : the result must not have child
+
+answer : The constructor for a custom element is not supposed to read or write its DOM. It shouldn't create child elements, or modify attributes. That work needs to be done later, usually in a connectedCallback() method (although note that connectedCallback() can be called multiple times if the element is removed and re-added to the DOM, so you may need to check for this, or undo changes in a disconnectedCallback()).
+=> constructor 부분에 정의한 함수들을 connectedCallback() 메소드 안으로 이동
+------------------------------------------------------------
+error : Uncaught DOMException: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+=> document.appendChild()를 document.body.append()로 변경해서 사용
+------------------------------------------------------------

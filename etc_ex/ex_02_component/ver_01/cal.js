@@ -12,6 +12,7 @@ class Calculator extends HTMLElement{
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    // error : the result must not have child (발생시에 ...)
     connectedCallback(){
         this.render();
         this.setEvent();
