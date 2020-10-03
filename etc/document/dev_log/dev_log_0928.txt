@@ -1,0 +1,24 @@
+------------------------------------------------------------
+custom element 생성 시..
+------------------------------------------------------------
+error : the result must not have child
+
+answer : The constructor for a custom element is not supposed to read or write its DOM. It shouldn't create child elements, or modify attributes. That work needs to be done later, usually in a connectedCallback() method (although note that connectedCallback() can be called multiple times if the element is removed and re-added to the DOM, so you may need to check for this, or undo changes in a disconnectedCallback()).
+=> constructor 부분에 정의한 함수들을 connectedCallback() 메소드 안으로 이동
+------------------------------------------------------------
+error : Uncaught DOMException: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+=> document.appendChild()를 document.body.append()로 변경해서 사용
+------------------------------------------------------------
+connectedCallback() => 호출 시기
+
+connectedCallback은 커스텀 엘리먼트가 처음 document의 DOM에 연결될 때 호출이 됨
+ex) custom element의 사용시 appendchild와 같은 함수로 dom에 계속 연결할 경우,
+connectedCallback은 계속 불림
+
+=> 0928 연습 시 혼자서 connectedCallback이 한번만 불렸던 이유는 element의 위치를 절대좌표값으로 사용했기 때문
+=> custom element를 appendchild의 방식으로 이동하는 경우가 많지 않지만,
+굳이 사용한다면 boolean 변수 하나를 두는 것이 맞음
+------------------------------------------------------------
+git 보고서
+
+내용물 : 테스트 시나리오, git 장단점과 svn과의 차이점

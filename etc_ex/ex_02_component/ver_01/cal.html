@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <style>
+            button.calculator{
+                width: 40px;
+                height: 40px;
+            }
+            custom-calculator{
+                position : absolute;
+                display: none;
+            }
+            custom-calculator.hide{
+                display:none;
+            }
+            custom-calculator.show{
+                display:block;
+            }
+            xxdiv.aaa{
+                height : 100px;
+                overflow: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='aaa'>
+            <div class="input-group col-6">
+                <input type="text" class="form-control" placeholder="number ..." id="input_1" data-calculator='btn_1'>
+                <div class="input-group-append">
+                <button class="btn btn-success" type="submit" id='btn_1'>calculate ..</button>
+                </div>
+            </div>
+            <br>
+            <div class="input-group col-6">
+                <input type="text" class="form-control" placeholder="number ..." id="input_2" data-calculator='btn_2'>
+                <div class="input-group-append">
+                <button class="btn btn-success" type="submit" id='btn_2'>calculate ..</button>
+                </div>
+            </div>
+            <br>
+            <div class="input-group col-6">
+                <input type="text" class="form-control" placeholder="number ..." id="input_3" data-calculator='btn_3'>
+                <div class="input-group-append">
+                <button class="btn btn-success" type="submit" id='btn_3'>calculate ..</button>
+                </div>
+            </div>
+            <br>
+            <div class="input-group col-6">
+                <input type="text" class="form-control" placeholder="number ..." id="input_4" data-calculator='btn_4'>
+                <div class="input-group-append">
+                <button class="btn btn-success" type="submit" id='btn_4'>calculate ..</button>
+                </div>
+            </div>
+            <br>
+            <div class="input-group col-6">
+                <input type="text" class="form-control" placeholder="number ..." id="input_5" data-calculator='btn_5'>
+                <div class="input-group-append">
+                <button class="btn btn-success" type="submit" id='btn_5'>calculate ..</button>
+                </div>
+            </div>
+            <br>
+        </div>
+        <!-- <custom-calculator id='cal_1' class='hide'></custom-calculator> -->
+
+        <script src="cal.js"></script>
+
+        <script>
+            var temp = document.createElement('custom-calculator');
+            temp.setAttribute('id', 'cal_1');
+            temp.setAttribute('class', 'hide');
+
+            // error : Uncaught DOMException: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+            // document.appendChild(temp);
+            document.body.append(temp);
+
+            let calculator_element = document.getElementById("cal_1");
+
+            document.addEventListener('click', e=>cal_show(e));
+
+            //input 이벤트 시 계산기에 변화를 주는 이벤트
+            document.addEventListener('input', function(e){
+                // 계산기의 제어권을 가는 element의 id(버튼의 id가 담겨있음) 와 같은 input을 찾아감(input의 data-calculator 속성을 제어권을 갖는 버튼의 id와 같음)
+                if(document.getElementById(e.target.id).getAttribute('data-calculator') === Calculator.caller_element){
+                    document.querySelector('#calculator_resultarea').value=document.getElementById(e.target.id).value;
+                }
+            });
+
+            //계산 완료 시에 input에 영향을 주는 이벤트
+            document.addEventListener('custom_01', function(e){
+                document.querySelector('[data-calculator="'+ Calculator.caller_element +'"]').value = e.detail;
+                // Calculator.statusFunc();
+            });
+
+            function cal_show(e){
+                // 버튼을 눌렀을 경우(필수)에 계산기가 열려있지 않거나(undefined 혹은 ''), 열려있는 계산기를 부른 버튼과 동일한 버튼일 경우(계산기를 닫는 경우)
+                if(e.target.matches('button.btn-success')  && ( Calculator.caller_element==='' || Calculator.caller_element===undefined || Calculator.caller_element===e.target.id ) ){
+                    // 계산기를 부착할 element
+                    let target_attach_component = document.querySelector('[data-calculator="'+ e.target.id +'"]');
+
+                    // 계산기의 제어권을 갖는 버튼의 id를 저장(해당 버튼의 id는 버튼과 묶여있는 input의 data-calculator 속성으로 찾을 수 있음)
+                    Calculator.caller_element = e.target.id;
+                    
+                    // show -> hide로 갈 경우 caller_element 초기화
+                    if(calculator_element.classList.contains('show')){ 
+                        Calculator.caller_element = '';
+                    }
+
+                    // show, hide 토글링
+                    calculator_element.classList.toggle('hide');
+                    calculator_element.classList.toggle('show');
+
+                    // caculator 위치 이동
+                    calculator_element.style.top = target_attach_component.getBoundingClientRect().bottom +'px';
+                    calculator_element.style.left = target_attach_component.getBoundingClientRect().left +'px';
+                    
+                    // 버튼 클릭시에 target_attach_component의 값이 전달됨
+                    document.querySelector('#calculator_resultarea').value=target_attach_component.value;
+                }
+            }
+        </script>
+    </body>
+</html>
