@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  </head>
+
+  <body>
+    test
+    <button id="button1">button1</button>
+    <button id='button2'>button2</button>
+  </body>
+
+  <script src="{{url_for('static', filename='js/tree.js')}}"></script>
+  <script>
+    document.getElementById('button1').addEventListener('click', function(e){
+      console.log('button1 ... clickEvent');
+      let query = 'select * from tree_table'
+      fetch('/raw_sql?query='+query)
+      .then(function(response){
+        return response.json()
+      })
+      .then(function (myJson){
+        console.log(JSON.stringify(myJson));
+      });
+    });
+    document.getElementById('button2').addEventListener('click', function(e){
+      console.log('button2 ... clickEvent');
+      let query = 'insert into tree_table values(11,2, "node9", "ex_des")'
+      fetch('/raw_sql_iud?query='+query)
+      .then(function(response){
+        return response.json()
+      })
+      .then(function (myJson){
+        console.log('button2 ajax complete ...');
+      });
+    });
+
+    // getRootData();
+    // function getRootData(){
+    //   var query = 'select * from tree_table where pid = 0';
+    //   var result = getData(query);
+    //   console.log('getRootData result 확인'+ result);
+    // }
+    // function getData(args_query){
+    //     fetch('/raw_sql?query='+args_query)
+    //     .then(function(response){
+    //       return response.json()
+    //     })
+    //     .then(function (myJson){
+    //       console.log('check in getData ...' + JSON.stringify(myJson));
+    //       return myJson
+    //     });
+    // }
+  </script>
+</html>

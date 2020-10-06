@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  </head>
+
+  <body>
+    test
+    <button id="getData">getData</button>
+  </body>
+
+  <script>
+    document.addEventListener('click', function(e){
+      console.log('getData ... clickEvent');
+      fetch('/test_ajax')
+      .then(function(response){
+        return response.json()
+      })
+      .then(function (myJson){
+        console.log(JSON.stringify(myJson));
+      });
+    });
+  </script>
+</html>
