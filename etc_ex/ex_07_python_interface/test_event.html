@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <button id="btn_01">btn01</button>
+        <button id="btn_02">btn02</button>
+        <button id="btn_03">btn03</button>
+
+
+        <script>
+            class Custom_btn{
+                constructor(element, options){
+                    this.element = element;
+                    this.options = options;
+
+                    this.setEvent();
+                }
+                setEvent(){
+                    this.element.addEventListener('click', function(e){
+                        if(this.onClick){
+                            this.onClick();
+                        }
+                    })
+                }
+
+                onClick(e){
+                    alert('default onClick');
+                    e.target.dispatchEvent(new CustomEvent('customEvent_01', {
+                        bubbles : true
+                    }));                    
+                }
+
+                on(eventName, eventFunction){
+                    this.options[eventName]=eventFunction;
+                }
+            }
+            el_btn_01 = document.querySelector('#btn_01');
+            el_btn_02 = document.querySelector('#btn_02');
+            let btn_01 = new Custom_btn(el_btn_01);
+            // let btn_01 = new Custom_btn(document.querySelector('#btn_01'));
+            let btn_02 = new Custom_btn(document.querySelector('#btn_02'), {
+                onClick : function(e){
+                    alert('btn_02 custom onClick');
+                    e.target.dispatchEvent(new CustomEvent('customEvent_02'), {
+                        bubbles : true
+                    });
+                }
+            })
+        </script>
+    </body>
+</html>

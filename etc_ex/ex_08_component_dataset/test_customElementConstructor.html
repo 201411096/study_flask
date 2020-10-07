@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <custom-element data-args1="args11" data-args2="args22" data-args3="args33">abc</custom-element>
+        <div id='container_01'></div>
+        <script>
+            class CustomElement extends HTMLElement{
+                constructor(){
+                    super();
+                    console.log(this.dataset.args1);
+                    console.log(this.dataset.args2);
+                    console.log(this.dataset.args3);
+                }
+            }
+            customElements.define('custom-element', CustomElement);
+            // createElement의 인자들
+            let customElement_02 = document.createElement('custom-element', {
+                dataset : {
+                    args1 : 'args111',
+                    args2 : 'args222',
+                    args3 : 'args333'
+                },
+                args1 : 'args111',
+                args2 : 'args222',
+                args3 : 'args333'
+            });
+            document.querySelector('#container_01').appendChild(customElement_02);
+        </script>
+    </body>
+</html>
