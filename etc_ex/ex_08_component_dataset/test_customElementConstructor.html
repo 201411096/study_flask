@@ -4,21 +4,30 @@
 
     </head>
     <body>
-        <custom-element data-args1="args11" data-args2="args22" data-args3="args33">abc</custom-element>
+        <!-- <custom-element data-args1="args11" data-args2="args22" data-args3="args33">abc</custom-element> -->
         <div id='container_01'></div>
         <script>
             class CustomElement extends HTMLElement{
-                constructor(){
+                constructor(ooptions){
                     super();
                     console.log(this.dataset.args1);
                     console.log(this.dataset.args2);
                     console.log(this.dataset.args3);
+                    console.log(ooptions.data.args1);
+                    console.log(ooptions.args1);
+
+
                 }
             }
             customElements.define('custom-element', CustomElement);
             // createElement의 인자들
             let customElement_02 = document.createElement('custom-element', {
                 dataset : {
+                    args1 : 'args111',
+                    args2 : 'args222',
+                    args3 : 'args333'
+                },
+                data : {
                     args1 : 'args111',
                     args2 : 'args222',
                     args3 : 'args333'
