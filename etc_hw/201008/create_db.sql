@@ -20,3 +20,4 @@ insert into tree_table(id, pid, NAME, description) values (12, 6, 'node12', 'des
 insert into tree_table(id, pid, NAME, description) values (13, 6, 'node13', 'des_013');
 insert into tree_table(id, pid, NAME, description) values (14, 1, 'node14', 'des_014');
 insert into tree_table(id, pid, NAME, description) values (15, 0, 'node15', 'des_015');
+insert into tree_table(id, pid, NAME, description) values (16, 2, 'node16', 'des_016');
