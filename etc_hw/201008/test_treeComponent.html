@@ -11,7 +11,6 @@
         </style>
     </head>
     <body>
-        1008...
         <tree-componenet></tree-componenet>
         <script>
             class tree extends HTMLElement{
@@ -22,6 +21,7 @@
                 connectedCallback(){
                     this.render();
                     this.pidArray = [];
+                    this.nodeList = {};
                 }
 
                 async getDataFromServer(){
@@ -40,7 +40,7 @@
                                                 SELECT * FROM cte ORDER BY pid asc, id asc;`);
                     let responseJson = await response.json();
                     this.initialData = responseJson;
-                    console.log(this.initialData); // Type : object
+                    // console.log(this.initialData); // Type : object
                 }
 
                 async render(){
@@ -52,28 +52,34 @@
                     let copiedData = this.initialData;
                     while(copiedData.length!=0){
                         let tempObject = copiedData.shift();
-                        this.addItem(tempObject);
+                        this.addItem(tempObject.pid, tempObject);
                     }
                 }
 
-                addItem(elementData){
-                    console.log(elementData);
+                addItem(pid, elementData){
+                    console.log(elementData.id);
                     let tempElement = document.createElement('span');
                     tempElement.innerText = elementData['NAME'];
                     tempElement.setAttribute('data-id', elementData['id']);
-                    tempElement.setAttribute('data-pid', elementData['pid']);
-                    tempElement.setAttribute('data-name', elementData['NAME']);
-                    tempElement.setAttribute('data-description', elementData['description']);
+                    tempElement.nodeData = elementData;
                     
                     if(!this.pidArray.includes(elementData['pid'])){
                         this.appendChild(tempElement);
                     }else{ // pid가 존재하는 경우에 ...
-                        console.log('this element has parents');
-                        
-                        //ul 태그가 존재한다면 ...
-                        //ul 태그가 없는지 ...
+                        if(this.nodeList[pid].parentElement.childNodes.length === 1){       //ul 태그가 존재하지않는다면 ...
+                            let tempUl = document.createElement('ul');
+                            let tempLi = document.createElement('li');
+                            tempLi.appendChild(tempElement);
+                            tempUl.appendChild(tempLi);
+                            this.nodeList[pid].parentElement.appendChild(tempUl);       
+                        }else{                                                              //ul 태그가 있다면 ...                                                 
+                            let tempLi = document.createElement('li');
+                            tempLi.appendChild(tempElement);
+                            this.nodeList[pid].nextElementSibling.appendChild(tempLi);
+                        }
                     }
                     this.pidArray.push(elementData.id);
+                    this.nodeList[elementData.id] = tempElement; // id, element 쌍으로 객체에 저장
                 }
             }
             customElements.define('tree-componenet', tree);
