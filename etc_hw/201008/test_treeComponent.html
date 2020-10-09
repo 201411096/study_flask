@@ -26,7 +26,8 @@
 
                 async getDataFromServer(){
                     // let response = await fetch('http://192.168.0.51:5000/dataFromServer');
-                    let response = await fetch(`http://192.168.0.51:5000/dataFromDb?query=WITH recursive cte (id, pid, NAME, description) as(
+                    // let response = await fetch('http://192.168.56.1:5000/dataFromServer');
+                    let response = await fetch(`http://192.168.56.1:5000/dataFromDb?query=WITH recursive cte (id, pid, NAME, description) as(
                                                     SELECT id, pid, NAME, description
                                                     FROM tree_table
                                                     WHERE id=1
