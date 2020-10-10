@@ -2,6 +2,12 @@
 <html>
     <head>
         <style>
+            ul{
+                list-style: none;
+            }
+            li{
+                list-style: none;
+            }
             .tree_node + ul{
                 display: none;
             }
@@ -11,7 +17,7 @@
         </style>
     </head>
     <body>
-        <tree-componenet></tree-componenet>
+        <tree-componenet data-group='tree_01'></tree-componenet>
         <br>
         <div id='checkContainer'>
             <div id="addItemCheckContainer">
@@ -113,26 +119,26 @@
                 }
 
                 toggelingTreeNodeToShow(event){
-                    if(event.target.matches('span.tree_node')){
+                    if(event.target.matches('div.tree_node')){
                         event.target.classList.toggle('show');
                     }
                 }
 
                 getSelectedId(event){
-                    if(event.target.matches('span.tree_node')){
+                    if(event.target.matches('div.tree_node')){
                         console.log('check elementId in getSelectedId() : ' + event.target.dataset.id);
                     }
                 }
 
                 getSelectedItem(event){
-                    if(event.target.matches('span.tree_node')){
+                    if(event.target.matches('div.tree_node')){
                         console.log('check elementId in getSelectedItem() ... ');
                         console.log(event.target.nodeData);
                     }
                 }
 
                 addItem(pid, elementData){
-                    let tempElement = document.createElement('span');
+                    let tempElement = document.createElement('div');
                     tempElement.innerText = elementData['NAME'];
                     tempElement.setAttribute('data-id', elementData['id']);
                     tempElement.setAttribute('class', 'tree_node');
@@ -147,15 +153,32 @@
                             let tempLi = document.createElement('li');
                             tempLi.appendChild(tempElement);
                             tempUl.appendChild(tempLi);
-                            this.nodeList[pid].after(tempUl);       
+                            this.nodeList[pid].after(tempUl); 
+                            // this.nodeList[pid].parentElement.appendChild(tempUl);      
                         }else{                                                              //ul 태그가 있다면 ...                                                 
                             let tempLi = document.createElement('li');
                             tempLi.appendChild(tempElement);
                             this.nodeList[pid].nextElementSibling.appendChild(tempLi);
                         }
                     }
+                    this.addCheckBoxButton(tempElement);
+                    this.addRadioButton(tempElement);                    
                     this.nodeIdArray.push(elementData.id);
                     this.nodeList[elementData.id] = tempElement; // id, element 쌍으로 객체에 저장
+                }
+
+                addCheckBoxButton(element){
+                    let tempElement = document.createElement('input');
+                    tempElement.setAttribute('type', 'checkbox');
+                    console.log(element.firstChild)
+                    element.prepend(tempElement);                    
+                }
+
+                addRadioButton(element){
+                    let tempElement = document.createElement('input');
+                    tempElement.setAttribute('type', 'radio');
+                    tempElement.setAttribute('name', this.dataset.group);
+                    element.appendChild(tempElement);
                 }
 
             }
