@@ -2,16 +2,17 @@
 <html>
     <head>
         <style>
-            /* .tree_node + ul{
+            .tree_node + ul{
                 display: none;
             }
             .tree_node.show + ul{
                 display: block;
-            }             */
+            }            
         </style>
     </head>
     <body>
         <tree-componenet></tree-componenet>
+        <br>
         <div id='checkContainer'>
             <div id="addItemCheckContainer">
                 <input type="text" placeholder="element_id" value=''>
@@ -88,13 +89,15 @@
                 customClickEventListener(){
                     this.addEventListener('click', function(e){
                         this.getSelectedId(e);
-                        this.getSelectedItem(e);                        
+                        this.getSelectedItem(e);
+                        this.toggelingTreeNodeToShow(e);                        
                     });
                     document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this 바인딩 객체 문제
                         this.addItemEventListener(e);
                     });
                 }
 
+                // addItem() 작동을 확인하는 이벤트 리스너
                 addItemEventListener(event){
                     if(event.target == document.querySelector('#addItemCheckButton')){
                         let elementData = {
@@ -109,14 +112,20 @@
                     }
                 }
 
+                toggelingTreeNodeToShow(event){
+                    if(event.target.matches('span.tree_node')){
+                        event.target.classList.toggle('show');
+                    }
+                }
+
                 getSelectedId(event){
-                    if(event.target.matches('span')){
+                    if(event.target.matches('span.tree_node')){
                         console.log('check elementId in getSelectedId() : ' + event.target.dataset.id);
                     }
                 }
 
                 getSelectedItem(event){
-                    if(event.target.matches('span')){
+                    if(event.target.matches('span.tree_node')){
                         console.log('check elementId in getSelectedItem() ... ');
                         console.log(event.target.nodeData);
                     }
