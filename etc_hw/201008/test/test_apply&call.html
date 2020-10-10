@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            type = "zero";
+            var type1 = { type: "one" };
+            var type2 = { type: "two" };
+
+            function getType() {
+                console.log(this.type);
+            }
+
+            getType();
+            getType.call(this);
+            getType.call(type1); // getType의 this를 바꿔버림
+            getType.call(type2); // getType의 this를 바꿔버림
+
+        </script>
+    </body>
+</html>

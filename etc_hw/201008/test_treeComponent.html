@@ -90,7 +90,7 @@
                         this.getSelectedId(e);
                         this.getSelectedItem(e);                        
                     });
-                    document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this.addIte... 부분에서 함수를 찾지 못함
+                    document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this 바인딩 객체 문제
                         this.addItemEventListener(e);
                     });
                 }

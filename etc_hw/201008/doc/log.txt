@@ -1,0 +1,12 @@
+----------------------------------------------------------------------------------------------------
+node와 element의 구분
+
+childNodes <-> children (노드 포함 여부, childNodes의 경우 주석노드같은 것들을 포함함)
+nextSibling <-> nextElementSibling (노드 포함여부, nextElementSibling element만을 반환함)
+
+----------------------------------------------------------------------------------------------------
+apply, call
+
+구문
+    func.apply(thisArg, [argsArray])             // 함수에 사용하는 인자들을 배열로 ...
+    func.call(thisArg[, arg1[, arg2[, ...]]])    // 함수에 사용하는 값들을 배열이 아닌 각각 넘겨줌
