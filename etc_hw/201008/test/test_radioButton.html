@@ -6,8 +6,23 @@
     <body>
         <input type='radio' name='aa'>
         <input type='radio' name='aa'>
-        <input type='radio'>
-        <input type='radio'>
-        <script></script>
+        <input type='radio' name='aa'>
+        <input type='radio' name='aa' id='red'>
+        <button id='checkRadioButton'>checkRadioButton</button>
+        <button id='unCheckRadioButton'>unCheckRadioButtoon</button>
+        <script>
+            document.querySelector('#checkRadioButton').addEventListener('click', function(e){
+                check();
+            });
+            document.querySelector('#unCheckRadioButton').addEventListener('click', function(e){
+                uncheck();
+            });
+            function check() {
+            document.getElementById("red").checked = true;
+            }
+            function uncheck() {
+            document.getElementById("red").checked = false;
+            }
+        </script>
     </body>
 </html>
