@@ -12,13 +12,24 @@
     </head>
     <body>
         <tree-componenet></tree-componenet>
+        <div id='checkContainer'>
+            <div id="addItemCheckContainer">
+                <input type="text" placeholder="element_id" value=''>
+                <input type="text" placeholder="element_pid" value=''>
+                <input type="text" placeholder="element_name" value=''>
+                <input type="text" placeholder="element_description" value=''>
+                <button id='addItemCheckButton'>addItemCheckButton</button>
+            </div>
+        </div>
+
         <script>
             // let serverURL = 'http://192.168.0.51:5000/dataFromServer';
             // let serverURL = 'http://192.168.56.1:5000/dataFromServer';
-            let serverURL = `http://192.168.56.1:5000/dataFromDb`;
+            // let serverURL = `http://192.168.56.1:5000/dataFromDb`;
             class tree extends HTMLElement{
                 constructor(){
                     super();
+                    this.serverURL = `http://192.168.56.1:5000/dataFromDb`;
                 }
 
                 connectedCallback(){
@@ -31,7 +42,7 @@
                 async getDataFromServer(){
                     // let response = await fetch('http://192.168.0.51:5000/dataFromServer');
                     // let response = await fetch('http://192.168.56.1:5000/dataFromServer');
-                    let response = await fetch(serverURL+`?query=WITH recursive cte (id, pid, NAME, description) as(
+                    let response = await fetch(this.serverURL+`?query=WITH recursive cte (id, pid, NAME, description) as(
                                                     SELECT id, pid, NAME, description
                                                     FROM tree_table
                                                     WHERE pid=0
@@ -60,9 +71,9 @@
                     }
                 }
 
-                checkChildNodes(element, querySelector){
-                    let childNodeList = element.childNodes;
-                    for(var i=0; i<element.childNodes.length; i++){
+                checkchildren(element, querySelector){
+                    let childNodeList = element.children;
+                    for(var i=0; i<element.children.length; i++){
                         if(childNodeList[i].matches(querySelector)){
                             return true; // 해당 element를 포함하고 있음
                         }
@@ -77,8 +88,25 @@
                 customClickEventListener(){
                     this.addEventListener('click', function(e){
                         this.getSelectedId(e);
-                        this.getSelectedItem(e);
+                        this.getSelectedItem(e);                        
                     });
+                    document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this.addIte... 부분에서 함수를 찾지 못함
+                        this.addItemEventListener(e);
+                    });
+                }
+
+                addItemEventListener(event){
+                    if(event.target == document.querySelector('#addItemCheckButton')){
+                        let elementData = {
+                            'id' : parseInt(event.target.parentElement.children[0].value),
+                            'pid' : parseInt(event.target.parentElement.children[1].value),
+                            'NAME' : event.target.parentElement.children[2].value,
+                            'description' : event.target.parentElement.children[3].value
+                        };
+                        let pid = event.target.parentElement.children[1].value;
+                        console.log(elementData);
+                        this.addItem(pid, elementData);
+                    }
                 }
 
                 getSelectedId(event){
@@ -102,9 +130,10 @@
                     tempElement.nodeData = elementData;
                     
                     if(!this.nodeIdArray.includes(elementData['pid'])){
+                        console.log('pid존재안함')
                         this.appendChild(tempElement);
                     }else{ // pid가 존재하는 경우에 ...
-                        if(!this.checkChildNodes(this.nodeList[pid].parentElement, 'ul')){       //ul 태그가 존재하지않는다면 ...
+                        if(!this.checkchildren(this.nodeList[pid].parentElement, 'ul')){       //ul 태그가 존재하지않는다면 ...
                             let tempUl = document.createElement('ul');
                             let tempLi = document.createElement('li');
                             tempLi.appendChild(tempElement);
@@ -119,8 +148,12 @@
                     this.nodeIdArray.push(elementData.id);
                     this.nodeList[elementData.id] = tempElement; // id, element 쌍으로 객체에 저장
                 }
+
             }
             customElements.define('tree-componenet', tree);
+        </script>
+        <script>
+
         </script>
     </body>
 </html>
