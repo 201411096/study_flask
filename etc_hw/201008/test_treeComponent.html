@@ -19,9 +19,10 @@
                 }
 
                 connectedCallback(){
-                    this.render();
                     this.nodeIdArray = [];
                     this.nodeList = {};
+                    this.render();
+                    this.setEvent();
                 }
 
                 async getDataFromServer(){
@@ -64,6 +65,29 @@
                         }
                     }
                     return false; // 해당 element를 포함하고 있지 않음
+                }
+
+                setEvent(){
+                    this.customClickEventListener();
+                }
+
+                customClickEventListener(){
+                    this.addEventListener('click', function(e){
+                        this.getSelectedId(e);
+                        this.getSelectedItem(e);
+                    });
+                }
+
+                getSelectedId(event){
+                    if(event.target.matches('span')){
+                        console.log('check elementId in getSelectedId() : ' + event.target.dataset.id);
+                    }
+                }
+                getSelectedItem(event){
+                    if(event.target.matches('span')){
+                        console.log('check elementId in getSelectedItem() ... ');
+                        console.log(event.target.nodeData);
+                    }
                 }
 
                 addItem(pid, elementData){
