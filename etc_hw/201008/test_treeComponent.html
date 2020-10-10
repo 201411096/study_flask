@@ -83,6 +83,7 @@
                         console.log('check elementId in getSelectedId() : ' + event.target.dataset.id);
                     }
                 }
+
                 getSelectedItem(event){
                     if(event.target.matches('span')){
                         console.log('check elementId in getSelectedItem() ... ');
@@ -94,6 +95,7 @@
                     let tempElement = document.createElement('span');
                     tempElement.innerText = elementData['NAME'];
                     tempElement.setAttribute('data-id', elementData['id']);
+                    tempElement.setAttribute('class', 'tree_node');
                     tempElement.nodeData = elementData;
                     
                     if(!this.nodeIdArray.includes(elementData['pid'])){
