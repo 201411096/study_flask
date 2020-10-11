@@ -28,8 +28,15 @@
                 <button id='addItemCheckButton'>addItemCheckButton</button>
             </div>
             <div id="checkRadioCheckContainer">
-                <input type='text' placeholder='element_id for checkRadio ...'>
+                <input type='text' placeholder='element_id for radioButton ...'>
                 <button id='checkRadioButton'>checkRadioButton</button>
+            </div>
+            <div id="checkCheckBoxContainer">
+                <input type='text' placeholder='element_id for checkBox ...'>
+                <button id='checkCheckBoxButton'>checkCheckBoxButton</button>
+            </div>
+            <div id="nodeDataCheckContainer">
+                <button id='nodeDataCheckButton'>nodeDataCheckButton</button>
             </div>
         </div>
 
@@ -65,19 +72,17 @@
                                                 )
                                                 SELECT * FROM cte ORDER BY pid asc, id asc;`);
                     let responseJson = await response.json();
-                    this.initialData = responseJson;
+                    this.componentData = responseJson;
                 }
 
                 async render(){
                     await this.getDataFromServer();
-                    this.constructTreeWithInitialData();
+                    await this.constructTreeWithInitialData();
                 }
 
                 constructTreeWithInitialData(){
-                    let copiedData = this.initialData;
-                    while(copiedData.length!=0){
-                        let tempObject = copiedData.shift();
-                        // console.log(tempObject.id)
+                    for(var i=0; i<this.componentData.length; i++){
+                        let tempObject = this.componentData[i];
                         this.addItem(tempObject.pid, tempObject);
                     }
                 }
@@ -105,7 +110,21 @@
                     document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this 바인딩 객체 문제
                         this.addItemEventListener(e);
                         this.checkRadio(e);
+                        this.checkItem(e);
                     });
+                }
+
+                checkItem(event){
+                    if(event.target == document.querySelector('#checkCheckBoxButton')){
+                        let id = parseInt(event.target.parentElement.children[0].value);
+                        let targetNode = document.querySelector('div[data-id="'+ id +'"]');
+                        let targetNodeCheckBox = targetNode.querySelector('input[type="checkbox"]');
+                        if(targetNodeCheckBox.checked== false || targetNodeCheckBox.checked == undefined){
+                            targetNodeCheckBox.checked=true;
+                        }else{
+                            targetNodeCheckBox.checked=false;
+                        }
+                    }
                 }
 
                 checkRadio(event){
@@ -163,7 +182,6 @@
                     tempElement.nodeData = elementData;
                     
                     if(!this.nodeIdArray.includes(elementData['pid'])){
-                        console.log('pid존재안함')
                         this.appendChild(tempElement);
                     }else{ // pid가 존재하는 경우에 ...
                         if(!this.checkchildren(this.nodeList[pid].parentElement, 'ul')){       //ul 태그가 존재하지않는다면 ...
@@ -171,8 +189,7 @@
                             let tempLi = document.createElement('li');
                             tempLi.appendChild(tempElement);
                             tempUl.appendChild(tempLi);
-                            this.nodeList[pid].after(tempUl); 
-                            // this.nodeList[pid].parentElement.appendChild(tempUl);      
+                            this.nodeList[pid].after(tempUl);       
                         }else{                                                              //ul 태그가 있다면 ...                                                 
                             let tempLi = document.createElement('li');
                             tempLi.appendChild(tempElement);
@@ -200,9 +217,6 @@
 
             }
             customElements.define('tree-componenet', tree);
-        </script>
-        <script>
-
         </script>
     </body>
 </html>
