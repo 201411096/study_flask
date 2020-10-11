@@ -109,14 +109,12 @@
 
                 setEvent(){
                     this.customClickEventListener(); // click이벤트 처리
-                    this.customCheckEventListener(); // check이벤트 처리
                 }
 
                 // 클릭이벤트 처리함수
                 customClickEventListener(){
                     this.addEventListener('click', function(e){
-                        this.toggelingTreeNodeToShow(e);                // 노드를 펼치고 숨기는 함수
-                        this.dispatchTreeCheckEventFromClickEvent(e);                        
+                        this.toggelingTreeNodeToShow(e);                // 노드를 펼치고 숨기는 함수                      
                     });
                     document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this 바인딩 객체 문제
                         this.addItemEventListener(e);
@@ -125,85 +123,6 @@
                         this.getSelectedIdEventListener(e);
                         this.getSelectedItemEventListener(e);
                     });
-                }
-
-                customCheckEventListener(){
-                    this.addEventListener('tree_checkEvent', function(e){
-                        this.customCheckEventHandler(e);
-                    });
-                }
-
-                customCheckEventHandler(event){
-                    let targetElement = document.querySelector('div[data-id="'+event.detail.id +'"]');
-                    let targetParentElement = document.querySelector('div[data-id="'+targetElement.nodeData.pid +'"]'); // 해당 element가 없다면 null
-                    let targetParentElementNextUlChildren = null;
-                    if(targetParentElement != null){
-                        targetParentElementNextUlChildren = targetParentElement.nextElementSibling.children; // li들이 들어있는 리스트가 나옴
-                    }
-
-                    if(event.detail.state === 'checked'){
-                        if(targetElement.nextElementSibling!=null){ // 하위 노드가 존재할 경우
-                            let targetElementChildrenCheckBoxList = targetElement.nextElementSibling.querySelectorAll('input[type="checkbox"]');
-                            for(var i=0; i<targetElementChildrenCheckBoxList.length; i++){
-                                targetElementChildrenCheckBoxList[i].checked=true;
-                            }
-                        }
-                        if(targetParentElement != null){ // 부모 노드가 존재할 경우 ...
-                            let checkFlag = true;
-                            let targetParentElementChildrenLiList = targetParentElement.nextElementSibling.children;
-                            console.log(targetParentElement.nextElementSibling.children);
-                            for(var i=0; i<targetParentElementChildrenLiList.length; i++){
-                                if(targetParentElementChildrenLiList[i].children[0].children[0].checked==false){
-                                    checkFlag=false;
-                                }
-                            }
-                            if(checkFlag == true){
-                                this.checkItem(targetParentElement.nodeData.id);
-                            }
-                        }                         
-                    }else{
-                        if(targetElement.nextElementSibling!=null){ // 하위 노드가 존재할 경우
-                            let targetElementChildrenCheckBoxList = targetElement.nextElementSibling.querySelectorAll('input[type="checkbox"]');
-                            for(var i=0; i<targetElementChildrenCheckBoxList.length; i++){
-                                targetElementChildrenCheckBoxList[i].checked=false;
-                            }
-                        }
-                        if(targetParentElement != null){ // 부모 노드가 존재할 경우 ...
-                            let checkFlag = false;
-                            let targetParentElementChildrenLiList = targetParentElement.nextElementSibling.children;
-                            console.log(targetParentElement.nextElementSibling.children);
-                            for(var i=0; i<targetParentElementChildrenLiList.length; i++){
-                                if(targetParentElementChildrenLiList[i].children[0].children[0].checked==false){
-                                    checkFlag=true;
-                                }
-                            }
-                            if(checkFlag == true){
-                                // targetParentElement.children[0].checked=false;
-                                this.checkItem(targetParentElement.nodeData.id);
-                            }
-                        }
-                    }
-                }
-
-                dispatchTreeCheckEventFromClickEvent(event){
-                    if(event.target.matches('input[type="checkbox"]')){
-                        let eventResult = {};
-                        eventResult.id = event.target.parentElement.dataset.id;
-                        if(event.target.checked== false || event.target.checked == undefined){
-                            eventResult.state = 'unchecked';
-                        }else{
-                            eventResult.state = 'checked';
-                        }
-                        this.dispatchTreeCheckEvent(eventResult);
-                    }
-                }
-
-
-                dispatchTreeCheckEvent(eventResult){
-                    this.dispatchEvent(new CustomEvent('tree_checkEvent', {
-                        detail : eventResult,
-                        bubbles : true
-                    }));
                 }
 
                 checkItemEventListener(event){
@@ -225,7 +144,6 @@
                         targetNodeCheckBox.checked=false;
                         eventResult.state = 'unchecked';
                     }
-                    this.dispatchTreeCheckEvent(eventResult);
                 }
 
                 checkRadioEventListener(event){
@@ -298,7 +216,8 @@
                     if(!this.nodeIdArray.includes(elementData['pid'])){
                         this.appendChild(tempElement);
                     }else{ // pid가 존재하는 경우에 ...
-                        if(!this.checkchildren(this.nodeList[pid].parentElement, 'ul')){       //ul 태그가 존재하지않는다면 ...
+                        // if(!this.checkchildren(this.nodeList[pid].parentElement, 'ul')){       //ul 태그가 존재하지않는다면 ...
+                        if(this.nodeList[pid].nextElementSibling==null || this.nodeList[pid].nextElementSibling.matches('ul') ==false){       //ul 태그가 존재하지않는다면 ...
                             let tempUl = document.createElement('ul');
                             let tempLi = document.createElement('li');
                             tempLi.appendChild(tempElement);
