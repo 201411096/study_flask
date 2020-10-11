@@ -38,12 +38,6 @@
             <div id="nodeDataCheckContainer">
                 <button id='nodeDataCheckButton'>nodeDataCheckButton</button>
             </div>
-            <div id="getSelectedIdCheckContainer">
-                <button id="getSelectedIdButton">getSelectedIdButton</button>
-            </div>
-            <div id="getSelectedItemCheckContainer">
-                <button id="getSelectedItemButton">getSelectedItemButton</button>
-            </div>
         </div>
 
         <script>
@@ -109,48 +103,41 @@
 
                 customClickEventListener(){
                     this.addEventListener('click', function(e){
+                        this.getSelectedId(e);
+                        this.getSelectedItem(e);
                         this.toggelingTreeNodeToShow(e);                        
                     });
                     document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this 바인딩 객체 문제
                         this.addItemEventListener(e);
-                        this.checkRadioEventListener(e);
-                        this.checkItemEventListener(e);
-                        this.getSelectedIdEventListener(e);
-                        this.getSelectedItemEventListener(e);
+                        this.checkRadio(e);
+                        this.checkItem(e);
                     });
                 }
 
-                checkItemEventListener(event){
+                checkItem(event){
                     if(event.target == document.querySelector('#checkCheckBoxButton')){
                         let id = parseInt(event.target.parentElement.children[0].value);
-                        this.checkItem(id);
+                        let targetNode = document.querySelector('div[data-id="'+ id +'"]');
+                        let targetNodeCheckBox = targetNode.querySelector('input[type="checkbox"]');
+                        if(targetNodeCheckBox.checked== false || targetNodeCheckBox.checked == undefined){
+                            targetNodeCheckBox.checked=true;
+                        }else{
+                            targetNodeCheckBox.checked=false;
+                        }
                     }
                 }
 
-                checkItem(id){
-                    let targetNode = document.querySelector('div[data-id="'+ id +'"]');
-                    let targetNodeCheckBox = targetNode.querySelector('input[type="checkbox"]');
-                    if(targetNodeCheckBox.checked== false || targetNodeCheckBox.checked == undefined){
-                        targetNodeCheckBox.checked=true;
-                    }else{
-                        targetNodeCheckBox.checked=false;
-                    }
-                }
-
-                checkRadioEventListener(event){
+                checkRadio(event){
                     if(event.target == document.querySelector('#checkRadioButton')){
                         let id = parseInt(event.target.parentElement.children[0].value);
-                        this.checkRadio(id);
-                    }                    
-                }
-
-                checkRadio(id){
-                    let targetNode = document.querySelector('div[data-id="'+ id +'"]');
-                    let targetNodeRadio = targetNode.querySelector('input[type="radio"]');
-                    if(targetNodeRadio.checked== false || targetNodeRadio.checked == undefined){
-                        targetNodeRadio.checked=true;
-                    }else{
-                        targetNodeRadio.checked=false;
+                        let targetNode = document.querySelector('div[data-id="'+ id +'"]');
+                        let targetNodeRadio = targetNode.querySelector('input[type="radio"]');
+                        if(targetNodeRadio.checked== false || targetNodeRadio.checked == undefined){
+                            targetNodeRadio.checked=true;
+                        }else{
+                            targetNodeRadio.checked=false;
+                        }
+                        
                     }
                 }
 
@@ -174,27 +161,17 @@
                     }
                 }
 
-                getSelectedIdEventListener(event){
-                    if(event.target.matches('#getSelectedIdButton')){
-                        let id = this.getSelectedId();
-                        console.log('returned id by getSelectedId() : ' + id);
-                    }
-
-                }
-                getSelectedItemEventListener(event){
-                    if(event.target.matches('#getSelectedItemButton')){
-                        let elementData = this.getSelectedItem();
-                        console.log('returned id by getSelectedItem() ... ');
-                        console.log(elementData);
+                getSelectedId(event){
+                    if(event.target.matches('div.tree_node')){
+                        console.log('check elementId in getSelectedId() : ' + event.target.dataset.id);
                     }
                 }
 
-                getSelectedId(){
-                    return parseInt(this.querySelector('input[type="radio"]:checked').parentElement.nodeData.id);
-                }
-
-                getSelectedItem(){
-                    return this.querySelector('input[type="radio"]:checked').parentElement.nodeData;
+                getSelectedItem(event){
+                    if(event.target.matches('div.tree_node')){
+                        console.log('check elementId in getSelectedItem() ... ');
+                        console.log(event.target.nodeData);
+                    }
                 }
 
                 addItem(pid, elementData){
