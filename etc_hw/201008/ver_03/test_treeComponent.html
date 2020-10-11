@@ -57,13 +57,12 @@
                 }
 
                 connectedCallback(){
-                    this.nodeIdArray = [];  // nodeId를 담아두는 배열
-                    this.nodeList = {};     // nodeElement를 담아두는 배열
+                    this.nodeIdArray = [];
+                    this.nodeList = {};
                     this.render();
                     this.setEvent();
                 }
 
-                // 서버로부터 초기 트리 데이터를 받아와서 저장하는 함수
                 async getDataFromServer(){
                     // let response = await fetch('http://192.168.0.51:5000/dataFromServer');
                     // let response = await fetch('http://192.168.56.1:5000/dataFromServer');
@@ -82,13 +81,11 @@
                     this.componentData = responseJson;
                 }
 
-                // 트리를 시각화하는 함수(초기 트리 데이터를 가져와서 구성해줌)
                 async render(){
                     await this.getDataFromServer();
                     this.constructTreeWithInitialData();
                 }
 
-                // 초기 데이터로 트리를 시각화하는 함수
                 constructTreeWithInitialData(){
                     for(var i=0; i<this.componentData.length; i++){
                         let tempObject = this.componentData[i];
@@ -96,7 +93,6 @@
                     }
                 }
 
-                // args1에 해당하는 element의 바로 밑에 자식들에 args2에 해당하는 자식들이 있는지 확인하는 함수
                 checkchildren(element, querySelector){
                     let childNodeList = element.children;
                     for(var i=0; i<element.children.length; i++){
@@ -108,15 +104,12 @@
                 }
 
                 setEvent(){
-                    this.customClickEventListener(); // click이벤트 처리
-                    this.customCheckEventListener(); // check이벤트 처리
+                    this.customClickEventListener();
                 }
 
-                // 클릭이벤트 처리함수
                 customClickEventListener(){
                     this.addEventListener('click', function(e){
-                        this.toggelingTreeNodeToShow(e);                // 노드를 펼치고 숨기는 함수
-                        this.dispatchTreeCheckEventFromClickEvent(e);                        
+                        this.toggelingTreeNodeToShow(e);                        
                     });
                     document.addEventListener('click', (e)=>{ //arrow function을 사용하지 않을 경우 this 바인딩 객체 문제
                         this.addItemEventListener(e);
@@ -125,56 +118,6 @@
                         this.getSelectedIdEventListener(e);
                         this.getSelectedItemEventListener(e);
                     });
-                }
-
-                customCheckEventListener(){
-                    this.addEventListener('tree_checkEvent', function(e){
-                        this.customCheckEventHandler(e);
-                    });
-                }
-
-                customCheckEventHandler(event){
-                    let targetElement = document.querySelector('div[data-id="'+event.detail.id +'"]');
-                    let targetParentElement = document.querySelector('div[data-id="'+targetElement.nodeData.pid +'"]'); // 해당 element가 없다면 null
-                    let targetParentElementNextUlChildren = null;
-                    if(targetParentElement != null){
-                        targetParentElementNextUlChildren = targetParentElement.nextElementSibling.children; // li들이 들어있는 리스트가 나옴
-                    }
-
-                    if(event.detail.state === 'checked'){
-                        let targetElementChildrenCheckBoxList = targetElement.nextElementSibling.querySelectorAll('input[type="checkbox"]');
-                        for(var i=0; i<targetElementChildrenCheckBoxList.length; i++){
-                            targetElementChildrenCheckBoxList[i].checked=true;
-                        }                         
-
-                    }else{
-                        let targetElementChildrenCheckBoxList = targetElement.nextElementSibling.querySelectorAll('input[type="checkbox"]');
-                        for(var i=0; i<targetElementChildrenCheckBoxList.length; i++){
-                            targetElementChildrenCheckBoxList[i].checked=false;
-                        }
-
-                    }
-                }
-
-                dispatchTreeCheckEventFromClickEvent(event){
-                    if(event.target.matches('input[type="checkbox"]')){
-                        let eventResult = {};
-                        eventResult.id = event.target.parentElement.dataset.id;
-                        if(event.target.checked== false || event.target.checked == undefined){
-                            eventResult.state = 'unchecked';
-                        }else{
-                            eventResult.state = 'checked';
-                        }
-                        this.dispatchTreeCheckEvent(eventResult);
-                    }
-                }
-
-
-                dispatchTreeCheckEvent(eventResult){
-                    this.dispatchEvent(new CustomEvent('tree_checkEvent', {
-                        detail : eventResult,
-                        bubbles : true
-                    }));
                 }
 
                 checkItemEventListener(event){
@@ -187,16 +130,11 @@
                 checkItem(id){
                     let targetNode = document.querySelector('div[data-id="'+ id +'"]');
                     let targetNodeCheckBox = targetNode.querySelector('input[type="checkbox"]');
-                    let eventResult = {};
-                    eventResult.id = id;
                     if(targetNodeCheckBox.checked== false || targetNodeCheckBox.checked == undefined){
                         targetNodeCheckBox.checked=true;
-                        eventResult.state = 'checked';
                     }else{
                         targetNodeCheckBox.checked=false;
-                        eventResult.state = 'unchecked';
                     }
-                    this.dispatchTreeCheckEvent(eventResult);
                 }
 
                 checkRadioEventListener(event){
