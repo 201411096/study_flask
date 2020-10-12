@@ -1,3 +1,4 @@
+<!-- check recursive function 되기 시작한 버전 -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -134,6 +135,11 @@
                 }
 
                 checkItemRecursiveToUpperNode(element, checkedFlag){
+                    console.log('recursive ...');
+                    console.log('element ...');
+                    console.log(element);
+                    // console.log('element nextElementSibling ...');
+                    // console.log(element.nextElementSibling)
                     if(element != null){
                         if(checkedFlag == 'checked'){
                             let checkFlag = true;
@@ -145,6 +151,8 @@
                             }
                             if(checkFlag == true){
                                 element.children[0].checked=true;
+                                // this.checkItemRecursiveToUpperNode(element, 'checked');
+                                // this.checkItemRecursiveToUpperNode(element.parentElement, 'checked');
                                 this.checkItemRecursiveToUpperNode(document.querySelector('div[data-id="'+element.nodeData.pid +'"]'), 'checked');
                             }
                             
@@ -158,6 +166,8 @@
                             }
                             if(checkFlag == true){
                                 element.children[0].checked=false;
+                                // this.checkItemRecursiveToUpperNode(element.parentElement, 'unchecked');
+                                // this.checkItemRecursiveToUpperNode(element.parentElement, 'checked');
                                 this.checkItemRecursiveToUpperNode(document.querySelector('div[data-id="'+element.nodeData.pid +'"]'), 'unchecked');
                             }
                             
@@ -180,7 +190,20 @@
                                 targetElementChildrenCheckBoxList[i].checked=true;
                             }
                         }
-                        this.checkItemRecursiveToUpperNode(targetParentElement, 'checked');                         
+                        this.checkItemRecursiveToUpperNode(targetParentElement, 'checked');
+                        // if(targetParentElement != null){ // 부모 노드가 존재할 경우 ...
+                        //     let checkFlag = true;
+                        //     let targetParentElementChildrenLiList = targetParentElement.nextElementSibling.children;
+                        //     console.log(targetParentElement.nextElementSibling.children);
+                        //     for(var i=0; i<targetParentElementChildrenLiList.length; i++){
+                        //         if(targetParentElementChildrenLiList[i].children[0].children[0].checked==false){
+                        //             checkFlag=false;
+                        //         }
+                        //     }
+                        //     if(checkFlag == true){
+                        //         this.checkItem(targetParentElement.nodeData.id);
+                        //     }
+                        // }                         
                     }else{
                         if(targetElement.nextElementSibling!=null){ // 하위 노드가 존재할 경우
                             let targetElementChildrenCheckBoxList = targetElement.nextElementSibling.querySelectorAll('input[type="checkbox"]');
@@ -189,10 +212,23 @@
                             }
                         }
                         this.checkItemRecursiveToUpperNode(targetParentElement, 'unchecked');
+                        // if(targetParentElement != null){ // 부모 노드가 존재할 경우 ...
+                        //     let checkFlag = false;
+                        //     let targetParentElementChildrenLiList = targetParentElement.nextElementSibling.children;
+                        //     console.log(targetParentElement.nextElementSibling.children);
+                        //     for(var i=0; i<targetParentElementChildrenLiList.length; i++){
+                        //         if(targetParentElementChildrenLiList[i].children[0].children[0].checked==false){
+                        //             checkFlag=true;
+                        //         }
+                        //     }
+                        //     if(checkFlag == true){
+                        //         // targetParentElement.children[0].checked=false;
+                        //         this.checkItem(targetParentElement.nodeData.id);
+                        //     }
+                        // }
                     }
                 }
 
-                // 직접 체크박스를 클릭했을 경우의 customEvent를 발생시키는 메소드
                 dispatchTreeCheckEventFromClickEvent(event){
                     if(event.target.matches('input[type="checkbox"]')){
                         let eventResult = {};
@@ -206,7 +242,7 @@
                     }
                 }
 
-                // customEvent를 발생시키는 메소드 => checkItem()과 직접 체크했을 경우에 부름(클릭이벤트)
+
                 dispatchTreeCheckEvent(eventResult){
                     this.dispatchEvent(new CustomEvent('tree_checkEvent', {
                         detail : eventResult,
@@ -306,6 +342,7 @@
                     if(!this.nodeIdArray.includes(elementData['pid'])){
                         this.appendChild(tempElement);
                     }else{ // pid가 존재하는 경우에 ...
+                        // if(!this.checkchildren(this.nodeList[pid].parentElement, 'ul')){       //ul 태그가 존재하지않는다면 ...
                         if(this.nodeList[pid].nextElementSibling==null || this.nodeList[pid].nextElementSibling.matches('ul') ==false){       //ul 태그가 존재하지않는다면 ...
                             let tempUl = document.createElement('ul');
                             let tempLi = document.createElement('li');
