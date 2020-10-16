@@ -7,17 +7,20 @@
         <script>
             var obj ={
                 string : 'abc',
-                printString : function(){
+                printString : function(arg1, arg2){
                     console.log(this.string);
+                    console.log(arg1);
+                    console.log(arg2);
                 }
             }
             obj.printString();
             func1 = obj.printString;    // undefined
-            func1(); // this가 windows를 가르키게 됨
-            func2 = func1.bind(obj);    // abc
-            func2(); // this가 obj를 가르키게 됨
-            func3 = obj.printString.bind(obj);  // abc  
-            func3(); // this가 obj를 가르키게 됨
+            func1('arg1', 'arg2'); // this가 windows를 가르키게 됨
+            func1.apply(obj, ['arg1.', 'arg2.']);   //abc
+            func1.call(obj, 'arg1..', 'arg2...');    //abc
+
+            // apply는 기존 function 인자를 리스트의 형태로 넘겨줌
+            // call는 기존 function 인자를 하나씩 넘겨줌
         </script>
     </body>
 </html>
