@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            var obj ={
+                string : 'abc',
+                printString : function(){
+                    console.log(this.string);
+                }
+            }
+            obj.printString();          // abc
+            func1 = obj.printString;    // undefined
+            func1(); // this가 windows를 가르키게 됨
+            func2 = func1.bind(obj);    // abc
+            func2(); // this가 obj를 가르키게 됨
+            func3 = obj.printString.bind(obj);  // abc  
+            func3(); // this가 obj를 가르키게 됨
+        </script>
+    </body>
+</html>
