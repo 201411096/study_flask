@@ -36,8 +36,7 @@ def makeTempTableName(tableName):
     return tempTableName
 
 def appendImportStringToFileContent(fileContent):
-    fileContent += """
-    """
+    fileContent += """"""
     return fileContent
 
 def generateFile(tableName, tableComment):
