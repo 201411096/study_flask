@@ -19,9 +19,9 @@ from sqlalchemy import func
 # result = selectData(GOPntInfo.GOPntInfo, where='stn_id>100 and stn_id<120', orderBy='stn_id desc', type='list', withEntities=[GOPntInfo.GOPntInfo.stn_id, GOPntInfo.GOPntInfo.stn_ko])
 # 집계함수 사용안함
 result = selectData(GOPntInfo.GOPntInfo, where='stn_id>100 and stn_id<120', orderBy='stn_id desc', type='list', withEntities=[GOPntInfo.GOPntInfo.ht_wd], groupBy=[GOPntInfo.GOPntInfo.ht_wd], having='ht_wd>13')
-# 집계함수 사용
+# 집계함수 사용시도
 # result = selectData(GOPntInfo.GOPntInfo, where='stn_id>100 and stn_id<120', orderBy='stn_id desc', type='list', withEntities=[GOPntInfo.GOPntInfo.ht_wd], groupBy=[GOPntInfo.GOPntInfo.ht_wd], having='ht_wd>13')
-
+# ???
 # result = selectData(GOPntInfo.GOPntInfo, where='stn_id>100 and stn_id<120', orderBy='stn_id desc', type='list', withEntities=['GOPntInfo.GOPntInfo.ht_wd'], groupBy=['GOPntInfo.GOPntInfo.ht_wd'], having='ht_wd>13')
 
 print(result)
