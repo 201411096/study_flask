@@ -42,6 +42,10 @@ def selectData(data, **kwargs):
         result = result.filter(text(kwargs['where']))
     if('withEntities' in keyList):
         result = result.with_entities(*(kwargs['withEntities'])) # kwargs['withEntities]의 값이 list로 넘어오고 리스트로 넘어온 값을 unpacking해서 with_entities()의 매개변수로 넣어줌
+    if('groupBy' in keyList):
+        result = result.group_by(*(kwargs['groupBy']))
+    if('having' in keyList):
+        result = result.having(text(kwargs['having']))
     if('orderBy' in keyList):
         result = result.order_by(text(kwargs['orderBy']))
 
