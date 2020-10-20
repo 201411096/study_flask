@@ -9,7 +9,8 @@ def getFileNameList(fileList):
     resultList = []
     for file in fileList:
         # print(file.split('.')[0])
-        resultList.append(file.split('.')[0])
+        if(file.split('.')[0] not in ['__pycache__', '__init__']):
+            resultList.append(file.split('.')[0])
     return resultList
 
 currentDir = os.path.dirname(__file__)
