@@ -65,13 +65,16 @@ def deleteData(data, **kwargs):
     keyList = kwargs.keys()
     targetData = session.query(data)
     deleteCnt = 0
+
     if('where' in keyList):
         targetData = targetData.filter(text(kwargs['where']))
 
     for row in targetData:
         session.delete(row)
         deleteCnt+=1
+
     session.commit()
+
     return deleteCnt
 
 def updateData(data, dataContent, **kwargs):
@@ -79,6 +82,7 @@ def updateData(data, dataContent, **kwargs):
     dataContentKeyList = dataContent.keys()
     targetData = session.query(data)
     updateCnt = 0
+
     if('where' in keyList):
         targetData = targetData.filter(text(kwargs['where']))
 
@@ -86,5 +90,6 @@ def updateData(data, dataContent, **kwargs):
         for dataContentKey in dataContentKeyList:
             setattr(row, dataContentKey, dataContent[dataContentKey])
         updateCnt+=1
+        
     session.commit()
     return updateCnt
