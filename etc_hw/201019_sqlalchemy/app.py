@@ -1,5 +1,5 @@
 from classFiles import *
-from dataSource import session, insertData, insertAllData, selectData
+from dataSource import session, insertData, insertAllData, selectData, deleteData, updateData
 
 # data = Board.Board(100, writer_id=1000, title='title', content='abc')
 
