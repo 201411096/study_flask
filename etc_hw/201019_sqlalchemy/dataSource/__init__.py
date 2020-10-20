@@ -20,7 +20,6 @@ Base = declarative_base()
 Base.metadata.create_all(DATABASES)
 
 # 세션을 만들어서 연결시킨다.
-
 Session = sessionmaker()
 Session.configure(bind=DATABASES)
 session = Session()
@@ -90,6 +89,24 @@ def updateData(data, dataContent, **kwargs):
         for dataContentKey in dataContentKeyList:
             setattr(row, dataContentKey, dataContent[dataContentKey])
         updateCnt+=1
-        
+
     session.commit()
     return updateCnt
+
+# synchronize_session='fetch' 이용
+def deleteData2(data, dataContent, **kwargs):
+    keyList = kwargs.keys()
+    if('where' in keyList):
+        session.query(data).filter(text(kwargs['where'])).delete(dataContent, synchronize_session='fetch')
+    else:
+        session.query(data).delete(dataContent, synchronize_session='fetch')
+    session.commit()
+
+# synchronize_session='fetch' 이용
+def updateData2(data, dataContent, **kwargs):
+    keyList = kwargs.keys()
+    if('where' in keyList):
+        session.query(data).filter(text(kwargs['where'])).update(dataContent, synchronize_session='fetch')
+    else:
+        session.query(data).update(dataContent, synchronize_session='fetch')
+    session.commit()
