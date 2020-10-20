@@ -24,3 +24,30 @@ Base.metadata.create_all(DATABASES)
 Session = sessionmaker()
 Session.configure(bind=DATABASES)
 session = Session()
+
+def insertData(data):
+    session.add(data)
+    session.commit()
+
+def insertAllData(datas):
+    for data in datas:
+        session.add(data)
+    session.commit()
+
+def selectData(data, **kwargs):
+    keyList = kwargs.keys()
+    result = session.query(data)    
+    
+    if('where' in keyList):
+        result = result.filter(text(kwargs['where']))
+    if('orderBy' in keyList):
+        result = result.order_by(text(kwargs['orderBy']))
+
+    if('type' in keyList):
+        if(kwargs['type']=='query'):
+            return result
+        elif(kwargs['type']=='subquery'):
+            result = result.subquery()
+    else:
+        result = result.all()
+    return result
