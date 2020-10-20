@@ -60,3 +60,14 @@ def selectData(data, **kwargs):
             return result.all()
     else:
         return result.all()
+
+def deleteData(data, **kwargs):
+    keyList = kwargs.keys()
+    targetData = session.query(data)
+
+    if('where' in keyList):
+        targetData = targetData.filter(text(kwargs['where']))
+
+    for row in targetData:
+        session.delete(row)
+    session.commit()
