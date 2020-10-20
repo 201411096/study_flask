@@ -47,7 +47,8 @@ def selectData(data, **kwargs):
         if(kwargs['type']=='query'):
             return result
         elif(kwargs['type']=='subquery'):
-            result = result.subquery()
+            return result.subquery()
+        else:
+            return result.all()
     else:
-        result = result.all()
-    return result
+        return result.all()
