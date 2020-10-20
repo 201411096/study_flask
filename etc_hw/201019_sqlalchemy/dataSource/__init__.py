@@ -40,6 +40,8 @@ def selectData(data, **kwargs):
     
     if('where' in keyList):
         result = result.filter(text(kwargs['where']))
+    if('withEntities' in keyList):
+        result = result.with_entities(*(kwargs['withEntities'])) # kwargs['withEntities]의 값이 list로 넘어오고 리스트로 넘어온 값을 unpacking해서 with_entities()의 매개변수로 넣어줌
     if('orderBy' in keyList):
         result = result.order_by(text(kwargs['orderBy']))
 
@@ -48,6 +50,8 @@ def selectData(data, **kwargs):
             return result
         elif(kwargs['type']=='subquery'):
             return result.subquery()
+        elif(kwargs['type']=='one'):
+            return result.one()
         else:
             return result.all()
     else:
