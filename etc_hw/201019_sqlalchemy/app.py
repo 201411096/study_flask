@@ -9,6 +9,14 @@ from sqlalchemy import func
 # session.commit()
 # insertData(data)
 
+# catch IntegrityError Exception (sqlalchemy 무결성 에러 처리)
+# try:
+#     session.add(data)
+#     session.commit()
+#     print('a')
+# except exc.IntegrityError:
+#     print('b')
+
 # print(session.query(GOPntInfo.GOPntInfo).filter()all())
 # result = selectData(GOPntInfo.GOPntInfo)
 
