@@ -1,0 +1,17 @@
+mybatis # $ difference
+
+#{}
+	- parameter가 string 형태로 들어와 자동적으로 'parameter'형태가 된다
+	- ex) #{user_id}의 user_id의 값이 abc라면 쿼리문에는 USER_ID = 'abc'형태가 된다.
+	- 쿼리 주입을 예방할 수 있어 보안측면에서 유리
+
+${}
+	- parameter가 바로 출력된다.
+	- 해당컬럼의 자료형에 맞추어 파라메터의 자료형이 변경된다
+	- 쿼리 주입을 예방할 수 없어 보안측면에서 불리하다. 사용자의 입력을 전달할떄는 사용하지 않는편이 낫다
+	- 테이블이나 컬럼명을 parameter로 전달하고 싶을 떄 사용한다. #{}은 자동으로 ''가 붙어서 사용할 수 없다.
+	- ex)
+		<select id="select_list" parameterType="HashMap" resultType="HashMap">
+			SELECT ${COLUMN}
+			FROM USER
+		</select>
