@@ -93,7 +93,8 @@ def updateData(data, dataContent, **kwargs):
     session.commit()
     return updateCnt
 
-# synchronize_session='fetch' 이용
+# Specify 'fetch' or False for the synchronize_session parameter.
+# => synchronize_session='fetch' 혹은 synchronize_session=False 이용
 def deleteData2(data, dataContent, **kwargs):
     keyList = kwargs.keys()
     if('where' in keyList):
@@ -102,7 +103,8 @@ def deleteData2(data, dataContent, **kwargs):
         session.query(data).delete(dataContent, synchronize_session='fetch')
     session.commit()
 
-# synchronize_session='fetch' 이용
+# Specify 'fetch' or False for the synchronize_session parameter.
+# => synchronize_session='fetch' 혹은 synchronize_session=False 이용
 def updateData2(data, dataContent, **kwargs):
     keyList = kwargs.keys()
     if('where' in keyList):
