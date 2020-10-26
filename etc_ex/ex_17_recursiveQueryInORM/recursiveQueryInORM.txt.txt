@@ -1,0 +1,36 @@
+------------------------------------------------------------------------------------------
+SQL
+
+with recursive cte as (
+select
+	id, name, level, parent_id
+from
+	categories c
+where
+	c.id = 128
+	-- initial selector
+union
+select
+	c2.id, c2.name, c2.level, c2.parent_id
+from
+	categories c2
+join cte on
+	c2.parent_id = cte.id
+	-- recursive part
+)
+select
+	*
+from
+	cte;
+------------------------------------------------------------------------------------------
+ORM
+
+topq = sess.query(Category)
+topq = topq.filter(Category.id == 128)
+topq = topq.cte('cte', recursive=True)
+
+bottomq = sess.query(Category)
+bottomq = bottomq.join(topq, Category.parent_id == topq.c.id)
+
+recursive_q = topq.union(bottomq)
+q = sess.query(recursive_q)
