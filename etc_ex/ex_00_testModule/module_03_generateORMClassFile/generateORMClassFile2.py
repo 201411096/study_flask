@@ -111,7 +111,7 @@ def generateFile(tableName, tableComment):
         else:
             fileContent+=', \\\n        '
 
-        fileContent+="'"+tableStructure3[0]+"' : %s"
+        fileContent+="'"+tableStructure3[0]+"' : '%s'"
         columnArray.append(tableStructure3[0])
     fileContent+='}" % (\n'
 
