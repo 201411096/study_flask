@@ -27,7 +27,7 @@ WHERE ID IN (
 	SELECT * FROM CTE_NAME
 )
 ============================================================
-SELECT FROM RECURSIVE QUERY in "sqlalchemy"
+SELECT QUERY in "sqlalchemy"
 
 from sqlalchemy.sql import bindparam
 from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
@@ -47,7 +47,7 @@ resultList = session.execute(stmt, {"var01":  "var01_content", "var02":"var02_co
 for result in resultList:
 	print(result)
 ============================================================
-UPDATE FROM RECURSIVE QUERY in "sqlalchemy"
+UPDATE QUERY in "sqlalchemy"
 
 from sqlalchemy.sql import bindparam
 from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
