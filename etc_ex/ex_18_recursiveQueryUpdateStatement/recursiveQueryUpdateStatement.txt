@@ -1,0 +1,50 @@
+============================================================
+기본적인 RECUSRIVE QUERY 구조
+
+WITH recursive CTE_NAME AS(
+	SELECT ID
+	FROM TABLE_NAME
+	WHERE ID = 'keyword'
+	UNION ALL
+	SELECT A.ID
+	FROM TABLE_NAME A, CTE_NAME B
+	WHERE A.PARENT_ID = B.ID) // recursive query 종료
+SELECT * FROM CTE_NAME ;
+============================================================
+UPDATE FROM RECURSIVE QUERY
+
+UPDATE TABLE_NAME
+SET COLUMN_NAME_01 = 'update_content'
+WHERE ID IN (
+	WITH recursive CTE_NAME AS(
+		SELECT ID
+		FROM TABLE_NAME
+		WHERE ID = 'keyword'
+		UNION ALL
+		SELECT A.ID
+		FROM TABLE_NAME A, CTE_NAME B
+		WHERE A.PARENT_ID = B.ID) // recursive query 종료
+	SELECT * FROM CTE_NAME
+)
+============================================================
+UPDATE FROM RECURSIVE QUERY in "sqlalchemy"
+
+from sqlalchemy.sql import bindparam
+from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
+
+
+
+stringQuery = """
+	... query content ...
+	(	...
+		COLUMN_NAME_01 = :var01 // bindparam 해줘야 하는 변수들 (var01, var02, var03 ..)
+		COLUMN_NAME_02 = :var02
+		COLUMN_NAME_03 = :var03
+		...
+	)
+"""
+statement = text(stringQuery)
+statement = statement.bindparams(bindparam("var01", type_=String), bindparam("var02", type_=Datetime),  ...)
+session.execute(stmt, {"var01":  "var01_content", "var02":"var02_content", "var03":"var03_content"})
+session.commit()
+============================================================
