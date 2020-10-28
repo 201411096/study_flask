@@ -32,7 +32,7 @@ SELECT QUERY in "sqlalchemy"
 from sqlalchemy.sql import bindparam
 from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
 
-stringQUery """
+stringQuery = """
 	... query content ...
 	(	...
 		COLUMN_NAME_01 = :var01 // bindparam 해줘야 하는 변수들 (var01, var02, var03 ..)
