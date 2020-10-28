@@ -27,6 +27,26 @@ WHERE ID IN (
 	SELECT * FROM CTE_NAME
 )
 ============================================================
+SELECT FROM RECURSIVE QUERY in "sqlalchemy"
+
+from sqlalchemy.sql import bindparam
+from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
+
+stringQUery """
+	... query content ...
+	(	...
+		COLUMN_NAME_01 = :var01 // bindparam 해줘야 하는 변수들 (var01, var02, var03 ..)
+		COLUMN_NAME_02 = :var02
+		COLUMN_NAME_03 = :var03
+		...
+	)
+"""
+statement = text(stringQuery).columns(TABLE_NAME.COLUMN_NAME_01, TABLE_NAME.COLUMN_NAME_02, TABLE_NAME.COLUMN_NAME_03, ...) 	// set columns ...
+statement = statement.bindparams(bindparam("var01", type_=String), bindparam("var02", type_=Datetime),  ...)					// type binding
+resultList = session.execute(stmt, {"var01":  "var01_content", "var02":"var02_content", "var03":"var03_content"})					// data binding
+for result in resultList:
+	print(result)
+============================================================
 UPDATE FROM RECURSIVE QUERY in "sqlalchemy"
 
 from sqlalchemy.sql import bindparam
