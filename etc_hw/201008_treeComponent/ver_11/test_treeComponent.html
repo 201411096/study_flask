@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            ul{
+                list-style: none;
+            }
+            li{
+                list-style: none;
+            }
+            .tree_node + ul{
+                display: none;
+            }
+            .tree_node.show + ul{
+                display: block;
+            }            
+        </style>
+    </head>
+    <body>
+        <tree-componenet id="tree1" data-group='tree_01'></tree-componenet>
+        <br>
+        <div id='checkContainer'>
+            <div id="addItemCheckContainer">
+                <input type="text" placeholder="element_id" value=''>
+                <input type="text" placeholder="element_pid" value=''>
+                <input type="text" placeholder="element_name" value=''>
+                <input type="text" placeholder="element_description" value=''>
+                <button id='addItemCheckButton'>addItemCheckButton</button>
+            </div>
+            <div id='updateItemCheckContainer'>
+                <input type="text" placeholder="element_id" value=''>
+                <input type="text" placeholder="element_pid" value=''>
+                <input type="text" placeholder="element_name" value=''>
+                <input type="text" placeholder="element_description" value=''>
+                <button id='updateItemCheckButton'>updateItemCheckButton</button>
+            </div>
+            <div id='removeItemCheckContainer'>
+                <input type="text" placeholder="element_id" value=''>
+                <button id='removeItemCheckButton'>removeItemCheckButton</button>
+            </div>
+            <div id='moveItemCheckContainer'>
+                <input type="text" placeholder="element_id" value=''>
+                <input type="text" placeholder="element_pid" value=''>
+                <button id='moveItemCheckButton'>moveItemCheckButton</button>
+            </div>
+            <div id="checkRadioCheckContainer">
+                <input type='text' placeholder='element_id for radioButton ...'>
+                <button id='checkRadioButton'>checkRadioButton</button>
+            </div>
+            <div id="checkCheckBoxContainer">
+                <input type='text' placeholder='element_id for checkBox ...'>
+                <button id='checkCheckBoxButton'>checkCheckBoxButton</button>
+            </div>
+            <div id="nodeDataCheckContainer">
+                <button id='nodeDataCheckButton'>nodeDataCheckButton</button>
+            </div>
+            <div id="getSelectedIdCheckContainer">
+                <button id="getSelectedIdButton">getSelectedIdButton</button>
+            </div>
+            <div id="getSelectedItemCheckContainer">
+                <button id="getSelectedItemButton">getSelectedItemButton</button>
+            </div>
+        </div>
+        
+        <script src='treeComponent.js'></script>
+        <script> 
+            document.body.querySelector("#tree1").func1();
+        </script>
+    </body>
+</html>

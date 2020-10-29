@@ -1,7 +1,7 @@
 class tree extends HTMLElement{
     constructor(){
         super();
-        this.serverURL = `http://192.168.56.1:5000/dataFromDb`;
+        this.serverURL = `http://192.168.0.51:5000/dataFromDb`;
         console.log('js파일 연결 ...')
     }
 
@@ -24,7 +24,8 @@ class tree extends HTMLElement{
                                         SELECT a.id, a.pid, a.name, a.description
                                         FROM tree_table a
                                         INNER JOIN cte
-                                        ON a.pid = cte.id)
+                                        ON a.pid = cte.id
+                                    )
                                     SELECT * FROM cte ORDER BY pid asc, id asc;`);
         let responseJson = await response.json();
         this.componentData = responseJson;
