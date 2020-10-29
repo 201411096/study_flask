@@ -75,6 +75,7 @@ class tree extends HTMLElement{
             this.updateItemEventListener(e);
             this.removeItemEventListener(e);
             this.moveItemEventListener(e);
+            this.copyItemEventListener(e);
             this.checkRadioEventListener(e);
             this.checkItemEventListener(e);
             this.getSelectedIdEventListener(e);
@@ -249,6 +250,13 @@ class tree extends HTMLElement{
         }
     }
 
+    // copyItem() 작동을 확인하는 이벤트 리스너
+    copyItemEventListener(event){
+        if(event.target == document.querySelector('#copyItemCheckButton')){
+            this.copyItem(parseInt(event.target.parentElement.children[0].value), parseInt(event.target.parentElement.children[1].value));
+        }
+    }
+
     toggelingTreeNodeToShow(event){
         if(event.target.matches('div.tree_node')){
             event.target.classList.toggle('show');
@@ -362,6 +370,54 @@ class tree extends HTMLElement{
         }
 
         liToBeDeleted.remove(); // 기존 위치에서 targetElement를 감싸고 있던 li태그를 제거
+    }
+
+    copyItem(id, pid){
+        let targetElement = document.querySelector('div[data-id="'+id+'"]');
+        let copiedTargetElement = null; // 복사된 노드들의 루트 div
+        let childNodeOfTargetElement = null; // 하위노드가 존재할수도 존재하지 않을 수도 있음
+        let targetNextParentElement = document.querySelector('div[data-id="'+pid+'"]'); // 상위 노드가 될 노드
+
+        if(targetElement.parentElement.matches('tree-component')){// 최상위 노드일 경우
+            return; // 이동안함
+        }
+
+        if(targetElement.nextElementSibling !=null && targetElement.nextElementSibling.matches('ul')==true){ // 하위노드가 있는지 없는지 확인
+            childNodeOfTargetElement = targetElement.nextElementSibling;
+        }
+
+        if(targetNextParentElement.nextElementSibling == null || targetNextParentElement.nextElementSibling.matches('ul') == false){// 상위 노드가 될 노드에게 하위 노드가 존재하지 않을 경우
+            let tempUl = document.createElement('ul');
+            let tempLi = document.createElement('li');
+            copiedTargetElement = targetElement.cloneNode(true);
+            copiedTargetElement.nodeData = targetElement.nodeData;  // 복사 시에 element에 담겨져 있는 노드 데이터도 같이 복사함
+            tempLi.appendChild(copiedTargetElement);
+            if(childNodeOfTargetElement!=null){             // 하위노드가 존재할 경우 같이 붙임
+                tempLi.appendChild(childNodeOfTargetElement.cloneNode(true));
+            }
+            tempUl.appendChild(tempLi.cloneNode(true));
+            targetNextParentElement.after(tempUl.cloneNode(true)); 
+        }else{
+            let tempLi = document.createElement('li');
+            copiedTargetElement = targetElement.cloneNode(true);
+            copiedTargetElement.nodeData = targetElement.nodeData;  // 복사 시에 element에 담겨져 있는 노드 데이터도 같이 복사함
+            tempLi.appendChild(copiedTargetElement);
+            if(childNodeOfTargetElement!=null){            // 하위노드가 존재할 경우 같이 붙임
+                tempLi.appendChild(childNodeOfTargetElement.cloneNode(true));
+            }
+            targetNextParentElement.nextElementSibling.appendChild(tempLi.cloneNode(true));
+        }
+        this._changeDataInCopiedItem(copiedTargetElement);
+    }
+    // nodeData가 reference로 넘어왔을 수도 있음
+    // nodeList 관리?...
+    
+    _changeDataInCopiedItem(targetElement){ // 복사된 노드들의 id와 pid들을 바꿔주는 함수
+        
+    }
+
+    _createId(){ // id값 생성해주는..
+
     }
 
     addCheckBoxButton(element){
