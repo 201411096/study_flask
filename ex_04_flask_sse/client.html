@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+
+        <script>
+            var eventSource = new EventSource("http://127.0.0.1:8080/stream");
+            eventSource.onmessage = function(event){
+                console.log(event.data);
+                console.log(JSON.parse(event.data))
+            }
+            eventSource.onerror = function(event){
+                console.log('sse onerror .. ' + event);
+            }
+            eventSource.onopen = function(event){
+                console.log('sse onopen ..');
+            }
+            eventSource.addEventListener('event_01', function(event){
+                console.log('event_01 ..');
+            });
+            eventSource.addEventListener('event_02', function(event){
+                console.log('event_02 ..');
+            });
+        </script>
+    </body>
+</html>
