@@ -8,10 +8,13 @@
 # shutdown
 # exit
 # redis-server.exe
-from flask import Flask, Response
+# sample 예시 reference : https://pypi.org/project/Flask-SSE/
+from flask import Flask, Response, render_template
 from flask_sse import sse
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config["REDIS_URL"]="redis://localhost"
 app.register_blueprint(sse, url_prefix='/stream')
 
@@ -19,10 +22,24 @@ app.register_blueprint(sse, url_prefix='/stream')
 def hello_world():
     return 'Hello World'
 
+@app.route('/sample01')
+def render_template_sample():
+    return render_template('client.html')
+
 @app.route('/send')
 def send_message():
     sse.publish({"message": "Hello!"}, type='greeting')
     return "Message sent!"
 
+@app.route('/event_01')
+def event_01():
+    sse.publish({"message": "event_01!"}, type='event_01')
+    return "Message sent.. event_01.."
+
+@app.route('/event_02')
+def event_02():
+    sse.publish({"message": "event_02!"}, type='event_02')
+    return "Message sent.. event_02.."
+
 if __name__ == '__main__':
-     app.run(host="127.0.0.1", port="8080")
+     app.run(host="127.0.0.1", port="5000")
