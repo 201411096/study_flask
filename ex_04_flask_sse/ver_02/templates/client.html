@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <button id="greetingBtn">greetingEvent</button>
+        <script>
+            var eventSource = new EventSource("http://192.168.0.51:5000/stream");
+            eventSource.onmessage = function(event){
+                console.log(event.data);
+            }
+            eventSource.onerror = function(event){
+                console.log('sse onerror .. ' + event);
+            }
+            eventSource.onopen = function(event){
+                console.log('sse onopen ..');
+            }
+            eventSource.addEventListener('sse_example_event', function(event){
+                console.log('sse_example_event ..');
+            });
+        </script>
+    </body>
+</html>
