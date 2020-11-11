@@ -2,9 +2,10 @@
 <html>
     <head></head>
     <body>
-        <button id="greetingBtn">greetingEvent</button>
+        <button id="btn_01">checkClientId</button>
         <script>
-            var eventSource = new EventSource("http://192.168.0.51:5000/stream");
+            let rootUrl = 'http://192.168.0.51:5000'
+            var eventSource = new EventSource(rootUrl+"/stream");
             eventSource.onmessage = function(event){
                 console.log(event.data); // string
                 console.log('typeof event.data : ' + typeof(event.data));
@@ -18,6 +19,14 @@
             eventSource.addEventListener('sse_example_event', function(event){
                 console.log('sse_example_event ..');
             });
+            document.getElementById('btn_01').addEventListener('click', function(){
+                func_01(rootUrl);
+            });
+            async function func_01(rootUrl){
+                let response = await fetch(rootUrl+'/getId');
+                let responseJson = await response.json();
+                console.log(responseJson);
+            }
         </script>
     </body>
 </html>

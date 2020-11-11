@@ -3,6 +3,7 @@
 # https://github.com/microsoftarchive/redis
 # redis MS Open Tech Github Release
 # https://github.com/MSOpenTech/redis/releases
+# Redis-x64-3.0.504.msi
 # redis 설치 직후 실행 순서
 # redis-cli.exe
 # shutdown

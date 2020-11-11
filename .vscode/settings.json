@@ -4,7 +4,6 @@
     "python.linting.pylintArgs": [
         "--load-plugins",
         "pylint-flask"
-    ],
-    "python.pythonPath": "venv\\Scripts\\python.exe"
+    ]
 
 }
