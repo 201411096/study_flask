@@ -37,7 +37,9 @@ def get_pushes():
     print(appRedis.client_list())
     print('clientList Length : ', len(appRedis.client_list()))
     print('========== clientList check ==========')
-    return Response(event_stream(), mimetype="text/event-stream")
+    print('event stream result :', event_stream())      # <generator object event_stream at 0x00000185334B85C8>
+    print('event stream type :', type(event_stream()))  # <class 'generator'>
+    return Response(event_stream(), mimetype="text/event-stream")   # 응답의 형식 : event-stream
 
 @app.route('/post')
 def publish_data():
