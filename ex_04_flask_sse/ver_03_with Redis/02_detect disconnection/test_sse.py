@@ -25,11 +25,10 @@ def render_template_sample():
 def event_stream():
     try:
         pubsub = appRedis.pubsub()
-        pubsub.subscribe('chat')
+        pubsub.subscribe('sse_example_channel')
         #for message in pubsub.listen():#This doesn't work because it's blocking
         while True:
             message = pubsub.get_message()
-
             if not message:
                 # The yield is necessary for this to work!
                 # In my case I always send JSON encoded data
@@ -38,21 +37,26 @@ def event_stream():
                 time.sleep(1)
                 continue
                 # -> 0.1초마다 비어있는 json 전송
-                
+
             # If the nonblocking get_message() returned something, proceed normally
             yield 'data: %s\n\n' % message["data"]
     except GeneratorExit:
         print('generatorExit...')
     finally:
-        print("CLOSED!")
-        pubsub.reset()
         # Your closing logic here (e.g. marking the user as offline in your database)
+        pubsub.reset()
+        # print('========== clientList check ==========')
+        # print(appRedis.client_list())
+        # 밑에 주석 풀면 정상적으로 안 됨
+        # print('check clientNumber(event_stream .. finally) : ', len(appRedis.client_list()))
+        # print('========== clientList check ==========')
+        
 
 @app.route('/stream', methods=['GET'])
 def get_pushes():
     # print('========== clientList check ==========')
-    print(appRedis.client_list())
-    print('clientList Length : ', len(appRedis.client_list()))
+    # print(appRedis.client_list())
+    print('check clientNumber(get_pushes ..) : ', len(appRedis.client_list()))
     # print('========== clientList check ==========')
     return Response(event_stream(), mimetype="text/event-stream")
 
