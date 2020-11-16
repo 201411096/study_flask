@@ -44,7 +44,7 @@ def event_stream():
     finally:
         # Your closing logic here (e.g. marking the user as offline in your database)
         pubsub.reset()
-        # 밑에 주석 풀면 정상적으로 안 됨
+        time.sleep(10) # time.sleep()의 시간이 적거나 없으면 정상적으로 결과가 나오지 않음
         # print('check clientNumber(event_stream .. finally) : ', len(appRedis.client_list()))
         
 
