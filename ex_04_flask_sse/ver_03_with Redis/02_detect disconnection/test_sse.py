@@ -28,7 +28,7 @@ def event_stream():
         pubsub.subscribe('sse_example_channel')
         #for message in pubsub.listen():#This doesn't work because it's blocking
         while True:
-            message = pubsub.get_message()
+            message = pubsub.get_message()  # pubsub기 존재하지 않을 경우 예외가 발생하면서 pubsub 객체를 reset하는 방식
             if not message:
                 # The yield is necessary for this to work!
                 # In my case I always send JSON encoded data
@@ -36,7 +36,6 @@ def event_stream():
                 yield "data: {}\n\n"
                 time.sleep(1)
                 continue
-                # -> 0.1초마다 비어있는 json 전송
 
             # If the nonblocking get_message() returned something, proceed normally
             yield 'data: %s\n\n' % message["data"]
@@ -45,19 +44,14 @@ def event_stream():
     finally:
         # Your closing logic here (e.g. marking the user as offline in your database)
         pubsub.reset()
-        # print('========== clientList check ==========')
-        # print(appRedis.client_list())
         # 밑에 주석 풀면 정상적으로 안 됨
         # print('check clientNumber(event_stream .. finally) : ', len(appRedis.client_list()))
-        # print('========== clientList check ==========')
         
 
 @app.route('/stream', methods=['GET'])
 def get_pushes():
-    # print('========== clientList check ==========')
     # print(appRedis.client_list())
     print('check clientNumber(get_pushes ..) : ', len(appRedis.client_list()))
-    # print('========== clientList check ==========')
     return Response(event_stream(), mimetype="text/event-stream")
 
 @app.route('/post')
