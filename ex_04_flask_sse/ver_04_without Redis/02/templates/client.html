@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <button id="btn_01">checkClientId</button>
+        <script>
+            let rootUrl = 'http://192.168.0.51:5000'
+            var eventSource = new EventSource(rootUrl+"/stream");
+            eventSource.onmessage = function(event){
+                console.log(event.data); // string
+                // console.log('typeof event.data : ' + typeof(event.data));
+            }
+        </script>
+    </body>
+</html>
