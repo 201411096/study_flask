@@ -44,13 +44,11 @@ def event_stream():
     finally:
         # Your closing logic here (e.g. marking the user as offline in your database)
         pubsub.reset()
-        time.sleep(10) # time.sleep()의 시간이 적거나 없으면 정상적으로 결과가 나오지 않음
-        print('check clientNumber(event_stream .. finally) : ', len(appRedis.client_list()))
+        # print('check clientNumber(event_stream .. finally) : ', len(appRedis.client_list())) # 아래 코드 활성화시 정상 작동 안됨
         
 
 @app.route('/stream', methods=['GET'])
 def get_pushes():
-    # print(appRedis.client_list())
     print('check clientNumber(get_pushes ..) : ', len(appRedis.client_list()))
     return Response(event_stream(), mimetype="text/event-stream")
 
