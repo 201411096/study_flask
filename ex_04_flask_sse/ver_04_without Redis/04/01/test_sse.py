@@ -17,14 +17,14 @@ class PubSub:
         if id not in self.listeners:
             self.listeners[id] = {}
             self.listeners[id]['channel'] = set()  # channelSet
-            self.listeners[id]['messageQueue'] = {}            
+            self.listeners[id]['messageQueue'] = {} # messageQueue ...            
         q = queue.Queue(maxsize=10)
         self.listeners[id]['messageQueue'][uniqueId] = q
         return self.listeners[id]
 
     def closeListener(self, id, uniqueId):
         try:
-            self.listeners[id]['messageQueue'].pop('uniqueId')
+            del self.listeners[id]['messageQueue'][uniqueId]
             if len(self.listeners[id]['messageQueue']) == 0 :
                 self.removeListener(id)
         except:
@@ -71,32 +71,22 @@ def stream(clientId):
     def event_stream():
         uniqueId = uuid.uuid4()
         myListener = pubSub.getListener(clientId, uniqueId)
-        print('0. checkPoint before try statement => length of clientList : ', len(pubSub.listeners))
+        print('length of clientList : ', len(pubSub.listeners))
         try:
             messages = myListener['messageQueue'][uniqueId]
             while True:
                 try:
-                    print('1. checkPoint in try statement')
                     msg = messages.get_nowait()
                 except Exception:
-                    print('2. checkPoint in except statement')
                     msg = None
-                print('2_5. checkPoint after except statement => msg :', msg)
-                print('2_7. checkPoint after except statement => not msg :', not msg)
                 if not msg:
-                    print('3. checkPoint in if statement')
                     yield 'data: {}\n\n'
-                    time.sleep(1)
+                    time.sleep(5)
                     continue
-                print('3_5. checkPoint after if statement => dataFormat : ', 'data: {0}\n\n'.format(msg))
                 yield 'data: {0}\n\n'.format(msg)
-                print('3_6. checkPoint after yield statement ...')
         except GeneratorExit:
-            print('generatorExit ...')
-            print('4. checkPoint in except generatorExit statement')
+            print('generatorExit ... in stream()')
         finally:
-            print('5. checkPoint in finally statement')
-            print('close ...')
             pubSub.closeListener(clientId, uniqueId)
     return Response(event_stream(), mimetype='text/event-stream')
 
