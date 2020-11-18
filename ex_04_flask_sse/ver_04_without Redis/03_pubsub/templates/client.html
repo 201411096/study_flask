@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <input type='text' id='connectEventStreamId'>
+        <button id="connectEventStream">connectEventStream</button>
+        <button id='event1'>event1</button>
+        <button id='event2'>event2</button>
+        <script>
+            let flag_event1 = false;
+            let flag_event2 = false;
+            let rootUrl = 'http://192.168.0.51:5000'
+            function myfetch(id, channel, flag){
+                fetch(rootUrl+'/pubsub', {
+                            method : 'post',
+                            headers : {
+                                'Content-type': 'application/json',
+                            },
+                            body : JSON.stringify({
+                                "id":id,
+                                "channel":channel,
+                                "subscribe_flag":flag
+                            })
+                }).then(response => console.log(response));                
+            }
+            document.getElementById('connectEventStream').addEventListener('click', function(event){
+                let clientId = document.getElementById('connectEventStreamId').value
+                var eventSource = new EventSource(rootUrl+"/stream/"+clientId);
+                console.log(rootUrl+"/stream/"+clientId)
+                eventSource.onopen = function(event){
+                    console.log('sse onopen ..');
+                }
+                eventSource.onmessage = function(event){
+                    console.log(event.data); // string
+                    // console.log('typeof event.data : ' + typeof(event.data));
+                }
+            });
+            document.getElementById('event1').addEventListener('click', function(e){
+                if(flag_event1==false){
+                    flag_event1=true;
+                    myfetch((document.getElementById('connectEventStreamId')).value , 'event1', 'subscribe')
+                }else{
+                    flag_event1=false;                  
+                    myfetch((document.getElementById('connectEventStreamId')).value , 'event1', 'unsubscribe')
+                }
+            });
+            document.getElementById('event2').addEventListener('click', function(e){
+                if(flag_event2==false){
+                    flag_event2=true;
+                    myfetch((document.getElementById('connectEventStreamId')).value , 'event2', 'subscribe')
+                }else{
+                    flag_event2=false;                   
+                    myfetch((document.getElementById('connectEventStreamId')).value , 'event2', 'unsubscribe')
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,3 +1,6 @@
+# references
+# https://maxhalford.github.io/blog/flask-sse-no-deps/
+
 from flask import Flask, Response, render_template, request, session, escape
 from flask_cors import CORS
 import queue
