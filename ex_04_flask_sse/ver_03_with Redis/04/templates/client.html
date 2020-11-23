@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <input type="text" id='inputId'>
+        <button id='eventSourceConnect'>eventSourceConnect</button>
+        <label><input type="checkbox" id="event1" value="event1">event1</label>
+        <label><input type="checkbox" id="event2" value="event2">event2</label>
+        <script>
+            let rootUrl = 'http://192.168.0.51:5000';
+            function myfetch(id, event, flag){
+                fetch(rootUrl+'/pubsub', {
+                            method : 'post',
+                            headers : {
+                                'Content-type': 'application/json',
+                            },
+                            body : JSON.stringify({
+                                "usage":"pubsub",
+                                "id":id,
+                                "channel":event,
+                                "subscribe_flag":flag
+                            })
+                }).then(response => console.log(response));                
+            }
+            document.getElementById('eventSourceConnect').addEventListener('click', function(e){
+                var eventSource = new EventSource(rootUrl+"/stream/" + (document.getElementById('inputId')).value );
+                eventSource.onmessage = function(event){
+                    console.log(event.data); // string
+                }
+                eventSource.onerror = function(event){
+                    console.log('sse onerror .. ' + event);
+                    eventSource.close();
+                }
+                eventSource.onopen = function(event){
+                    console.log('sse onopen ..');
+                }
+                eventSource.addEventListener('admin_channel', function(event){
+                    console.log('adminchannel data : ' + event.data);
+                });
+                document.getElementById('event1').addEventListener('click', function(e){
+                    if(document.getElementById('event1').checked==true){
+                        myfetch((document.getElementById('inputId')).value , 'event1', 'subscribe')
+                    }else{
+                        myfetch((document.getElementById('inputId')).value , 'event1', 'unsubscribe')
+                    }
+                });
+                document.getElementById('event2').addEventListener('click', function(e){
+                    if(document.getElementById('event2').checked==true){
+                        myfetch((document.getElementById('inputId')).value , 'event2', 'subscribe')
+                    }else{
+                        myfetch((document.getElementById('inputId')).value , 'event2', 'unsubscribe')
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
