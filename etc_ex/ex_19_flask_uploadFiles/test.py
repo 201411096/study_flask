@@ -5,6 +5,12 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World'
 
+@app.route('/fileUpload', methods=["POST"])
+def upload_file():
+    f = request.files['file']
+    f.save(secure_filename(f.filename))
+    return '...'
+
 @app.route('/testFiles', methods=['GET', 'POST'])
 def test():
     files = request.files.getlist('file') # html의 name attribute값과 맞춰줘야함
