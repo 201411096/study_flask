@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        div#container{
+            overflow: auto;
+            width : 400px;
+            height: 300px;
+            border-width: 1px;
+            border-color: black;
+        }
+        span{
+            word-break: break-all;
+        }
+    </style>
+    <head></head>
+    <body>
+        <input type="text" placeholder="clientId" id='inputId'>
+        <button id='eventSourceConnect'>eventSourceConnect</button>
+        <label><input type="checkbox" id="event1" value="event1">event1</label>
+        <label><input type="checkbox" id="event2" value="event2">event2</label>
+        <div id='container'>
+
+        </div>
+        <div id='inputContainer'>
+            <input id="sendChannel" type="text" placeholder="channel">
+            <input id="sendMessageContent" type="text" placeholder="messageContent">
+            <button id="sendButton">sendButton</button>
+        </div>
+        <script>
+            let clientId = '';
+            let rootUrl = 'http://192.168.0.51:5000';
+            automaticallyScrollDown('container');
+            function automaticallyScrollDown(containerId){
+                flag = true;
+                function scrollFunc(){
+                    if(flag == true){
+                        flag = false;
+                        document.getElementById(containerId).scrollTop = (document.getElementById(containerId).scrollHeight);
+                    }
+                }
+                scrollFunc();
+            }
+            function parsingJson(str){
+                if( (str == '{}') )
+                    return '';
+                return JSON.parse(str.slice(2, -1));
+            }
+            function myfetch(id, event, flag){
+                fetch(rootUrl+'/pubsub', {
+                            method : 'post',
+                            headers : {
+                                'Content-type': 'application/json',
+                            },
+                            body : JSON.stringify({
+                                "usage":"pubsub",
+                                "id":id,
+                                "channel":event,
+                                "subscribe_flag":flag
+                            })
+                }).then(response => console.log(response));                
+            }
+            function attachMessage(data, elementId){
+                mydata = parsingJson(data);
+                if(mydata == '')
+                    return;
+                console.log(mydata);
+
+                var wrapper = document.createElement('div');
+                var channelElement = document.createElement('span');
+                var speakerElement = document.createElement('span');
+                var messageContentElement = document.createElement('span');
+
+                channelElement.innerText = '   channel : ' + mydata.channel;
+                speakerElement.innerText = '   speaker : ' + mydata.speaker;
+                messageContentElement.innerText = '   content : ' + mydata.messageContent;
+
+                wrapper.appendChild(channelElement);
+                wrapper.appendChild(speakerElement);
+                wrapper.appendChild(messageContentElement);
+
+                document.getElementById(elementId).appendChild(wrapper);
+                automaticallyScrollDown('container');
+            }
+            function sendMessage(speakerId, channelElementId, messageContentElementId){
+                fetch(rootUrl+'/chat', {
+                    method : 'post',
+                    headers : {
+                        'Content-type':'application/json',
+                    },
+                    body : JSON.stringify({
+                        "channel" : (document.getElementById(channelElementId)).value,
+                        "speaker" : speakerId,
+                        "messageContent" : (document.getElementById(messageContentElementId)).value
+                    })
+                }).then(response => console.log(response));
+            }
+
+            document.getElementById('sendButton').addEventListener('click', function(e){
+                sendMessage(clientId, 'sendChannel', 'sendMessageContent')
+            });
+
+            document.getElementById('eventSourceConnect').addEventListener('click', function(e){
+                clientId = (document.getElementById('inputId')).value
+                var eventSource = new EventSource(rootUrl+"/stream/" + (document.getElementById('inputId')).value );
+                eventSource.onmessage = function(event){
+                    console.log('check in eventSource.onMessage() ...');
+                    console.log(event.data);
+                    attachMessage(event.data, 'container');
+                }
+                eventSource.onerror = function(event){
+                    console.log('sse onerror .. ' + event);
+                    eventSource.close();
+                }
+                eventSource.onopen = function(event){
+                    console.log('sse onopen ..');
+                }
+                document.getElementById('event1').addEventListener('click', function(e){
+                    if(document.getElementById('event1').checked==true){
+                        myfetch(clientId , 'event1', 'subscribe')
+                    }else{
+                        myfetch(clientId , 'event1', 'unsubscribe')
+                    }
+                });
+                document.getElementById('event2').addEventListener('click', function(e){
+                    if(document.getElementById('event2').checked==true){
+                        myfetch(clientId , 'event2', 'subscribe')
+                    }else{
+                        myfetch(clientId , 'event2', 'unsubscribe')
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
