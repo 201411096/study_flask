@@ -41,7 +41,10 @@ def get_pushes(id):
             pubsub.id = clientId   
             pubsub.subscribe('admin_channel')
             while True:
-                message = pubsub.get_message(timeout=1)
+                # message = pubsub.get_message(timeout=1)
+                message = pubsub.get_message(timeout=120)
+                # disconnect 체크를 timeout 값마다 체크
+                # 메세지를 보내면 해당 메세지가 도달하게 되는 곳도 바로 체크
                 if not message:
                     # print("ping")
                     yield "data: {}\n\n"

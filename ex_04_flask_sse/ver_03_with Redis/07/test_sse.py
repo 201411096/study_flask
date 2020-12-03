@@ -41,7 +41,8 @@ def get_pushes(id):
             pubsub.id = clientId   
             pubsub.subscribe('admin_channel')
             while True:
-                message = pubsub.get_message(timeout=1)
+                message = pubsub.get_message(timeout=10)
+
                 if not message:
                     # print("ping")
                     yield "data: {}\n\n"
