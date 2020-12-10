@@ -402,6 +402,38 @@ def test_orm():
         mimetype="application/json"
     )
 
+def testCase2(caseOption, data):
+    # case_01_01 conditional query
+    if caseOption=='01_01':
+        conditions = []
+        if data.get('GENDER', None) is not None:
+                conditions.append(emp.gender == data['GENDER'])       
+        if data.get('LOCATION', None) is not None:
+                conditions.append(emp.location == data['LOCATION'])
+        if data.get('DEPTNO', None) is not None:
+            conditions.append(emp.deptno == data['DEPTNO'])
+        results = db.session.query(emp).filter(and_(*conditions))
+    return results
+
+@app.route('/test_orm_post', methods=["POST"])
+def test_orm_post():
+    data = request.get_json()
+    caseOption = request.args.get('case')
+    results = testCase2(caseOption, data)
+
+    # ORM에서 변환된 SQL문을 콘솔로 확인
+    checkQueryInConsole(results, caseOption)
+
+    # ORM결과를 json형태로 변환
+    # pandas의 read_sql 함수를 사용(.all(), .first()같은 경우에는 예외처리)
+    result = makeJsonWithCaseOption(results) 
+    
+    return Response(
+        response = result,
+        status = 200,
+        mimetype="application/json"
+    )
+
 if __name__ == '__main__':
-    app.run(host="192.168.0.51", port="5000")
-    # app.run(host="192.168.56.1", port="5000")
+    app.run(host="192.168.0.51", port="5000", debug=True))
+    # app.run(host="192.168.56.1", port="5000", debug=True))
