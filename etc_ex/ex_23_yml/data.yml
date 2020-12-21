@@ -1,0 +1,21 @@
+temp_list1:
+  - a
+  - b
+  - c
+temp_list2:
+  - a
+  - b
+  - d
+temp_data1: temp_content1
+temp_data1: temp_content2
+temp_dict1:
+  temp_dict_key1: temp_dict_content1
+  temp_dict_key2: temp_dict_content2
+temp_dict2:
+  temp_list1:
+    - a
+    - b
+    - c
+    - d
+    - e
+  temp_dict_key2: temp_dict_content2
