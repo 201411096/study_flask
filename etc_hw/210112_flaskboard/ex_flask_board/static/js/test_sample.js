@@ -1,0 +1,1 @@
+console.log('test_sample.js 연결 확인')
