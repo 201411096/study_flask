@@ -5,7 +5,7 @@ app = Flask(__name__)
 __all__ = ['app', 'session', 'Base']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.secret_key = '111'
 CORS(app)
 
 from database import Base, session

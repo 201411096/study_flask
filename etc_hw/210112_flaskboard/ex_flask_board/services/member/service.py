@@ -1,6 +1,9 @@
 from __main__ import session
 from dto import *
 from sqlalchemy import exc
+from util import *
+# PyJWT 1.7.1
+
 def test_member_service():
 	member = Member(
 		'aab', group_code='bb', member_pw='cc', member_name='dd', member_birthday='20120213', member_phonenumber='11', member_nickname='hh')
@@ -8,7 +11,6 @@ def test_member_service():
 	session.commit()
 	return 1
 	
-
 def member_signup(data):
 	result = {}
 	member = Member(
@@ -21,8 +23,15 @@ def member_signup(data):
 		session.commit()
 		result['code'] = '1'
 	except exc.IntegrityError:
+		session.rollback()
 		result['code'] = '0'
 	return result
 	
 def member_login(data):
-	return -1
+	resultData = {}
+	queryData = session.query(Member).\
+	with_entities(
+	Member.member_id, Member.group_code, Member.member_name, Member.member_pw,
+	Member.member_birthday, Member.member_phonenumber, Member.member_name).\
+	filter(Member.member_id == data['member_id'])
+	return queryToDict(queryData)
