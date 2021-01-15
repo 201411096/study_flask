@@ -10,7 +10,11 @@ def test_member_service():
 	session.add(member)
 	session.commit()
 	return 1
-	
+
+def test_getList():
+	resultData = session.query(Member).with_entities(Member.member_id, Member.member_name)
+	return queryToDict(resultData)
+
 def member_signup(data):
 	result = {}
 	member = Member(
@@ -32,6 +36,6 @@ def member_login(data):
 	queryData = session.query(Member).\
 	with_entities(
 	Member.member_id, Member.group_code, Member.member_name, Member.member_pw,
-	Member.member_birthday, Member.member_phonenumber, Member.member_name).\
+	Member.member_birthday, Member.member_phonenumber, Member.member_nickname).\
 	filter(Member.member_id == data['member_id'])
 	return queryToDict(queryData)

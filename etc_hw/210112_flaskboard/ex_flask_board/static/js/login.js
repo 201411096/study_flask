@@ -25,7 +25,7 @@ btn_login.addEventListener('click', function(){
 
         if(data['code']=='1'){
             console.log('login success');
-            // location.href = '/render/login';
+            location.href = '/render/index';
         }else if(data['code']=='0'){
             console.log('login fail');
             alert('로그인 실패');

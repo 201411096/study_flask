@@ -1,7 +1,6 @@
 from services import app
 from services.member import service as member_service
-from flask import request, session
-from flask import render_template
+from flask import request, session, render_template, redirect
 
 @app.route('/test/member')
 def test_member():
@@ -11,6 +10,12 @@ def test_member():
 @app.route('/test/session')
 def test_session():
 	print('test_session : ', session.get('userData'))
+	return '11'
+
+@app.route('/test/getList')
+def test_getList():
+	resultData = member_service.test_getList()
+	print(resultData)
 	return '11'
 
 @app.route('/member/signup', methods=['POST'])
@@ -36,6 +41,11 @@ def member_login():
 
 	return result
 
+@app.route('/member/logout')
+def member_logout():
+	session.clear()
+	return redirect('/render/index')
+	
 # @app.route('/member/logincheck')
 # def member_loginchk():
 # 	resultData = {}

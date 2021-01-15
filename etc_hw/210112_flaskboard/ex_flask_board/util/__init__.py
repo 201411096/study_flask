@@ -1,19 +1,21 @@
-from flask import render_template, request
+from flask import render_template, request, redirect
 from flask import session as flaskSession
 
 def queryToDict(statement):
+    # print('statement(queryToDict) : ', statement)
+    # print('statement.all() (queryToDict) : ', statement.all())
     result = []
     rows = statement.all()
 
     for row in rows:
+        # print('row(queryToDict) : ', row)
+        # print('type of row(queryToDict) : ', type(row))
         result.append(row._asdict())
     return result
 
 def authDecorator(func):
     def wrapper(*args, **kwargs):
-        print('before innerFunc ...')
-        if(flaskSession.get('userData') is not None):
-            return render_template('login.html')
-        func(*args, **kwargs)
-        print('after innerFunc ...')
+        if(flaskSession.get('userData') is None):
+            return redirect('/render/login')
+        return func(*args, **kwargs)
     return wrapper
