@@ -9,3 +9,9 @@ def board_getList():
     resultData['boardList'] = board_service.board_getList()
     print('data(board_getList) : ', resultData)
     return resultData
+
+@app.route('/board/write', methods=['POST'])
+def board_write():
+    data = request.get_json()
+    print('data(board_write) : ', data)
+    return redirect('/render/index')

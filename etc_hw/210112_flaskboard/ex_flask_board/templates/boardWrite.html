@@ -4,7 +4,19 @@
     <link rel='stylesheet' href="{{ url_for('static', filename='css/boardWrite.css') }}">
   </head>
   <body>
-    <div>
+    <div id='container_board'>
+        <input type='hidden' id='board_content_pid' value={% if data.board_content_pid %} {{data.board_content_pid}} {%else%} 0 {%endif%}>
+        <div>
+            <input type='text' id='board_content_title'>
+        </div>
+        <div>
+            <textarea id='board_content_body'></textarea>
+        </div>
+        
+        <!-- {{data.test1}} -->
+        <!-- <input type='hidden' id='board_content_test1' value={% if data.test1 %} {{data.test1}} {%else%} 0 {%endif%}> -->
+        <!-- <input type='hidden' id='board_content_test1' value={% if data.test11 %} {{data.test11}} {%else%} 0 {%endif%}> -->
+        
         
     </div>
     <div id='container_btn'>

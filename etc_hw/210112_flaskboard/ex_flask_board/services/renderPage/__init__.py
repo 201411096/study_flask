@@ -29,6 +29,11 @@ def render_index():
 @app.route('/render/boardWrite', methods=['GET', 'POST'])
 @authDecorator
 def render_boardWrite():
-	data = request.get_json()
+	data = {}
+	data['test1']='test11'
+	data['test2']='test2'
+	requestData = request.get_json()
+	if requestData is not None:
+		data.update(requestData)
 	
-	return render_template('boardWrite.html')
+	return render_template('boardWrite.html', data=data)
