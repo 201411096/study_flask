@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect
 from flask import session as flaskSession
+from functools import wraps
 
 def queryToDict(statement):
     # print('statement(queryToDict) : ', statement)
@@ -13,7 +14,15 @@ def queryToDict(statement):
         result.append(row._asdict())
     return result
 
+# def authDecorator(func):
+#     def wrapper(*args, **kwargs):
+#         if(flaskSession.get('userData') is None):
+#             return redirect('/render/login')
+#         return func(*args, **kwargs)
+#     return wrapper
+
 def authDecorator(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         if(flaskSession.get('userData') is None):
             return redirect('/render/login')

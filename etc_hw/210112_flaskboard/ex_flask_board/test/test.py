@@ -1,3 +1,0 @@
-
-import testb
-print('a')

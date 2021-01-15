@@ -1,6 +1,7 @@
 from services import app
-from services.member import service as member_service
 from flask import request, session, render_template, redirect
+from services.member import service as member_service
+
 
 @app.route('/test/member')
 def test_member():

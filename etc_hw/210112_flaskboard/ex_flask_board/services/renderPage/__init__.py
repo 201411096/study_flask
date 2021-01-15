@@ -1,5 +1,5 @@
 from services import app
-from flask import render_template
+from flask import render_template, request
 from flask import session as flaskSession
 from util import authDecorator
 
@@ -25,3 +25,10 @@ def render_signup():
 @app.route('/render/index')
 def render_index():
 	return render_template('index.html')
+
+@app.route('/render/boardWrite', methods=['GET', 'POST'])
+@authDecorator
+def render_boardWrite():
+	data = request.get_json()
+	
+	return render_template('boardWrite.html')

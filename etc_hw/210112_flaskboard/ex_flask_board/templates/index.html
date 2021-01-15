@@ -4,14 +4,30 @@
     <link rel='stylesheet' href="{{ url_for('static', filename='css/index.css') }}">
   </head>
   <body>
-    <div id='authcontainer' class='authcontainer'>
-        {% if session['userData'] is defined %}
-        <div>nickname : {{ session['userData'].member_nickname }}</div>
-        <button id='btn_logout'>logout</button>
-        {% else %}
-        <button id='btn_login'>login</button>
-        <button id='btn_signup'>signup</button>
-        {% endif %}
+    <div id='leftcontainer'>
+        <div id='authcontainer' class='authcontainer'>
+            {% if session['userData'] is defined %}
+            <div>name : {{ session['userData'].member_nickname }}</div>
+            <button id='btn_logout'>logout</button>
+            {% else %}
+            <button id='btn_login'>login</button>
+            <button id='btn_signup'>signup</button>
+            {% endif %}
+        </div>
+        <div id='boardListContainer' class='boardListContainer'>
+            <label> 게시판리스트 </label>
+            <div id='boardList'>
+            </div>
+        </div>        
+    </div>
+    <div id='rightcontainer'>
+        <div id='board_common_container'>
+
+        </div>
+        <div id='board_content_container'>
+
+        </div>
+
     </div>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>
