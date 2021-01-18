@@ -30,6 +30,7 @@ WHERE ID IN (
 SELECT QUERY in "sqlalchemy"
 
 from sqlalchemy.sql import bindparam
+from sqlalchemy import text
 from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
 
 stringQuery = """
@@ -50,6 +51,7 @@ for result in resultList:
 UPDATE QUERY in "sqlalchemy"
 
 from sqlalchemy.sql import bindparam
+from sqlalchemy import text
 from sqlalchemy import DateTime, Integer, String(bindparam에 사용할 타입들...)
 
 
