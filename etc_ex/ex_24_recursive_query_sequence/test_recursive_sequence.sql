@@ -73,3 +73,27 @@ select * from cte
 ORDER BY lvl;
 
 
+#예시3 그룹별 정렬 후 그룹내에서 lvl별 정렬(게시판)
+with recursive cte as
+(
+ select     id,
+            nm,
+            pid,
+            0 AS depth,
+            CAST(LPAD(id, 10, "0") AS VARCHAR(1000)) as grp,
+            CAST(LPAD(id, 10, "0") AS VARCHAR(1000)) as lvl
+ from       test_recursive
+ where      pid = 0
+ union all
+ select     r.id,
+            r.nm,
+            r.pid,
+            1 + depth AS depth,
+            grp AS grp,
+            CONCAT(cte.lvl, "-", LPAD(r.id, 10, "0")) as lvl
+ from       test_recursive r
+ inner join cte
+         on r.pid = cte.id
+)
+select * from cte
+ORDER BY grp desc lvl;
