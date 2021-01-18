@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/boardContent.css') }}">
+  </head>
+  <body>
+    <input type='hidden' id='board_content_id' value={% if data.board_content_id %} {{data.board_content_id}} {%else%}0{%endif%}>
+    <div> {{data.board_content_title}} </div>
+    <div> {{data.board_content_body}} </div>
+    <button id='btn_index'>메인화면</button>
+    <script src="{{ url_for('static', filename='js/boardContent.js') }}"></script>
+  </body>
+</html>

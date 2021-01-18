@@ -2,6 +2,7 @@ from services import app
 from flask import render_template, request, redirect
 from flask import session as flaskSession
 from util import authDecorator
+from services.board import service as board_service
 
 
 @app.route('/test/renderPage')
@@ -13,6 +14,11 @@ def test_renderPage():
 def test_loginSuccess():
 	print('check userData : ', flaskSession.get('userData'))
 	return render_template('test_loginSuccess.html')
+
+@app.route('/test/boardlistView')
+@authDecorator
+def render_boardlistView():	
+	return render_template('test_boardlistView.html')
 
 @app.route('/render/login')
 def render_login():
@@ -41,11 +47,12 @@ def render_boardWrite():
 	
 	return render_template('boardWrite.html', data=data)
 
-# 안씀
-@app.route('/render/boardlistView/<board_id>')
+@app.route('/render/boardContent/<board_content_id>')
 @authDecorator
-def render_boardlistView(board_id):
+def render_boardContent(board_content_id):
+	requestData={}
 	data = {}
-	data['board_id'] = board_id
-	
-	return render_template('boardWrite.html', data=data)
+	requestData['board_content_id']=board_content_id
+	data = board_service.board_content(requestData)[0]
+	print('resultData(render_boardContent) : ', data)
+	return render_template('boardContent.html', data=data)

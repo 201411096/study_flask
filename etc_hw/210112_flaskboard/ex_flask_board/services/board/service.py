@@ -65,6 +65,7 @@ def board_contentList(data):
 			board_content_num,
 			board_content_deleted,
 			0 AS depth,
+			CAST(LPAD(board_content_id, 10, "0") AS VARCHAR(1000)) as grp,
 			CAST(LPAD(board_content_id, 10, "0") AS VARCHAR(1000)) as lvl
 	from    board
 	where   board_content_pid = 0 and board_id = :board_id
@@ -79,13 +80,16 @@ def board_contentList(data):
 			r.board_content_num,
 			r.board_content_deleted,
 			depth + 1 AS depth,
+			grp AS grp,
 			CONCAT(cte.lvl, "-", LPAD(r.board_content_id, 10, "0")) as lvl
 	from    board r
 	inner join cte
 			on r.board_content_pid = cte.board_content_id
 	)
 	select * from cte
-	ORDER BY lvl
+	inner join member
+	on cte.member_id = member.member_id
+	ORDER BY grp desc, lvl
 	LIMIT :startrow, :numberInPage;
 	"""
 	statement = text(query)
@@ -98,3 +102,14 @@ def board_contentList(data):
 		"numberInPage": data["numberInPage"],
 		"board_id":data['board_id']})
 	return queryToDict2(result)
+
+def board_content(data):
+	result = session.query(Board)\
+			.filter(Board.board_content_id==data['board_content_id'])\
+			.with_entities(
+				Board.board_content_id, Board.board_content_pid, Board.member_id,
+				Board.board_content_title, Board.board_content_body, Board.board_content_regdatetime, Board.board_content_edtdatetime,
+				Board.board_id, Board.board_content_num, Board.board_content_deleted
+			)
+	print('type(board_content) : ', type(result))
+	return queryToDict(result)

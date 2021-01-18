@@ -1,11 +1,36 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel='stylesheet' href="{{ url_for('static', filename='css/boardlistView.css') }}">
+    <style>
+      table{
+        border: 1px solid #000000;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td{
+        border: 1px solid #000000;
+      }
+      th.th-first, td.td-first{
+        width:20%;
+      }
+      th.th-second, td.td-second{
+        width:10%;
+      }
+    </style>
   </head>
   <body>
-    <input type='hidden' id='board_id' value={% if data.board_id %} {{data.board_id}} {%else%} 0 {%endif%}>
-    <button>
-    <script src="{{ url_for('static', filename='js/boardlistView.js') }}"></script>
+    <table>
+      <thead>
+        <!-- <tr> <th class='th-first'>aa</th> <th class='th-second'>bb</th> <th>cc</th> </tr> -->
+        <tr> <td class='td-first'>a1</td> <td class='td-second'>b1</td> <td>c1</td> </tr>
+      </thead>
+      <tbody>
+        <tr> <td class='td-first'>a1</td> <td class='td-second'>b1</td> <td>c1</td> </tr>
+        <tr> <td class='td-first'>a2</td> <td class='td-second'>b2</td> <td>c2</td> </tr>
+      </tbody>
+      
+    </table>
+    
+    <script></script>
   </body>
 </html>
