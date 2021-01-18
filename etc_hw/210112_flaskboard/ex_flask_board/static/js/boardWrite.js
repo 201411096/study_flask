@@ -15,8 +15,15 @@ btn_write.addEventListener('click', function(){
         },
         body : JSON.stringify({
             "board_content_pid" : document.querySelector('#board_content_pid').value,
+            "board_id" : document.querySelector('#board_id').value,
             "board_content_title" : document.querySelector('#board_content_title').value,
             "board_content_body" : document.querySelector('#board_content_body').value
         })
-    });
+    }).then(res => res.json())
+    .then((data)=>{
+        console.log(data);
+        if(data['code']=='1'){
+            location.href='/render/index';
+        }
+    })
 })

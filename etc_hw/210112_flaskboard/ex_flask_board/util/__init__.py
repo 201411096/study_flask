@@ -14,6 +14,9 @@ def queryToDict(statement):
         result.append(row._asdict())
     return result
 
+def queryToDict2(data):
+    return [{column: value for column, value in rowproxy.items()} for rowproxy in data]
+
 def authDecorator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):

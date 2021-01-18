@@ -1,7 +1,9 @@
 from services import app
 from flask import request, session, render_template, redirect
+from flask import session as flaskSession
 from services.member import service as member_service
 from services.board import service as board_service
+from util import authDecorator
 
 @app.route('/boardList', methods=['GET'])
 def board_getList():
@@ -11,7 +13,27 @@ def board_getList():
     return resultData
 
 @app.route('/board/write', methods=['POST'])
+@authDecorator
 def board_write():
     data = request.get_json()
+    data['member_id'] = flaskSession.get('userData')['member_id']
     print('data(board_write) : ', data)
-    return redirect('/render/index')
+    return board_service.board_write(data)
+
+@app.route('/board/contentList', methods=["POST"])
+@authDecorator
+def board_contentList():
+    data = {}
+    result = {}
+    requestData = request.get_json()
+    if requestData is not None:
+        data.update(requestData)
+    if data.get('page', None) is None:
+        data['page'] = 1
+    if data.get('numberInPage', None) is None:
+        data['numberInPage'] = 10
+    if data.get('searchWord', None) is None:
+        data['searchWord'] = ''
+    data['startrow'] = (data['page']-1)*10
+    result['boardListData'] = board_service.board_contentList(data)
+    return result

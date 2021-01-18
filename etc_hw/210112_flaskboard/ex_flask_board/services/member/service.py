@@ -32,7 +32,6 @@ def member_signup(data):
 	return result
 	
 def member_login(data):
-	resultData = {}
 	queryData = session.query(Member).\
 	with_entities(
 	Member.member_id, Member.group_code, Member.member_name, Member.member_pw,
