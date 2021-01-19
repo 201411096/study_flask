@@ -105,8 +105,14 @@ CREATE TABLE IF NOT EXISTS `comment` (
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 테이블 데이터 kimyongseon.comment:~0 rows (대략적) 내보내기
+-- 테이블 데이터 kimyongseon.comment:~5 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT IGNORE INTO `comment` (`comment_id`, `comment_pid`, `member_id`, `board_content_id`, `comment_body`, `comment_regdatetime`, `comment_edtdatetime`, `comment_deleted`) VALUES
+	(15, '0', 'abc', '29', 'abc', '2021-01-19 16:24:57', '2021-01-19 16:24:57', 'N'),
+	(16, '0', 'abc', '29', 'abcee', '2021-01-19 16:25:06', '2021-01-19 16:25:06', 'N'),
+	(17, '0', 'abc', '29', 'abceeff', '2021-01-19 16:25:09', '2021-01-19 16:25:09', 'N'),
+	(18, '0', 'abc', '29', 'aaa', '2021-01-19 16:29:20', '2021-01-19 16:29:20', 'N'),
+	(19, '16', 'abc', '29', 'abc', '2021-01-19 16:30:55', '2021-01-19 16:30:56', 'N');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 
 -- 테이블 kimyongseon.file 구조 내보내기

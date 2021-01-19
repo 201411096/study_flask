@@ -13,3 +13,11 @@ def comment_write():
     result = {}
     result = comment_service.comment_write(data)
     return result
+
+@app.route('/comment/list', methods=['POST'])
+def comment_list():
+    data = request.get_json()
+    data['member_id'] = flaskSession.get('userData')['member_id']
+    result={}
+    result['commentListData'] = comment_service.comment_contentList(data)
+    return result

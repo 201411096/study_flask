@@ -32,3 +32,20 @@ document.querySelector('#comment_write_btn').addEventListener('click', function(
         console.log(data);
     });
 });
+
+document.querySelector('#test_btn_commentList').addEventListener('click', function(e){
+    var bid = document.querySelector('#board_content_id').value;
+    fetch('/comment/list',{
+        method : 'POST',
+        headers : {
+            'Content-Type':'application/json',
+        },
+        body : JSON.stringify({
+            "board_content_id":bid
+        })
+    }).then((res)=>res.json())
+    .then((data)=>{
+        console.log('commentList...')
+        console.log(data);
+    });
+});
