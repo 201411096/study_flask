@@ -3,7 +3,7 @@
 } */
 
 #board_container{
-  min-height: 15%;
+  min-height: 12%;
   border: 2px solid #000000;
   text-align: center;
 }
@@ -14,7 +14,10 @@
   text-align: center;
   overflow: auto;
 }
-
+#comment_write_container{
+  min-height: 5%;
+  border: 2px solid #000000;
+}
 #comment_container{
   min-height: 30%;
   border: 2px solid #000000;
@@ -34,4 +37,8 @@ span.col_container_01{
 span.col_container_02{
   width:80%;
   float:left;
+}
+
+#comment_write_textfield{
+  width: 94%;
 }

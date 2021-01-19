@@ -6,8 +6,9 @@ class Comment(Base):
     __table_args__ = {
             'comment' : '댓글'
         }
-
-    comment_id                           = Column(VARCHAR(100), primary_key=True, comment='') # 
+    # autoincrement
+    # comment_id                           = Column(VARCHAR(100), primary_key=True, comment='') # 
+    comment_id                           = Column(Integer, primary_key=True, autoincrement=True, comment='') #
     comment_pid                          = Column(VARCHAR(100), comment='') # 
     member_id                            = Column(VARCHAR(100), comment='') # 
     board_content_id                      = Column(VARCHAR(100), comment='') # 
@@ -16,8 +17,11 @@ class Comment(Base):
     comment_edtdatetime                      = Column(DATETIME, comment='') # 
     comment_deleted                      = Column(VARCHAR(10), comment='') # 
 
-    def __init__(self, commentId, **kwargs):
-        self.comment_id = commentId
+    # autoincrement..
+    # def __init__(self, commentId, **kwargs):
+    #     self.comment_id = commentId
+    def __init__(self, **kwargs):
+
 
         self.comment_pid                   = kwargs.get('comment_pid', None)
         self.member_id                     = kwargs.get('member_id', None)
