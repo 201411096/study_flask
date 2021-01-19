@@ -18,7 +18,10 @@ def board_write():
     data = request.get_json()
     data['member_id'] = flaskSession.get('userData')['member_id']
     print('data(board_write) : ', data)
-    return board_service.board_write(data)
+
+    resultData = board_service.board_write(data)
+    
+    return resultData
 
 @app.route('/board/contentList', methods=["POST"])
 @authDecorator
@@ -36,5 +39,7 @@ def board_contentList():
     if data.get('searchWord', None) is None:
         data['searchWord'] = ''
     data['startrow'] = (int(data['page'])-1)*10
+
     result['boardListData'] = board_service.board_contentList(data)
+
     return result

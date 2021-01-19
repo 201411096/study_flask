@@ -4,10 +4,54 @@
     <link rel='stylesheet' href="{{ url_for('static', filename='css/boardContent.css') }}">
   </head>
   <body>
-    <input type='hidden' id='board_content_id' value={% if data.board_content_id %} {{data.board_content_id}} {%else%}0{%endif%}>
-    <div> {{data.board_content_title}} </div>
-    <div> {{data.board_content_body}} </div>
-    <button id='btn_index'>메인화면</button>
+
+    <div id='board_container'>
+      <input type='hidden' id='board_content_id' value={% if data.board_content_id %} {{data.board_content_id}} {%else%}0{%endif%}>
+      <input type='hidden' id='board_id' value={% if data.board_id %} {{data.board_id}} {%else%}0{%endif%}>
+      <div class='row_container'>
+        <span class='col_container_01'>
+          제목
+        </span>
+        <span class='col_container_02'>
+          {{data.board_content_title}}
+        </span>
+      </div>
+      <div class='row_container'>
+        <span class='col_container_01'>
+          작성자
+        </span>
+        <span class='col_container_02'>
+          {{data.member_nickname}}
+        </span>
+      </div>
+      <div class='row_container'>
+        <span class='col_container_01'>
+          작성날짜
+        </span>
+        <span class='col_container_02'>
+          {{data.board_content_regdatetime}}
+        </span>
+      </div>
+      <div class='row_container'>
+        <span class='col_container_01'>
+          수정날짜
+        </span>
+        <span class='col_container_02'>
+          {{data.board_content_edtdatetime}}
+        </span>
+      </div>
+    </div>
+    <div id=main_container>
+      {{data.board_content_body}}
+    </div>
+    <div id='comment_container'>
+
+    </div>
+    <div id='button_container'>
+      <button id='btn_index'>메인화면</button>
+      <button id='btn_replyContent'>답글달기</button>
+    </div>
+
     <script src="{{ url_for('static', filename='js/boardContent.js') }}"></script>
   </body>
 </html>

@@ -21,12 +21,6 @@ def board_write(data):
 		.filter(Board.board_id == data['board_id'])\
 		.order_by(cast(Board.board_content_num, Integer).desc()).first()
 
-	# print('data1(board_write) : ', subq1)
-	# print('data2(board_write) : ', subq2)
-	# print('data1(board_write) : ', len(subq1))
-	# print('data2(board_write) : ', len(subq2))
-	# print('data1(board_write) : ', subq1.board_content_id)
-	# print('data2(board_write) : ', subq2.board_content_num)
 	if(subq1 is not None):
 		bci = str(int(subq1.board_content_id)+1)
 	else:
@@ -104,12 +98,22 @@ def board_contentList(data):
 	return queryToDict2(result)
 
 def board_content(data):
+	# 조인 전의 쿼리
+	# result = session.query(Board)\
+	# 		.filter(Board.board_content_id==data['board_content_id'])\
+	# 		.with_entities(
+	# 			Board.board_content_id, Board.board_content_pid, Board.member_id,
+	# 			Board.board_content_title, Board.board_content_body, Board.board_content_regdatetime, Board.board_content_edtdatetime,
+	# 			Board.board_id, Board.board_content_num, Board.board_content_deleted
+	# 		)
 	result = session.query(Board)\
+			.join(Member, Member.member_id==Board.member_id)\
 			.filter(Board.board_content_id==data['board_content_id'])\
 			.with_entities(
 				Board.board_content_id, Board.board_content_pid, Board.member_id,
 				Board.board_content_title, Board.board_content_body, Board.board_content_regdatetime, Board.board_content_edtdatetime,
-				Board.board_id, Board.board_content_num, Board.board_content_deleted
+				Board.board_id, Board.board_content_num, Board.board_content_deleted,
+				Member.member_nickname
 			)
 	print('type(board_content) : ', type(result))
 	return queryToDict(result)

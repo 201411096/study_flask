@@ -8,10 +8,10 @@
         <input type='hidden' id='board_content_pid' value={% if data.board_content_pid %} {{data.board_content_pid}} {%else%}0{%endif%}>
         <input type='hidden' id='board_id' value={% if data.board_id %} {{data.board_id}} {%else%} 0 {%endif%}>
         <div>
-            <input type='text' id='board_content_title'>
+            <input type='text' id='board_content_title' placeholder="제목">
         </div>
         <div>
-            <textarea id='board_content_body'></textarea>
+            <textarea id='board_content_body' placeholder="본문"></textarea>
         </div>
         
         <!-- {{data.test1}} -->

@@ -1,3 +1,37 @@
 /* body{
   background-color: #ff0000;
 } */
+
+#board_container{
+  min-height: 15%;
+  border: 2px solid #000000;
+  text-align: center;
+}
+
+#main_container{
+  min-height: 45%;
+  border: 2px solid #000000;
+  text-align: center;
+  overflow: auto;
+}
+
+#comment_container{
+  min-height: 30%;
+  border: 2px solid #000000;
+  overflow: auto;
+}
+
+#button_container{
+  min-height: 5%;
+  border: 2px solid #000000;
+}
+
+span.col_container_01{
+  width:20%;
+  float:left;
+}
+
+span.col_container_02{
+  width:80%;
+  float:left;
+}
