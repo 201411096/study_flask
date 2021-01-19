@@ -38,6 +38,10 @@ th, td{
   text-align: center;
 }
 
+tbody tr:hover{
+  background-color: #777777;
+}
+
 .table-c0{
   width:10%;
 }

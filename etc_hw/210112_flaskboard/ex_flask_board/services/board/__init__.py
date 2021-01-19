@@ -26,6 +26,7 @@ def board_contentList():
     data = {}
     result = {}
     requestData = request.get_json()
+    print('data(board_contentList) : ', data)
     if requestData is not None:
         data.update(requestData)
     if data.get('page', None) is None:
@@ -34,6 +35,6 @@ def board_contentList():
         data['numberInPage'] = 10
     if data.get('searchWord', None) is None:
         data['searchWord'] = ''
-    data['startrow'] = (data['page']-1)*10
+    data['startrow'] = (int(data['page'])-1)*10
     result['boardListData'] = board_service.board_contentList(data)
     return result

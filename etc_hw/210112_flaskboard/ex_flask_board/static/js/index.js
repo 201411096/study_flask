@@ -1,7 +1,15 @@
 console.log('js 연결 확인');
 
-current_board_id = -1;
+let current_board_id = -1;
+let current_page = 1;
 makeBoardList();
+
+// 임시 페이징
+document.querySelector('#input_paging').addEventListener('keyup',(e)=>{
+    current_page = document.querySelector('#input_paging').value;
+    console.log('210119 : ' + document.querySelector('#input_paging').value);
+    getDataAndMakeBoardContentList();
+});
 
 document.querySelector('#authcontainer').addEventListener('click', (e)=>{
     // console.log('event.targetId : ' + e.target.id);
@@ -21,20 +29,22 @@ document.querySelector('#boardList').addEventListener('click', function(e){
         board_id = e.target.dataset.boardId
         current_board_id = board_id;
         document.querySelector('#current_board_name_container').innerText = e.target.innerText;
+        current_page = 1;
+        getDataAndMakeBoardContentList();
     }
-    fetch('/board/contentList', {
-        method : 'POST',
-        headers : {
-            'Content-Type':'application/json',
-        },
-        body : JSON.stringify({
-            "board_id":current_board_id
-        })
-    }).then((res)=>res.json())
-    .then((data)=>{
-        // console.log(data);
-        makeBoardContentList(data);
-    });
+    // fetch('/board/contentList', {
+    //     method : 'POST',
+    //     headers : {
+    //         'Content-Type':'application/json',
+    //     },
+    //     body : JSON.stringify({
+    //         "board_id":current_board_id
+    //     })
+    // }).then((res)=>res.json())
+    // .then((data)=>{
+    //     // console.log(data);
+    //     makeBoardContentList(data);
+    // });
 });
 
 // 게시판글쓰기 버튼 클릭시에
@@ -53,6 +63,25 @@ document.querySelector('#board_content_container').addEventListener('click', fun
         location.href = '/render/boardContent/'+boardContentId;
     }
 });
+
+// 각 게시판의 글 목록 데이터를 불러와서 테이블 형식으로 만듬
+function getDataAndMakeBoardContentList(){
+    console.log('current_page(getDataAndMakeBoardContentList) : ' + current_page);
+    fetch('/board/contentList', {
+        method : 'POST',
+        headers : {
+            'Content-Type':'application/json',
+        },
+        body : JSON.stringify({
+            "board_id":current_board_id,
+            "page":current_page
+        })
+    }).then((res)=>res.json())
+    .then((data)=>{
+        // console.log(data);
+        makeBoardContentList(data);
+    });
+}
 
 // 각 게시판의 글 목록을 불러온 리스트를 테이블 형식으로 만듬
 function makeBoardContentList(data){
