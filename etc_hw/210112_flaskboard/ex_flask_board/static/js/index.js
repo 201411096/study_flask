@@ -112,7 +112,33 @@ function makeBoardContentList(data){
         tr.classList.toggle('board_contentRow');
         for (var j=0; j<columnList.length; j++){
             var td = document.createElement('td');
-            td.innerText = boardListData[i][columnList[j]];
+
+            // 답글 추가 전
+            // td.innerText = boardListData[i][columnList[j]];
+            
+            // 답글_01
+            if(j==2){
+                var tempString = '';
+                for(var k=0; k< parseInt(boardListData[i]['depth']) ; k++ ){
+                    tempString +='ㄴ';
+                }
+                td.innerText = tempString+boardListData[i][columnList[j]];
+            }else{
+                td.innerText = boardListData[i][columnList[j]];
+            }
+
+            // 답글_02
+            // if(j==2){
+            //     for(var k=0; k< parseInt(boardListData[i]['depth']) ; k++ ){
+            //         var arrow = document.createElement('span');
+            //         arrow.classList.toggle('arrow_content');
+            //         td.append(arrow);
+            //     }
+            //     // td.innerText = td.innerText + boardListData[i][columnList[j]];
+            // }else{
+            //     td.innerText = boardListData[i][columnList[j]];
+            // }
+
             td.classList.toggle('table-c'+(j));
             tr.append(td);
         }

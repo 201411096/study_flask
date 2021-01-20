@@ -2,9 +2,18 @@
   <head>
     <meta charset="utf-8">
     <link rel='stylesheet' href="{{ url_for('static', filename='css/test_sample.css') }}">
+    <style>
+      span.arrow_content{
+      content : U+02192;
+      width: auto;
+  height: auto;
+  overflow: hidden;
+      }
+    </style>
   </head>
   <body>
-    <button>
+      <div>&#10149;abc</div>
+      <span class='arrow_content'></span>
     <script src="{{ url_for('static', filename='js/test_sample.js') }}"></script>
   </body>
 </html>

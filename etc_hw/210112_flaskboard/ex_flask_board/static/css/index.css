@@ -50,6 +50,7 @@ tbody tr:hover{
 }
 .table-c2{
   width:45%;
+  text-align: left;
 }
 .table-c3{
   width:30%;
@@ -62,4 +63,11 @@ tbody tr:hover{
 #board_content_container{
   min-height: 45%;
   max-height: 90%;
+}
+
+span.arrow_content{
+  content : U+02192;
+  width: auto;
+  height: auto;
+  overflow: hidden;
 }
