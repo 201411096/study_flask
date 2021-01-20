@@ -59,7 +59,7 @@ def comment_contentList(data):
 	select * from cte
 	inner join member
 	on cte.member_id = member.member_id
-	ORDER BY grp desc, lvl
+	ORDER BY lvl
     """
     statement = text(query)
     statement = statement.bindparams(

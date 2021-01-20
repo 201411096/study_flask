@@ -20,6 +20,7 @@
 }
 #comment_container{
   min-height: 30%;
+  max-height: 30%;
   border: 2px solid #000000;
   overflow: auto;
 }
@@ -30,7 +31,8 @@
 }
 
 div.comment_container{
-  min-width: 100%;
+  /* min-width: 100%; */
+  width: auto;
   height: auto;
   overflow:hidden;
 }
@@ -59,4 +61,8 @@ span.col_container_02{
 
 #comment_write_textfield{
   width: 94%;
+}
+
+div.selected_comment{
+  background-color: #777777;
 }

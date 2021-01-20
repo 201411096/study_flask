@@ -54,7 +54,7 @@ document.querySelector('#btn_boardWrite').addEventListener('click', function(e){
 
 // 게시판글목록의 행클릭시에
 document.querySelector('#board_content_container').addEventListener('click', function(e){
-    console.log('click')
+    // console.log('click')
     // console.log(e.target)
     // console.log(e.target.parentElement)
     if(e.target.matches('#board_content_container td')){
@@ -66,7 +66,7 @@ document.querySelector('#board_content_container').addEventListener('click', fun
 
 // 각 게시판의 글 목록 데이터를 불러와서 테이블 형식으로 만듬
 function getDataAndMakeBoardContentList(){
-    console.log('current_page(getDataAndMakeBoardContentList) : ' + current_page);
+    // console.log('current_page(getDataAndMakeBoardContentList) : ' + current_page);
     fetch('/board/contentList', {
         method : 'POST',
         headers : {
