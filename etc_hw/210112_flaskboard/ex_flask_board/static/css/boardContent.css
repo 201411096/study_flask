@@ -29,6 +29,24 @@
   border: 2px solid #000000;
 }
 
+div.comment_container{
+  min-width: 100%;
+  height: auto;
+  overflow:hidden;
+}
+
+span.comment_col_container_01{
+  width:15%;
+  float:left;
+  border: 0.5px solid #000000;
+}
+
+span.comment_col_container_02{
+  width:75%;
+  float:left;
+  border: 0.5px solid #000000;
+}
+
 span.col_container_01{
   width:20%;
   float:left;
