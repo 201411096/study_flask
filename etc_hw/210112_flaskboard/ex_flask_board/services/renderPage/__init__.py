@@ -15,6 +15,11 @@ def test_loginSuccess():
 	print('check userData : ', flaskSession.get('userData'))
 	return render_template('test_loginSuccess.html')
 
+@app.route('/test/api')
+@authDecorator
+def test_api():
+	return render_template('test_api.html')
+
 @app.route('/test/boardlistView')
 @authDecorator
 def render_boardlistView():	
@@ -76,3 +81,7 @@ def render_boardContent(board_content_id):
 @app.route('/render/notice_board_content_deleted')
 def render_notice_board_content_deleted():
 	return render_template('notice_board_content_deleted.html')
+
+@app.route('/render/notice_required_authority')
+def render_notice_required_authority():
+	return render_template('notice_required_authority.html')

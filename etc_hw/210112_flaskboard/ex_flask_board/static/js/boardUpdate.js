@@ -26,7 +26,7 @@ btn_write.addEventListener('click', function(){
         if(data['code']=='1'){
             location.href='/render/boardContent/'+document.querySelector('#board_content_id').value;
         }else{
-            location.href='/render/index'
+            location.href='/render/index';
         }
     })
 })
