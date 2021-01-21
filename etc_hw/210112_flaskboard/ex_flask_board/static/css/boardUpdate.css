@@ -1,0 +1,19 @@
+/* body{
+  background-color: #ff0000;
+} */
+
+#container_board{
+  text-align: center;
+}
+
+#board_content_title{
+  width: 80%;
+}
+#board_content_body{
+  width:80%;
+  min-height: 80%;
+}
+
+#container_btn{
+  text-align: right;
+}

@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/boardUpdate.css') }}">
+  </head>
+  <body>
+    <div id='container_board'>
+        <input type='hidden' id='board_content_pid' value={% if data.board_content_pid %} {{data.board_content_pid}} {%else%}-1{%endif%}>
+        <input type='hidden' id='board_content_id' value={% if data.board_content_id %} {{data.board_content_id}} {%else%}-1{%endif%}>
+        <input type='hidden' id='board_id' value={% if data.board_id %} {{data.board_id}} {%else%} 0 {%endif%}>
+        <div>
+            <input type='text' id='board_content_title' placeholder="제목" value={% if data.board_content_title %} {{data.board_content_title}} {%else%}-1{%endif%}>
+        </div>
+        <div>
+            <textarea id='board_content_body' placeholder="본문">{% if data.board_content_body %}{{data.board_content_body}}{%endif%}</textarea>
+        </div>
+        
+        
+    </div>
+    <div id='container_btn'>
+        <button id='btn_write'>작성</button>
+        <button id='btn_cancel'>취소</button>
+    </div>
+    <script src="{{ url_for('static', filename='js/boardUpdate.js') }}"></script>
+  </body>
+</html>

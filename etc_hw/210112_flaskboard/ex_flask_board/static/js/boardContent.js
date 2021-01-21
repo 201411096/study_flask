@@ -13,6 +13,7 @@ document.querySelector('#btn_index').addEventListener('click', function(e){
 document.querySelector('#button_container').addEventListener('click', function(e){
     if(e.target.matches('button#btn_update')){
         console.log('수정버튼 클릭이벤트 확인');
+        location.href='/render/boardUpdate?board_content_id='+document.querySelector('#board_content_id').value;
     }else if(e.target.matches('button#btn_delete')){
         console.log('삭제버튼 클릭이벤트 확인');
         dataObject = {

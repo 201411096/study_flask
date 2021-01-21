@@ -47,6 +47,17 @@ def render_boardWrite():
 	
 	return render_template('boardWrite.html', data=data)
 
+@app.route('/render/boardUpdate')
+@authDecorator
+def render_boardUpdate():
+	requestParameter = request.args.to_dict()
+	print('request.args(render_boardUpdate) : ', requestParameter)
+
+	data = board_service.board_content(requestParameter)[0]
+
+
+	return render_template('boardUpdate.html', data=data)
+
 @app.route('/render/boardContent/<board_content_id>')
 @authDecorator
 def render_boardContent(board_content_id):

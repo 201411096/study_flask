@@ -107,16 +107,32 @@ def board_content(data):
 	print('type(board_content) : ', type(result))
 	return queryToDict(result)
 
+def board_update(data):
+	resultData = {}
+	data['board_content_edtdatetime'] = datetime.datetime.now()
+	result = session.query(Board)\
+			.filter(Board.board_content_id==data['board_content_id'])\
+			.update(data, synchronize_session='fetch')
+	
+	session.commit()
+
+	if result>=1:
+		resultData['code']=1
+	else:
+		resultData['code']=0		
+	return resultData
+
 def board_delete(data):
-    resultData = {}
-    result = session.query(Board)\
+	resultData = {}
+
+	result = session.query(Board)\
 			.filter(Board.board_content_id==data['board_content_id'])\
 			.update({"board_content_deleted":"Y"}, synchronize_session='fetch')
 
-    session.commit()
+	session.commit()
 
-    if result>=1:
-        resultData['code']=1
-    else:
-        resultData['code']=0
-    return resultData
+	if result>=1:
+		resultData['code']=1
+	else:
+		resultData['code']=0
+	return resultData
