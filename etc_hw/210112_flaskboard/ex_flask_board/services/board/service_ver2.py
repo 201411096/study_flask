@@ -45,7 +45,7 @@ def board_contentList(data):
 			CAST(LPAD(board_content_id, 10, "0") AS VARCHAR(1000)) as grp,
 			CAST(LPAD(board_content_id, 10, "0") AS VARCHAR(1000)) as lvl
 	from    board
-	where   board_content_pid = -1 and board_id = :board_id
+	where   board_content_pid = -1 and board_id = :board_id and board_content_deleted = 'N'
 	union all
 	select  r.board_content_id,
 			r.board_content_pid,
@@ -106,3 +106,17 @@ def board_content(data):
 			)
 	print('type(board_content) : ', type(result))
 	return queryToDict(result)
+
+def board_delete(data):
+    resultData = {}
+    result = session.query(Board)\
+			.filter(Board.board_content_id==data['board_content_id'])\
+			.update({"board_content_deleted":"Y"}, synchronize_session='fetch')
+
+    session.commit()
+
+    if result>=1:
+        resultData['code']=1
+    else:
+        resultData['code']=0
+    return resultData

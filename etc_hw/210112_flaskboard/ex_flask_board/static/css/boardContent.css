@@ -55,7 +55,7 @@ span.col_container_01{
 }
 
 span.col_container_02{
-  width:80%;
+  min-width:80%;
   float:left;
 }
 

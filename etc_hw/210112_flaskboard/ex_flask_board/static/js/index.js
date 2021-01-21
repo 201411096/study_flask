@@ -110,38 +110,52 @@ function makeBoardContentList(data){
         var tr = document.createElement('tr');
         tr.dataset.boardContentId = boardListData[i]['board_content_id'];
         tr.classList.toggle('board_contentRow');
-        for (var j=0; j<columnList.length; j++){
-            var td = document.createElement('td');
-
-            // 답글 추가 전
-            // td.innerText = boardListData[i][columnList[j]];
-            
-            // 답글_01
-            if(j==2){
-                var tempString = '';
-                for(var k=0; k< parseInt(boardListData[i]['depth']) ; k++ ){
-                    tempString +='ㄴ';
+        if(boardListData[i]['board_content_deleted']=='N'){
+            for (var j=0; j<columnList.length; j++){
+                var td = document.createElement('td');
+    
+                // 답글 추가 전
+                // td.innerText = boardListData[i][columnList[j]];
+                
+                // 답글_01
+                if(j==2){
+                    var tempString = '';
+                    for(var k=0; k< parseInt(boardListData[i]['depth']) ; k++ ){
+                        tempString +='ㄴ';
+                    }
+                    td.innerText = tempString+boardListData[i][columnList[j]];
+                }else{
+                    td.innerText = boardListData[i][columnList[j]];
                 }
-                td.innerText = tempString+boardListData[i][columnList[j]];
-            }else{
-                td.innerText = boardListData[i][columnList[j]];
+                td.classList.toggle('table-c'+(j));
+                tr.append(td);
             }
-
-            // 답글_02
-            // if(j==2){
-            //     for(var k=0; k< parseInt(boardListData[i]['depth']) ; k++ ){
-            //         var arrow = document.createElement('span');
-            //         arrow.classList.toggle('arrow_content');
-            //         td.append(arrow);
-            //     }
-            //     // td.innerText = td.innerText + boardListData[i][columnList[j]];
-            // }else{
-            //     td.innerText = boardListData[i][columnList[j]];
-            // }
-
-            td.classList.toggle('table-c'+(j));
-            tr.append(td);
+        }else{
+            // var td = document.createElement('td');
+            // td.innerText = '삭제된 글입니다.';
+            // td.setAttribute('colspan', 4);
+            // tr.append(td);
+            for (var j=0; j<columnList.length; j++){
+                var td = document.createElement('td');
+        
+                // 답글 추가 전
+                // td.innerText = boardListData[i][columnList[j]];
+                
+                // 답글_01
+                if(j==2){
+                    var tempString = '';
+                    for(var k=0; k< parseInt(boardListData[i]['depth']) ; k++ ){
+                        tempString +='ㄴ';
+                    }
+                    td.innerText = tempString+'삭제된 글입니다.';
+                }else{
+                    td.innerText = '--';
+                }
+                td.classList.toggle('table-c'+(j));
+                tr.append(td);
+            }
         }
+
         tbody.append(tr);
     }
 

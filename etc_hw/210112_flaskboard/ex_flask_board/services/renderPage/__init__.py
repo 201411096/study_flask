@@ -54,5 +54,14 @@ def render_boardContent(board_content_id):
 	data = {}
 	requestData['board_content_id']=board_content_id
 	data = board_service.board_content(requestData)[0]
-	print('resultData(render_boardContent) : ', data)
+	print('board_content_deleted : ', data['board_content_deleted'])
+	if(data['board_content_deleted']=='Y'):
+		print('if문 작동확인')
+		return redirect('/render/notice_board_content_deleted')
+
+	# print('resultData(render_boardContent) : ', data)
 	return render_template('boardContent.html', data=data)
+
+@app.route('/render/notice_board_content_deleted')
+def render_notice_board_content_deleted():
+	return render_template('notice_board_content_deleted.html')

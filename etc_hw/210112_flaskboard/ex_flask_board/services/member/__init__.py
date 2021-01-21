@@ -46,7 +46,18 @@ def member_login():
 def member_logout():
 	session.clear()
 	return redirect('/render/index')
+
+@app.route('/member/getCurrentMemberData')
+def member_getCurrentMemberData():
+	result = {}
+	data = {}
 	
+	data['member_id'] = session['userData']['member_id']
+	serviceResult = member_service.member_login(data)
+	result['data'] = serviceResult
+	
+	return result
+
 # @app.route('/member/logincheck')
 # def member_loginchk():
 # 	resultData = {}

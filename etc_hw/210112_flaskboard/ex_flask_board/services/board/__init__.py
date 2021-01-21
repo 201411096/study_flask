@@ -26,6 +26,13 @@ def board_write():
 
     return resultData
 
+@app.route('/board/delete', methods=['POST'])
+@authDecorator
+def board_delete():
+    data = request.get_json()
+    resultData = board_service.board_delete(data)
+    return resultData
+
 @app.route('/board/contentList', methods=["POST"])
 @authDecorator
 def board_contentList():

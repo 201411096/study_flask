@@ -8,6 +8,7 @@
     <div id='board_container'>
       <input type='hidden' id='board_content_id' value={% if data.board_content_id %} {{data.board_content_id}} {%else%}0{%endif%}>
       <input type='hidden' id='board_id' value={% if data.board_id %} {{data.board_id}} {%else%}0{%endif%}>
+      <input type='hidden' id='member_id' value={% if data.member_id %} {{data.member_id}}{%endif%}>
       <div class='row_container'>
         <span class='col_container_01'>
           제목
@@ -54,8 +55,13 @@
     <div id='button_container'>
       <button id='btn_index'>메인화면</button>
       <button id='btn_replyContent'>답글달기</button>
+      {% if (session['userData'] is defined) and (data.member_id is defined) %}
+        {% if session['userData']['member_id'] == data.member_id %}
+          <button id='btn_update'>수정하기</button>
+          <button id='btn_delete'>삭제하기</button>
+        {% endif %}
+      {% endif %}
     </div>
-
     <script src="{{ url_for('static', filename='js/boardContent.js') }}"></script>
   </body>
 </html>

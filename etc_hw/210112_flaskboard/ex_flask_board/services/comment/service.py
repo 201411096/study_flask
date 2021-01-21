@@ -39,7 +39,7 @@ def comment_contentList(data):
 			CAST(LPAD(comment_id, 10, "0") AS VARCHAR(1000)) as grp,
 			CAST(LPAD(comment_id, 10, "0") AS VARCHAR(1000)) as lvl
 	from    comment
-	where   comment_pid = 0 and board_content_id = :board_content_id
+	where   comment_pid = 0 and board_content_id = :board_content_id and comment_deleted = 'N'
 	union all
 	select  r.comment_id,
 			r.comment_pid,
@@ -69,3 +69,16 @@ def comment_contentList(data):
 		{"board_content_id":data['board_content_id']})
     print('210119 data : ', result)
     return queryToDict2(result)
+
+def comment_delete(data):
+    resultData = {}
+    result = session.query(Comment)\
+            .filter(Comment.comment_id==data['comment_id'])\
+            .update({"comment_deleted":"Y"}, synchronize_session='fetch')
+    session.commit()
+
+    if result>=1:
+        resultData['code']=1
+    else:
+        resultData['code']=0
+    return resultData

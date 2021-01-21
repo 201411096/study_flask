@@ -21,3 +21,9 @@ def comment_list():
     result={}
     result['commentListData'] = comment_service.comment_contentList(data)
     return result
+
+@app.route('/comment/delete', methods=['POST'])
+def comment_delete():
+    data = request.get_json()
+    result = comment_service.comment_delete(data)
+    return result
