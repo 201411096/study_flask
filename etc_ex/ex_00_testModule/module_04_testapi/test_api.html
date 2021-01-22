@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+        input.url{
+            width: 300px;
+            height: 40px;
+        }
+        input.method{
+            width: 300px;
+            height: 40px;
+        }
+        textarea.content{
+            width: 300px;
+            height: 200px;
+        }
+        textarea.result{
+            width: 1000px;
+            height: 400px;
+            overflow: auto;
+        }
+    </style>
+  </head>
+  <body>
+    <div>
+        <input id='test_url' class='url' type='text' placeholder="url">
+    </div>
+    <div>
+        <input type='text' id='test_method' class='method' placeholder="method">
+    </div>
+    <div>
+        <textarea id='test_content' class='content' placeholder="content"></textarea>
+    </div>
+    
+    <div>
+        <button id='btn_test'>테스트</button>
+    </div>
+    <div>
+        <textarea id='test_result' class='result'></textarea>
+    </div>
+    
+    <script>
+        document.querySelector('#btn_test').addEventListener('click', function(){
+            var url = document.querySelector('#test_url').value;
+            var resultContainer = document.querySelector('#test_result');
+            var apiMethod = document.querySelector('#test_method').value;
+            var dataObject = JSON.parse(document.querySelector('#test_content').value);
+            console.log(dataObject);
+            fetch(url, {
+                method : apiMethod,
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body:JSON.stringify(dataObject)
+            }).then(res => res.json())
+            .then( (data) =>{
+                console.log(data);
+                resultContainer.value = JSON.stringify(data);
+            })
+        });
+    </script>
+  </body>
+</html>
