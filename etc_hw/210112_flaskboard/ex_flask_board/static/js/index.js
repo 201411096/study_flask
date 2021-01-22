@@ -25,19 +25,31 @@ document.querySelector('#authcontainer').addEventListener('click', (e)=>{
 // 게시판리스트 안의 게시판 버튼을 클릭했을 경우
 document.querySelector('#boardList').addEventListener('click', function(e){
     if(e.target.matches('#boardList > div > button')){
-        // console.log(e.target.dataset.boardId);
-        board_id = e.target.dataset.boardId
-        current_board_id = board_id;
-        document.querySelector('#current_board_name_container').innerText = e.target.innerText;
-        current_page = 1;
-        getDataAndMakeBoardContentList();
+        event_click_boardList(e);
+        // board_id = e.target.dataset.boardId
+        // current_board_id = board_id;
+        // document.querySelector('#current_board_name_container').innerText = e.target.innerText;
+        // current_page = 1;
+
+        // var current_member_data = getCurrentMemberData();
+        // var current_authority_data = getCurrentAuthorityData();
+        // console.log('current_member_data');
+        // console.log(current_member_data);
+        // console.log('current_authority_data');
+        // console.log(current_authority_data);
+        // getDataAndMakeBoardContentList();
     }
 });
 
 // 게시판글쓰기 버튼 클릭시에
-document.querySelector('#btn_boardWrite').addEventListener('click', function(e){
-    location.href='/render/boardWrite?board_id='+current_board_id
-});
+document.querySelector('#container_btn_boardWrite').addEventListener('click', function(e){
+    if(e.target.matches('#btn_boardWrite')){
+        location.href='/render/boardWrite?board_id='+current_board_id;    
+    }
+})
+// document.querySelector('#btn_boardWrite').addEventListener('click', function(e){
+//     location.href='/render/boardWrite?board_id='+current_board_id
+// });
 
 // 게시판글목록의 행클릭시에
 document.querySelector('#board_content_container').addEventListener('click', function(e){
@@ -159,4 +171,45 @@ function makeBoardList(){
             boardListContainer.append(divelement);
         }         
     });
+}
+
+async function getCurrentMemberData(){
+    res = await fetch('/member/getCurrentMemberData', {
+        method : 'GET',
+        headers : {
+            'Content-Type':'application/json',
+        }        
+    });
+    data = await res.json();
+    return data;
+}
+
+async function getCurrentAuthorityData(){
+    res = await fetch('/authority/getList')
+    data = await res.json();
+    return data;    
+}
+
+async function event_click_boardList(e){
+    board_id = e.target.dataset.boardId;
+    current_board_id = board_id;
+    document.querySelector('#current_board_name_container').innerText = e.target.innerText;
+    current_page = 1;
+
+    document.querySelector('#container_btn_boardWrite').innerHTML = '';
+
+    var current_authority_data = await getCurrentAuthorityData();
+    if(current_authority_data['authority_board'][board_id]["authority_board_content_read"]==0){
+        alert('게시판 조회 권한이 없습니다.');
+        document.querySelector('#board_content_container').innerHTML = '';
+    }else{
+        getDataAndMakeBoardContentList();
+        if( (current_authority_data['authority_board'][board_id]["authority_board_content_write"]==1) || (current_authority_data['authority_board'][board_id]["authority_board_content_write"]==2) ){
+            var btn = document.createElement('button');
+            btn.setAttribute('id', 'btn_boardWrite');
+            btn.innerText = '게시판 글쓰기';
+            document.querySelector('#container_btn_boardWrite').append(btn);
+        }
+    }
+    
 }
