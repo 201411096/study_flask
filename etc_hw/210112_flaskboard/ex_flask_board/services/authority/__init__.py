@@ -23,3 +23,10 @@ def authority_boardAuthority_getList():
 
     result['data'] = authority_service.authority_boardAuthority_getList(data)
     return result
+
+@app.route('/test/authority/getList', methods=["GET"])
+def authority_getList():
+    data = {}
+    data['member_id'] = flaskSession.get('userData')['member_id']
+    result = authority_service.getAuthorityList(data)
+    return result

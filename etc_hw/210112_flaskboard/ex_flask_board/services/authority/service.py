@@ -37,6 +37,13 @@ def authority_boardAuthority_getList(data):
     resultData = {}
     for row in rows:
         tempDict = row._asdict()
-        print(row)
+        # print(row)
         resultData[tempDict['board_id']]=tempDict
     return resultData
+
+def getAuthorityList(data):
+    result = {}
+    data['member_id'] = flaskSession.get('userData')['member_id']
+    result['authority_group'] = authority_groupAuthority_getList(data)
+    result['authority_board'] = authority_boardAuthority_getList(data)
+    return result
