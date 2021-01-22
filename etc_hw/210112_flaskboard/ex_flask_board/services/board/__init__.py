@@ -42,7 +42,7 @@ def board_delete():
     resultData = board_service.board_delete(data)
     return resultData
 
-@app.route('/board/contentList', methods=["POST"])
+@app.route('/board/list', methods=["POST"])
 @authDecorator
 def board_contentList():
     data = {}

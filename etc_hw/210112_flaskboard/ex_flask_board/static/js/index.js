@@ -26,18 +26,6 @@ document.querySelector('#authcontainer').addEventListener('click', (e)=>{
 document.querySelector('#boardList').addEventListener('click', function(e){
     if(e.target.matches('#boardList > div > button')){
         event_click_boardList(e);
-        // board_id = e.target.dataset.boardId
-        // current_board_id = board_id;
-        // document.querySelector('#current_board_name_container').innerText = e.target.innerText;
-        // current_page = 1;
-
-        // var current_member_data = getCurrentMemberData();
-        // var current_authority_data = getCurrentAuthorityData();
-        // console.log('current_member_data');
-        // console.log(current_member_data);
-        // console.log('current_authority_data');
-        // console.log(current_authority_data);
-        // getDataAndMakeBoardContentList();
     }
 });
 
@@ -47,9 +35,6 @@ document.querySelector('#container_btn_boardWrite').addEventListener('click', fu
         location.href='/render/boardWrite?board_id='+current_board_id;    
     }
 })
-// document.querySelector('#btn_boardWrite').addEventListener('click', function(e){
-//     location.href='/render/boardWrite?board_id='+current_board_id
-// });
 
 // 게시판글목록의 행클릭시에
 document.querySelector('#board_content_container').addEventListener('click', function(e){
@@ -61,7 +46,7 @@ document.querySelector('#board_content_container').addEventListener('click', fun
 
 // 각 게시판의 글 목록 데이터를 불러와서 테이블 형식으로 만듬
 function getDataAndMakeBoardContentList(){
-    fetch('/board/contentList', {
+    fetch('/board/list', {
         method : 'POST',
         headers : {
             'Content-Type':'application/json',
