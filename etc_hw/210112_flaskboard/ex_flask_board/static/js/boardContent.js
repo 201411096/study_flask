@@ -47,13 +47,6 @@ document.querySelector('#comment_write_container').addEventListener('click', fun
     }
 })
 
-//답글달기 클릭이벤트
-// document.querySelector('#btn_replyContent').addEventListener('click', function(e){
-//     bpid = document.querySelector('#board_content_id').value;
-//     bid = document.querySelector('#board_id').value;
-//     location.href='/render/boardWrite?board_id='+bid+'&board_content_pid='+bpid;
-// });
-
 //댓글달기 클릭이벤트
 function event_commentWrite(){
     var bid = document.querySelector('#board_content_id').value;
@@ -77,40 +70,11 @@ function event_commentWrite(){
         getCommentList();
     });    
 }
-// document.querySelector('#comment_write_btn').addEventListener('click', function(e){
-//     var bid = document.querySelector('#board_content_id').value;
-//     var comment_body = document.querySelector('#comment_write_textfield').value;
-//     var dataObject = {
-//         "board_content_id":bid,
-//         "comment_body":comment_body        
-//     }
-//     if(document.querySelector('#comment_container div.selected_comment') != null){
-//         dataObject['comment_pid']=document.querySelector('#comment_container div.selected_comment').dataset.commentId;
-//     }
-//     fetch('/comment/write',{
-//         method : 'POST',
-//         headers : {
-//             'Content-Type':'application/json',
-//         },
-//         body : JSON.stringify(dataObject)
-//         // body : JSON.stringify({
-//         //     "board_content_id":bid,
-//         //     "comment_body":comment_body
-//         // })
-//     }).then((res)=>res.json())
-//     .then((data)=>{
-//         console.log(data);
-//         getCommentList();
-//     });
-// });
 
 //댓글 클릭이벤트
 document.querySelector('#comment_container').addEventListener('click', function(e){
-    // console.log('comment_container...')
-
     // 행단위 댓글 클릭시에
     if(e.target.parentElement.matches('#comment_container div.comment_container')){
-        // console.log('click');
         if(e.target.parentElement.classList.contains('selected_comment')){
             e.target.parentElement.classList.toggle('selected_comment');
         }else{
@@ -127,7 +91,6 @@ document.querySelector('#comment_container').addEventListener('click', function(
         var btnData = e.target.dataset;
         console.log('btnData ..');
         console.log(btnData);
-        // console.log(btnData['comment_id']);
         fetch('/comment/delete',{
             method : 'POST',
             headers : {
@@ -161,18 +124,10 @@ async function makeCommentList(data){
     for(var i=0; i<listData.length ; i++){
         if(listData[i]['comment_deleted']=='N'){
             var flag_deleteBtn = 0;
-            // if(current_member_id == listData[i]['member_id']){
-            //     // console.log('flag 변경');
-            //     flag_deleteBtn = 1;
-            // }else{
-            //     console.log('flag 변경 안됨');
-            //     // console.log(current_member_id);
-            // }
             if(current_authority_data['authority_board'][boardId]['authority_board_content_delete'] == '2'){
                 flag_deleteBtn = 1;
             }else if(current_authority_data['authority_board'][boardId]['authority_board_content_delete'] == '1'){
                 if(current_member_id == listData[i]['member_id']){
-                    // console.log('flag 변경');
                     flag_deleteBtn = 1;
                 }
             }            
@@ -190,7 +145,6 @@ async function makeCommentList(data){
                 tempString+='ㄴ'
             }
             span2.innerText = tempString + listData[i]['comment_body'];
-            // span2.innerText = listData[i]['comment_body'];
             span1.classList.toggle('comment_col_container_01');
             span2.classList.toggle('comment_col_container_02');
             div.append(span1);
@@ -244,8 +198,6 @@ function getCommentList(){
         })
     }).then((res)=>res.json())
     .then((data)=>{
-        // console.log('commentList...')
-        // console.log(data);
         makeCommentList(data);
     });
 }
@@ -258,15 +210,15 @@ async function getCurrentMemberData(){
         }        
     });
     data = await res.json();
-    console.log('getCurrentMemberData() ...');
-    console.log(data);
+    // console.log('getCurrentMemberData() ...');
+    // console.log(data);
     return data;
 }
 
 async function getCurrentAuthorityData(){
     res = await fetch('/authority/getList')
     data = await res.json();
-    console.log('getCurrentAuthorityData() ...');
-    console.log(data);
+    // console.log('getCurrentAuthorityData() ...');
+    // console.log(data);
     return data;    
 }

@@ -32,19 +32,6 @@ document.querySelector('#boardList').addEventListener('click', function(e){
         current_page = 1;
         getDataAndMakeBoardContentList();
     }
-    // fetch('/board/contentList', {
-    //     method : 'POST',
-    //     headers : {
-    //         'Content-Type':'application/json',
-    //     },
-    //     body : JSON.stringify({
-    //         "board_id":current_board_id
-    //     })
-    // }).then((res)=>res.json())
-    // .then((data)=>{
-    //     // console.log(data);
-    //     makeBoardContentList(data);
-    // });
 });
 
 // 게시판글쓰기 버튼 클릭시에
@@ -54,19 +41,14 @@ document.querySelector('#btn_boardWrite').addEventListener('click', function(e){
 
 // 게시판글목록의 행클릭시에
 document.querySelector('#board_content_container').addEventListener('click', function(e){
-    // console.log('click')
-    // console.log(e.target)
-    // console.log(e.target.parentElement)
     if(e.target.matches('#board_content_container td')){
         var boardContentId = e.target.parentElement.dataset.boardContentId;
-        // console.log('boardContentId : ' + boardContentId);
         location.href = '/render/boardContent/'+boardContentId;
     }
 });
 
 // 각 게시판의 글 목록 데이터를 불러와서 테이블 형식으로 만듬
 function getDataAndMakeBoardContentList(){
-    // console.log('current_page(getDataAndMakeBoardContentList) : ' + current_page);
     fetch('/board/contentList', {
         method : 'POST',
         headers : {
@@ -131,10 +113,6 @@ function makeBoardContentList(data){
                 tr.append(td);
             }
         }else{
-            // var td = document.createElement('td');
-            // td.innerText = '삭제된 글입니다.';
-            // td.setAttribute('colspan', 4);
-            // tr.append(td);
             for (var j=0; j<columnList.length; j++){
                 var td = document.createElement('td');
         
