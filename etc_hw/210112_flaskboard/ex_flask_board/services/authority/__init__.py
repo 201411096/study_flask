@@ -24,7 +24,7 @@ def authority_boardAuthority_getList():
     result['data'] = authority_service.authority_boardAuthority_getList(data)
     return result
 
-@app.route('/test/authority/getList', methods=["GET"])
+@app.route('/authority/getList', methods=["GET"])
 def authority_getList():
     result = authority_service.getAuthorityList()
     return result

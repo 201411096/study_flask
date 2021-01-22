@@ -1,6 +1,7 @@
 console.log('js 연결 확인');
 
-boardContentId = document.querySelector('#board_content_id').value;
+let boardContentId = document.querySelector('#board_content_id').value;
+let boardId = document.querySelector('#board_id').value;
 console.log('boardContentId : ' + boardContentId);
 
 getCommentList();
@@ -32,18 +33,29 @@ document.querySelector('#button_container').addEventListener('click', function(e
                 location.href='/render/index';
             }
         });
+    }else if(e.target.matches('#btn_replyContent')){
+        bpid = document.querySelector('#board_content_id').value;
+        bid = document.querySelector('#board_id').value;
+        location.href='/render/boardWrite?board_id='+bid+'&board_content_pid='+bpid;
     }
 });
 
+//댓글 클릭이벤트
+document.querySelector('#comment_write_container').addEventListener('click', function(e){
+    if(e.target.matches('#comment_write_btn')){
+        event_commentWrite();
+    }
+})
+
 //답글달기 클릭이벤트
-document.querySelector('#btn_replyContent').addEventListener('click', function(e){
-    bpid = document.querySelector('#board_content_id').value;
-    bid = document.querySelector('#board_id').value;
-    location.href='/render/boardWrite?board_id='+bid+'&board_content_pid='+bpid;
-});
+// document.querySelector('#btn_replyContent').addEventListener('click', function(e){
+//     bpid = document.querySelector('#board_content_id').value;
+//     bid = document.querySelector('#board_id').value;
+//     location.href='/render/boardWrite?board_id='+bid+'&board_content_pid='+bpid;
+// });
 
 //댓글달기 클릭이벤트
-document.querySelector('#comment_write_btn').addEventListener('click', function(e){
+function event_commentWrite(){
     var bid = document.querySelector('#board_content_id').value;
     var comment_body = document.querySelector('#comment_write_textfield').value;
     var dataObject = {
@@ -59,16 +71,38 @@ document.querySelector('#comment_write_btn').addEventListener('click', function(
             'Content-Type':'application/json',
         },
         body : JSON.stringify(dataObject)
-        // body : JSON.stringify({
-        //     "board_content_id":bid,
-        //     "comment_body":comment_body
-        // })
     }).then((res)=>res.json())
     .then((data)=>{
         console.log(data);
         getCommentList();
-    });
-});
+    });    
+}
+// document.querySelector('#comment_write_btn').addEventListener('click', function(e){
+//     var bid = document.querySelector('#board_content_id').value;
+//     var comment_body = document.querySelector('#comment_write_textfield').value;
+//     var dataObject = {
+//         "board_content_id":bid,
+//         "comment_body":comment_body        
+//     }
+//     if(document.querySelector('#comment_container div.selected_comment') != null){
+//         dataObject['comment_pid']=document.querySelector('#comment_container div.selected_comment').dataset.commentId;
+//     }
+//     fetch('/comment/write',{
+//         method : 'POST',
+//         headers : {
+//             'Content-Type':'application/json',
+//         },
+//         body : JSON.stringify(dataObject)
+//         // body : JSON.stringify({
+//         //     "board_content_id":bid,
+//         //     "comment_body":comment_body
+//         // })
+//     }).then((res)=>res.json())
+//     .then((data)=>{
+//         console.log(data);
+//         getCommentList();
+//     });
+// });
 
 //댓글 클릭이벤트
 document.querySelector('#comment_container').addEventListener('click', function(e){
@@ -118,6 +152,7 @@ document.querySelector('#comment_container').addEventListener('click', function(
 
 async function makeCommentList(data){
     var current_member_data = await getCurrentMemberData();
+    var current_authority_data = await getCurrentAuthorityData();
     var current_member_id = current_member_data['data'][0]['member_id'];
 
     var comment_container = document.querySelector('#comment_container');
@@ -126,13 +161,21 @@ async function makeCommentList(data){
     for(var i=0; i<listData.length ; i++){
         if(listData[i]['comment_deleted']=='N'){
             var flag_deleteBtn = 0;
-            if(current_member_id == listData[i]['member_id']){
-                // console.log('flag 변경');
+            // if(current_member_id == listData[i]['member_id']){
+            //     // console.log('flag 변경');
+            //     flag_deleteBtn = 1;
+            // }else{
+            //     console.log('flag 변경 안됨');
+            //     // console.log(current_member_id);
+            // }
+            if(current_authority_data['authority_board'][boardId]['authority_board_content_delete'] == '2'){
                 flag_deleteBtn = 1;
-            }else{
-                console.log('flag 변경 안됨');
-                // console.log(current_member_id);
-            }
+            }else if(current_authority_data['authority_board'][boardId]['authority_board_content_delete'] == '1'){
+                if(current_member_id == listData[i]['member_id']){
+                    // console.log('flag 변경');
+                    flag_deleteBtn = 1;
+                }
+            }            
             var div = document.createElement('div');
             div.classList.toggle('comment_container');
             div.dataset.commentId = listData[i]['comment_id'];
@@ -218,4 +261,12 @@ async function getCurrentMemberData(){
     console.log('getCurrentMemberData() ...');
     console.log(data);
     return data;
+}
+
+async function getCurrentAuthorityData(){
+    res = await fetch('/authority/getList')
+    data = await res.json();
+    console.log('getCurrentAuthorityData() ...');
+    console.log(data);
+    return data;    
 }
