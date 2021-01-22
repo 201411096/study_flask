@@ -200,8 +200,8 @@ async function event_click_boardList(e){
 
     var current_authority_data = await getCurrentAuthorityData();
     if(current_authority_data['authority_board'][board_id]["authority_board_content_read"]==0){
-        alert('게시판 조회 권한이 없습니다.');
         document.querySelector('#board_content_container').innerHTML = '';
+        alert('게시판 조회 권한이 없습니다.');
     }else{
         getDataAndMakeBoardContentList();
         if( (current_authority_data['authority_board'][board_id]["authority_board_content_write"]==1) || (current_authority_data['authority_board'][board_id]["authority_board_content_write"]==2) ){

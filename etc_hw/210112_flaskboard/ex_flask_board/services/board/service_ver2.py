@@ -84,7 +84,13 @@ def board_contentList(data):
 		{"startrow":  data["startrow"], 
 		"numberInPage": data["numberInPage"],
 		"board_id":data['board_id']})
-	return queryToDict2(result)
+	
+	result = queryToDict2(result)
+	for row in result:
+		for key in row.keys():
+			if(type(row[key]) ==  datetime.datetime):
+				row[key] = str(row[key])
+	return result
 
 def board_content(data):
 	# 조인 전의 쿼리

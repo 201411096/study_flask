@@ -60,5 +60,5 @@ def board_contentList():
     data['startrow'] = (int(data['page'])-1)*10
 
     result['boardListData'] = board_service.board_contentList(data)
-
+    print(result)
     return result
