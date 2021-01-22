@@ -14,7 +14,8 @@
             width: 300px;
             height: 200px;
         }
-        textarea.result{
+        pre.result{
+            border: 1px solid #000000;
             width: 1000px;
             height: 400px;
             overflow: auto;
@@ -36,7 +37,7 @@
         <button id='btn_test'>테스트</button>
     </div>
     <div>
-        <textarea id='test_result' class='result'></textarea>
+        <pre id='test_result' class='result'></pre>
     </div>
     
     <script>
@@ -44,19 +45,28 @@
             var url = document.querySelector('#test_url').value;
             var resultContainer = document.querySelector('#test_result');
             var apiMethod = document.querySelector('#test_method').value;
-            var dataObject = JSON.parse(document.querySelector('#test_content').value);
-            console.log(dataObject);
-            fetch(url, {
-                method : apiMethod,
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body:JSON.stringify(dataObject)
-            }).then(res => res.json())
-            .then( (data) =>{
-                console.log(data);
-                resultContainer.value = JSON.stringify(data);
-            })
+            var dataObject = {};
+            if(apiMethod != 'GET' && apiMethod != 'HEAD'){
+                dataObject = JSON.parse(document.querySelector('#test_content').value);
+                console.log(dataObject);
+                fetch(url, {
+                    method : apiMethod,
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body:JSON.stringify(dataObject)
+                }).then(res => res.json())
+                .then( (data) =>{
+                    console.log(data);
+                    resultContainer.textContent = JSON.stringify(data, null, 2);
+                });
+            }else{
+                fetch(url).then(res => res.json())
+                .then( (data) =>{
+                    console.log(data);
+                    resultContainer.textContent = JSON.stringify(data, null, 2);
+                });
+            }
         });
     </script>
   </body>
