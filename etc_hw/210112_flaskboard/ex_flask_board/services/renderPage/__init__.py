@@ -3,7 +3,7 @@ from flask import render_template, request, redirect
 from flask import session as flaskSession
 from util import authDecorator
 from services.board import service as board_service
-
+from services.authority import service as authority_service
 
 @app.route('/test/renderPage')
 def test_renderPage():
@@ -70,9 +70,11 @@ def render_boardContent(board_content_id):
 	data = {}
 	requestData['board_content_id']=board_content_id
 	data = board_service.board_content(requestData)[0]
-	print('board_content_deleted : ', data['board_content_deleted'])
+	data['authority'] = authority_service.getAuthorityList()
+
+	# print('board_content_deleted : ', data['board_content_deleted'])
 	if(data['board_content_deleted']=='Y'):
-		print('if문 작동확인')
+		# print('if문 작동확인')
 		return redirect('/render/notice_board_content_deleted')
 
 	# print('resultData(render_boardContent) : ', data)

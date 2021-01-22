@@ -5,6 +5,7 @@ from services.member import service as member_service
 from services.board import service as board_service
 from services.comment import service as comment_service
 from util import authDecorator
+from services.authority import service as authority_service
 
 @app.route('/comment/write', methods=['POST'])
 def comment_write():
