@@ -62,14 +62,12 @@ def board_contentList(data):
 	inner join cte
 			on r.board_content_pid = cte.board_content_id
 	)
-    SELECT * FROM
-    (SELECT * FROM
+	SELECT * FROM
     (SELECT @ROWNUM:=@ROWNUM+1 AS board_content_num, c.* 
     FROM cte c, 
     (SELECT @ROWNUM:=0) b ORDER BY CAST(board_content_id AS INTEGER)) t 
-    ) a 
     inner join member
-    on a.member_id = member.member_id
+    on t.member_id = member.member_id
     ORDER BY grp DESC, lvl
 	LIMIT :startrow, :numberInPage
     ;
@@ -93,14 +91,6 @@ def board_contentList(data):
 	return result
 
 def board_content(data):
-	# 조인 전의 쿼리
-	# result = session.query(Board)\
-	# 		.filter(Board.board_content_id==data['board_content_id'])\
-	# 		.with_entities(
-	# 			Board.board_content_id, Board.board_content_pid, Board.member_id,
-	# 			Board.board_content_title, Board.board_content_body, Board.board_content_regdatetime, Board.board_content_edtdatetime,
-	# 			Board.board_id, Board.board_content_num, Board.board_content_deleted
-	# 		)
 	result = session.query(Board)\
 			.join(Member, Member.member_id==Board.member_id)\
 			.filter(Board.board_content_id==data['board_content_id'])\

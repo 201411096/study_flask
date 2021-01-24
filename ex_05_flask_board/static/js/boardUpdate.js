@@ -23,10 +23,19 @@ btn_write.addEventListener('click', function(){
     }).then(res => res.json())
     .then((data)=>{
         console.log(data);
+        checkAuthority(data);
         if(data['code']=='1'){
             location.href='/render/boardContent/'+document.querySelector('#board_content_id').value;
-        }else{
+        }else if(data['code']=='0'){
             location.href='/render/index';
         }
     })
 })
+
+function checkAuthority(data){
+    if( 'code' in data  ){
+        if(data['code'] == '22'){
+            location.href='/render/notice_required_authority';
+        }
+    }    
+}

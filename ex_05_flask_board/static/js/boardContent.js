@@ -18,7 +18,8 @@ document.querySelector('#button_container').addEventListener('click', function(e
     }else if(e.target.matches('button#btn_delete')){
         console.log('삭제버튼 클릭이벤트 확인');
         dataObject = {
-            "board_content_id":document.querySelector('#board_content_id').value
+            "board_content_id":document.querySelector('#board_content_id').value,
+            "board_id":boardId
         }
         fetch('/board/delete',{
             method : 'POST',
@@ -53,7 +54,8 @@ function event_commentWrite(){
     var comment_body = document.querySelector('#comment_write_textfield').value;
     var dataObject = {
         "board_content_id":bid,
-        "comment_body":comment_body        
+        "comment_body":comment_body,
+        "board_id":boardId        
     }
     if(document.querySelector('#comment_container div.selected_comment') != null){
         dataObject['comment_pid']=document.querySelector('#comment_container div.selected_comment').dataset.commentId;
@@ -97,12 +99,14 @@ document.querySelector('#comment_container').addEventListener('click', function(
                 'Content-Type':'application/json',
             },
             body : JSON.stringify({
-                "comment_id":btnData['commentId']
+                "comment_id":btnData['commentId'],
+                "board_id":boardId
             })
         }).then(res => res.json())
         .then( (data) => {
             console.log('fetch delete_comment completed');
             console.log(data);
+            checkAuthority(data);
             if(data['code']==1){
                 console.log('data[code]=1...');
                 getCommentList();
@@ -194,10 +198,12 @@ function getCommentList(){
             'Content-Type':'application/json',
         },
         body : JSON.stringify({
-            "board_content_id":bid
+            "board_content_id":bid,
+            "board_id":boardId
         })
     }).then((res)=>res.json())
     .then((data)=>{
+        checkAuthority(data);
         makeCommentList(data);
     });
 }
@@ -221,4 +227,12 @@ async function getCurrentAuthorityData(){
     // console.log('getCurrentAuthorityData() ...');
     // console.log(data);
     return data;    
+}
+
+function checkAuthority(data){
+    if( 'code' in data  ){
+        if(data['code'] == '22'){
+            location.href='/render/notice_required_authority';
+        }
+    }    
 }

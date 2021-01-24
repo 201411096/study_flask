@@ -82,3 +82,14 @@ def comment_delete(data):
     else:
         resultData['code']=0
     return resultData
+
+def commet_content(data):
+	result = session.query(Comment)\
+			.join(Member, Member.member_id==Comment.comment_id)\
+			.filter(Comment.comment_id==data['comment_id'])\
+			.with_entities(
+				Comment.comment_id, Comment.comment_pid, Comment.member_id, Member.member_nickname,
+				Comment.board_content_id, Comment.comment_body, Comment.comment_regdatetime, Comment.comment_edtdatetime,
+				Comment.comment_deleted
+			)
+	return queryToDict(result)

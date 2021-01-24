@@ -1,6 +1,4 @@
-import datetime
+str1 = '/abc/cde'
+print(str1)
 
-today = datetime.datetime.now()
-
-print(today)
-print(type(today))
+print(str1.split('/')[2])

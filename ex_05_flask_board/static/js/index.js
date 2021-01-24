@@ -58,6 +58,7 @@ function getDataAndMakeBoardContentList(){
     }).then((res)=>res.json())
     .then((data)=>{
         // console.log(data);
+        checkAuthority(data);
         makeBoardContentList(data);
     });
 }
@@ -197,4 +198,12 @@ async function event_click_boardList(e){
         }
     }
     
+}
+
+function checkAuthority(data){
+    if( 'code' in data  ){
+        if(data['code'] == '22'){
+            location.href='/render/notice_required_authority';
+        }
+    }    
 }
