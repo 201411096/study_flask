@@ -8,6 +8,7 @@ from services.authority import service as authority_service
 from util import authDecorator
 
 @app.route("/test/groupAuthority/getList", methods=['GET'])
+@authDecorator
 def authority_groupAuthority_getList():
     data = {}
     result = {}
@@ -17,6 +18,7 @@ def authority_groupAuthority_getList():
     return result
 
 @app.route("/test/boardAuthority/getList", methods=["GET"])
+@authDecorator
 def authority_boardAuthority_getList():
     data = {}
     result = {}
@@ -26,6 +28,7 @@ def authority_boardAuthority_getList():
     return result
 
 @app.route('/authority/getList', methods=["GET"])
+@authDecorator
 def authority_getList():
     result = authority_service.getAuthorityList()
     return result
@@ -34,9 +37,9 @@ def authority_getList():
 def before_request():
     deniedFlag = 0
     requestPath = request.path
-
     print('myRequestPath : ', requestPath)
 
+    # 게시판, 댓글관련 api 처리
     if requestPath.startswith('/board/') or requestPath.startswith('/comment/'):
         requestData = request.get_json()
         requestTarget = requestPath.split('/')[1]
@@ -52,9 +55,7 @@ def before_request():
                 deniedFlag = 1
             else:
                 currentUserAuthority = authority_service.getAuthorityList()
-                # print('currentUserAuthority : ', currentUserAuthority)
                 authorityForCurrentRequest = currentUserAuthority['authority_board'][boardIdInRequestData]['authority_board_content_'+requestRole]
-                print('authority(current_board) : ', authorityForCurrentRequest)
                 if authorityForCurrentRequest == '0':
                     deniedFlag = 1
                 elif (authorityForCurrentRequest == '1') and (requestRole=='update' or requestRole =='delete'):
@@ -63,21 +64,22 @@ def before_request():
                         dataForQuery['board_content_id'] = requestData['board_content_id']
                         contentMemberId = board_service.board_content(dataForQuery)[0]['member_id']
                         currentMemberId = flaskSession.get('userData')['member_id']
-                        print('contentMemberId : ', contentMemberId)
-                        print('currentMemberId : ', currentMemberId)
                         if currentMemberId != contentMemberId:
-                            print('currentMemberId != contentMemberId')
                             deniedFlag=1
                     elif requestTarget =='comment':
                         dataForQuery = {}
                         dataForQuery['comment_id'] = requestData['comment_id']
                         contentMemberId = comment_service.commet_content(dataForQuery)[0]['member_id']
                         currentMemberId = flaskSession.get('userData')['member_id']
-                        print('contentMemberId : ', contentMemberId)
-                        print('currentMemberId : ', currentMemberId)
                         if currentMemberId != contentMemberId:
-                            print('currentMemberId != contentMemberId')
-                            deniedFlag=1                        
+                            deniedFlag=1
+    elif requestPath.startswith('/render/board'):
+        # 사용하지 않는 부분
+        requestRole = requestPath.split('/render/board')[1]
+        requestRole = requestRole.split('/')[0].lower()
+        if requestRole == 'content':
+            requestRole = 'read'
+        print('myRequestRole : ', requestRole)
                     
     if deniedFlag == 1:
         print('deniedFlag : ', deniedFlag)
