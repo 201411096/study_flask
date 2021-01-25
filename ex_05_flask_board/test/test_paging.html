@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id='container_option'>
+      <input type='text' id='dataNumberFromQuery' placeholder="쿼리에서 받은 데이터 갯수" value=''>
+      <input type='text' id='maxRowNumber' placeholder="페이지에 표시할 데이터 갯수" value=''>
+      <input type='text' id='maxPageNumberInGroup' placeholder="그룹에 표시되는 페이지 갯수" value=''>
+    </div>
+    <input type='text' id='currentPage' placeholder="현재페이지" value=''>
+    <button id='btn_makeDataAndPaging'>페이징 테스트</button>
+
+    <div id='container_paging'></div>
+    <script>
+      let data = {};
+      let currentPage = '';
+      document.querySelector('#currentPage').addEventListener('click', function(e){
+        currentPage = document.querySelector('#currentPage').value;
+      })
+
+      document.querySelector('#btn_makeDataAndPaging').addEventListener('click', function(e){
+        makeDataAndPaging(data, 'container_paging')
+      });
+
+      function makeDataAndPaging(data, containerId){
+        makeData(data);
+        paging(data, containerId);
+      }
+
+      function makeData(data){
+        let elementList = document.querySelector('#container_option').children;
+        for(var i=0; i<elementList.length; i++){
+          data[elementList[i].id] = elementList[i].value;
+        }
+        console.log(data);
+      }
+
+      function paging(data, containerId){
+        let totalPageNumber = Math.ceil(parseInt(data['dataNumberFromQuery']) / parseInt(data['maxRowNumber'])) ;
+        console.log('totalPageNumber : ' + totalPageNumber);
+
+      }
+    </script>
+  </body>
+</html>
