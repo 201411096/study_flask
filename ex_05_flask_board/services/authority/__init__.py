@@ -66,12 +66,18 @@ def before_request():
                         currentMemberId = flaskSession.get('userData')['member_id']
                         if currentMemberId != contentMemberId:
                             deniedFlag=1
+                        contentBoardId = board_service.board_content(dataForQuery)[0]['board_id']
+                        if contentBoardId != boardIdInRequestData:
+                            deniedFlag=1
                     elif requestTarget =='comment':
                         dataForQuery = {}
                         dataForQuery['comment_id'] = requestData['comment_id']
                         contentMemberId = comment_service.commet_content(dataForQuery)[0]['member_id']
                         currentMemberId = flaskSession.get('userData')['member_id']
                         if currentMemberId != contentMemberId:
+                            deniedFlag=1
+                        contentBoardId = board_service.board_content(dataForQuery)[0]['board_id']
+                        if contentBoardId != boardIdInRequestData:
                             deniedFlag=1
     elif requestPath.startswith('/render/board'):
         # 사용하지 않는 부분
