@@ -73,14 +73,18 @@ with open('./test_09_excel/config.json', 'r', encoding="utf-8" ) as f:
     jsonData = json.load(f)
 
 configData = jsonData['data']
+holidayFlag = input('휴가체크(y/n) : ').lower()
 
 for data in configData:
-    print(data['empName'] +'의 근태일지 작성중 ...' )
-    totalHoliday = input('총 휴가일수(+연휴일) 입력: ')
     holidayList = []
-    for i in range(int(totalHoliday)):
-        holiday = input('휴가일 입력 :')
-        holidayList.append(int(holiday))
+    if holidayFlag == 'y':
+        print(data['empName'] +'의 근태일지 작성중 ...' )
+        totalHoliday = input('총 휴가일수(+연휴일) 입력: ')
+        for i in range(int(totalHoliday)):
+            holiday = input('휴가일 입력 :')
+            holidayList.append(int(holiday))
+    elif holidayFlag == 'n':
+        pass
     makeFile(data['empNo'], data['empName'], data['empIp'], holidayList)
 
 
