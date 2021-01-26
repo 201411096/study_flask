@@ -37,9 +37,11 @@ def makeFile(empNo, empName, empIp, holidayList):
             print('cellName : ',  str(chr(startCol))+str(startRow) )
             currentWeekDay = datetime.date(currentYear, currentMonth, i+1).weekday()
             if currentWeekDay == 5 or currentWeekDay == 6:
-                continue
+                startRow= startRow - 1
+                break
             if (i+1) in holidayList:
-                continue
+                startRow= startRow - 1
+                break
             if j == 0:
                 ws[ str(chr(startCol))+str(startRow) ] = str(datetime.date(currentYear, currentMonth, i+1))
             if j == 1:
@@ -77,7 +79,7 @@ for data in configData:
     totalHoliday = input('총 휴가일수(+연휴일) 입력: ')
     holidayList = []
     for i in range(int(totalHoliday)):
-        holiday = input('휴가일 입력')
+        holiday = input('휴가일 입력 :')
         holidayList.append(int(holiday))
     makeFile(data['empNo'], data['empName'], data['empIp'], holidayList)
 
