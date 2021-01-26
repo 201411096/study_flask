@@ -5,7 +5,7 @@ import datetime
 import random
 import json
 
-def makeFile(empNo, empName, empIp, holidayList):
+def makeFile(empNo, empName, empIp, holidayList, **kwargs):
     # wb = Workbook()
     wb = load_workbook('./test_09_excel/template.xlsx')
     ws = wb.active
@@ -22,6 +22,12 @@ def makeFile(empNo, empName, empIp, holidayList):
     currentYear = currentTime.year
     currentMonth = currentTime.month
     currentMonthRange = calendar.monthrange(int(currentYear), int(currentMonth))[1]
+
+    if kwargs.get('year', None) is not None:
+        currentYear = kwargs.get('year', None)
+        if kwargs.get('month', None) is not None:
+            currentMonth = kwargs.get('month', None)
+            currentMonthRange = calendar.monthrange(int(currentYear), int(currentMonth))[1]
 
     # 위에 컬럼 작성해주던 부분
     # for i in range(len(columnList)):    
@@ -74,6 +80,14 @@ with open('./test_09_excel/config.json', 'r', encoding="utf-8" ) as f:
 
 configData = jsonData['data']
 holidayFlag = input('휴가체크(y/n) : ').lower()
+# holidayFlag = 'n'
+
+# anotherMonthFlag = input('다른달체크(y/n) : ').lower()
+anotherMonthFlag = 'y'
+
+if anotherMonthFlag == 'y':
+    optionYear = int(input('년도 입력 : '))
+    optionMonth = int(input('월 입력 : '))
 
 for data in configData:
     holidayList = []
@@ -85,6 +99,9 @@ for data in configData:
             holidayList.append(int(holiday))
     elif holidayFlag == 'n':
         pass
-    makeFile(data['empNo'], data['empName'], data['empIp'], holidayList)
+    if anotherMonthFlag == 'n':
+        makeFile(data['empNo'], data['empName'], data['empIp'], holidayList)
+    elif anotherMonthFlag == 'y':
+        makeFile(data['empNo'], data['empName'], data['empIp'], holidayList, year=optionYear, month=optionMonth)
 
 
