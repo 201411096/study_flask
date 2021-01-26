@@ -5,7 +5,7 @@ import datetime
 import random
 import json
 
-def makeFile(empNo, empName, empIp):
+def makeFile(empNo, empName, empIp, holidayList):
     # wb = Workbook()
     wb = load_workbook('./test_09_excel/template.xlsx')
     ws = wb.active
@@ -14,7 +14,7 @@ def makeFile(empNo, empName, empIp):
 
     # A ~ Z : 65 - 91
     # a ~ z : 97 - 123
-    startRow = 2
+    startRow = 3
     startCol = 66
 
     saved_startCol = startCol
@@ -33,10 +33,13 @@ def makeFile(empNo, empName, empIp):
     startCol = saved_startCol
 
     for i in range(currentMonthRange):
-        startCol = saved_startCol
-        startRow = startRow + 1
         for j in range(len(columnList)):
             print('cellName : ',  str(chr(startCol))+str(startRow) )
+            currentWeekDay = datetime.date(currentYear, currentMonth, i+1).weekday()
+            if currentWeekDay == 5 or currentWeekDay == 6:
+                continue
+            if (i+1) in holidayList:
+                continue
             if j == 0:
                 ws[ str(chr(startCol))+str(startRow) ] = str(datetime.date(currentYear, currentMonth, i+1))
             if j == 1:
@@ -58,6 +61,8 @@ def makeFile(empNo, empName, empIp):
             if j == 12:
                 ws[ str(chr(startCol))+str(startRow) ] = empIp
             startCol+=1
+        startCol = saved_startCol
+        startRow = startRow + 1
 
     fileName = str(currentYear) + "년" + str(currentMonth) + "월_근태기록_" + empName
     wb.save(fileName + ".xlsx")
@@ -68,6 +73,12 @@ with open('./test_09_excel/config.json', 'r', encoding="utf-8" ) as f:
 configData = jsonData['data']
 
 for data in configData:
-    makeFile(data['empNo'], data['empName'], data['empIp'])
+    print(data['empName'] +'의 근태일지 작성중 ...' )
+    totalHoliday = input('총 휴가일수(+연휴일) 입력: ')
+    holidayList = []
+    for i in range(int(totalHoliday)):
+        holiday = input('휴가일 입력')
+        holidayList.append(int(holiday))
+    makeFile(data['empNo'], data['empName'], data['empIp'], holidayList)
 
 
