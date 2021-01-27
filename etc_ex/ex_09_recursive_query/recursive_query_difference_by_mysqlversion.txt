@@ -1,0 +1,30 @@
+------------------------------------------------------------
+mysql 8+
+------------------------------------------------------------
+with recursive cte (id, name, parent_id) as (
+  select     id,
+             name,
+             parent_id
+  from       products
+  where      parent_id = 19
+  union all
+  select     p.id,
+             p.name,
+             p.parent_id
+  from       products p
+  inner join cte
+          on p.parent_id = cte.id
+)
+select * from cte;
+------------------------------------------------------------
+mysql 5.x
+------------------------------------------------------------
+select  id,
+        name,
+        parent_id 
+from    (select * from products
+         order by parent_id, id) products_sorted,
+        (select @pv := '19') initialisation
+where   find_in_set(parent_id, @pv)
+and     length(@pv := concat(@pv, ',', id))
+------------------------------------------------------------
