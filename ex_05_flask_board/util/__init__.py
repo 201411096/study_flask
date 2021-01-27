@@ -43,7 +43,7 @@ def convertStatementToList2(data):
     result['data'] = dataList
     return result
 
-def returnAfterAdd(session, dataObject):
+def sessionAdd(dataObject, session):
     result = {}
     try:
         session.add(dataObject)
@@ -55,11 +55,11 @@ def returnAfterAdd(session, dataObject):
         result['code'] = '0'
     return result
 
-def returnAfterUpdate(resultCount):
+def returnCodeAfterUpdate(resultCount):
     result = {}
     if resultCount>=1:
-        result['code']=1
+        result['code']='1'
     else:
-        result['code']=0		
+        result['code']='0'
     return result
 ##### test #####
