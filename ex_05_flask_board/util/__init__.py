@@ -2,6 +2,8 @@ from flask import render_template, request, redirect
 from flask import session as flaskSession
 from functools import wraps
 import datetime
+from pytz import utc, timezone
+from pytz import all_timezones
 
 def queryToDict(statement):
     result = []
@@ -62,4 +64,17 @@ def returnCodeAfterUpdate(resultCount):
     else:
         result['code']='0'
     return result
+
+def getCurrentDateTime():
+    currentUtcNaiveTime = datetime.datetime.utcnow()
+    return utc.localize(currentUtcNaiveTime)
+
+def convertUtcTimeToLocalTime(dt, **kwargs):
+    targetTimezone = None
+    if kwargs.get('timezone', None) is None:
+        targetTimezone = timezone('Asia/Seoul')
+    if dt.tzinfo is None:
+        return utc.localize(dt).astimezone(targetTimezone)
+    else:
+        return dt.astimezone(targetTimezone)
 ##### test #####
