@@ -28,3 +28,9 @@ print('now3 : ', now3)
 # KST 기준 aware datetime
 now4 = utc.localize(now1).astimezone(KST)
 print('now4 : ', now4)
+
+# 출력 예시
+# now1 :  2021-01-29 08:55:21.095828
+# now2 :  2021-01-29 08:55:21.095828+00:00
+# now3 :  2021-01-29 08:55:21.095828+09:00
+# now4 :  2021-01-29 17:55:21.095828+09:00
