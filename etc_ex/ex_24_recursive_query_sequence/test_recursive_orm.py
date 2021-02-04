@@ -105,8 +105,7 @@ included_parts = incl_alias.union(
                     (func.length(cast(parts_alias.id, VARCHAR(1000))) == 8, func.concat('00', cast(parts_alias.id, VARCHAR(1000)))),
                     (func.length(cast(parts_alias.id, VARCHAR(1000))) == 9, func.concat('0', cast(parts_alias.id, VARCHAR(1000)))),
                     (func.length(cast(parts_alias.id, VARCHAR(1000))) == 10, cast(parts_alias.id, VARCHAR(1000)))                    
-                ], else_= cast(parts_alias.id, VARCHAR(1000)) )).label('lvl'),
-                )\
+                ])).label('lvl'))\
             .filter(parts_alias.pid == incl_alias.c.id)
     )
 
