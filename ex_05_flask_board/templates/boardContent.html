@@ -60,9 +60,7 @@
     {% if (data.authority["authority_board"][data.board_id]["authority_board_content_write"]=='2') %}
       <button id='btn_replyContent'>답글달기</button>
     {% elif (data.authority["authority_board"][data.board_id]["authority_board_content_write"]=='1') %}
-      {% if (session['userData']['member_id'] == data.member_id) %}
-        <button id='btn_replyContent'>답글달기</button>
-      {% endif %}
+      <button id='btn_replyContent'>답글달기</button>
     {% endif %}      
     {% if (data.authority["authority_board"][data.board_id]["authority_board_content_update"]=='2') %}
       <button id='btn_update'>수정하기</button>

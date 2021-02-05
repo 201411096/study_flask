@@ -1,7 +1,7 @@
 from __main__ import session
 from dto import *
-from sqlalchemy import exc, subquery, cast, text
-from sqlalchemy import DateTime, Integer, String
+from sqlalchemy import exc, subquery, cast, text, literal, case, func, and_, over
+from sqlalchemy import DateTime, Integer, String, Integer, VARCHAR
 from sqlalchemy.sql import bindparam
 from util import *
 import datetime
@@ -72,7 +72,6 @@ def board_contentList(data):
 	LIMIT :startrow, :numberInPage
     ;
     """
-    
     # ====================================== orm 이전 부분 ======================================
 	# statement = text(query)
 	# statement = statement.bindparams(
@@ -174,8 +173,8 @@ def board_contentList(data):
 	
 	result = queryToDict(resultData)
 	
-	for row in result:
-		print(row)
+	# for row in result:
+	# 	print(row)
 
 	for row in result:
 		for key in row.keys():
@@ -225,3 +224,12 @@ def board_delete(data):
 	else:
 		resultData['code']=0
 	return resultData
+
+# 단순 알람 테스트용
+# 글 작성시 commit이 아닌 flush하는 방식으로 autoincrement된 key값을 가져오는 방식으로 변경이 필요해보임
+def get_last_boardContentId():
+	result = session.query(Board)\
+		.with_entities(Board.board_content_id)\
+		.order_by(Board.board_content_id.desc()).first()
+	print('last_boardContentId : ', result.board_content_id)
+	return result.board_content_id

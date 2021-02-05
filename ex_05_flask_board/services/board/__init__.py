@@ -6,6 +6,7 @@ from services.member import service as member_service
 from services.board import service_ver2 as board_service
 from util import authDecorator
 from services.authority import service as authority_service
+from services.alarm import service as alarm_service
 
 @app.route('/boardList', methods=['GET'])
 def board_getList():
@@ -25,6 +26,23 @@ def board_write():
 
     resultData = board_service.board_write(data)
 
+    # =============== 0205 알람기능 테스트 ===============
+    alarmData = {}
+    alarmData['board_content_id'] = board_service.get_last_boardContentId()
+    alarmData['board_id'] = data['board_id']
+    alarm_memberList = alarm_service.alarm_board_getMemberList(alarmData)
+    alarmData['from_member_id'] = data['member_id']
+    alarmData['alarm_content'] = data['board_content_title']
+    print('================ alarm_board_getMemberList ===============')
+    for alarm_member in alarm_memberList:
+        # 자기 자신은 제외
+        if alarm_member['member_id'] == data['member_id']:
+            continue
+        print(alarm_member)
+        alarmData['to_member_id'] = alarm_member['member_id']
+        alarm_service.alarm_board_send(alarmData)
+    print('================ alarm_board_getMemberList ===============')
+    # =============== 0205 알람기능 테스트 ===============
     return resultData
 
 @app.route('/board/update', methods=['POST'])

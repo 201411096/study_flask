@@ -14,10 +14,10 @@
     <div id='container_paging'></div>
     <script>
       let data = {};
-      let currentPage = '';
-      document.querySelector('#currentPage').addEventListener('click', function(e){
-        currentPage = document.querySelector('#currentPage').value;
-      })
+      // let currentPage = '';
+      // document.querySelector('#currentPage').addEventListener('click', function(e){
+      //   currentPage = document.querySelector('#currentPage').value;
+      // })
 
       document.querySelector('#btn_makeDataAndPaging').addEventListener('click', function(e){
         makeDataAndPaging(data, 'container_paging')
@@ -37,7 +37,7 @@
       }
 
       function paging(data, containerId){
-        let totalPageNumber = Math.ceil(parseInt(data['dataNumberFromQuery']) / parseInt(data['maxRowNumber'])) ;
+        let totalPageNumber = Math.ceil(parseInt(data['dataNumberFromQuery']) / parseInt(data['maxRowNumber']));
         console.log('totalPageNumber : ' + totalPageNumber);
 
       }

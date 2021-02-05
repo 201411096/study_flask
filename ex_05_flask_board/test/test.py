@@ -1,6 +1,5 @@
-str1 = '/abc/cde'
-print(str1)
-myList = str1.split('/')
-print(len(myList))
-for row in myList:
-    print(row)
+var1='abc'
+
+var2 =var1.rjust(10, '0')
+
+print(var2)
