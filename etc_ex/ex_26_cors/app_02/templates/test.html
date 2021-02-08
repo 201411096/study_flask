@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div id='btn_group'>
+            <button id="btn_01" value='a'>test_a</button>
+            <button id="btn_02" value='b'>test_b</button>
+            <button id="btn_03" value='c'>test_c</button>
+        </div>
+        <script>
+            document.querySelector('#btn_group').addEventListener('click', function(e){
+                fetch('http://192.168.0.51:5000/' + e.target.value ).then(res => res.json())
+                .then((data) => {
+                    console.log('check fetchData ...');
+                    console.log(data);
+                });
+            })
+        </script>
+    </body>
+</html>
