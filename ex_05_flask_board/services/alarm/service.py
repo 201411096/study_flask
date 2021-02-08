@@ -68,3 +68,18 @@ def alarm_board_send(data):
         result['code'] = '0'
     return result
 
+def alarm_read(data):
+    result = {}
+    
+    resultData = session.query(Alarm)\
+            .filter(and_(
+                Alarm.alarm_target_content_id == data['board_content_id'],
+                Alarm.to_member_id == data['to_member_id']
+                ))\
+            .delete()
+    print('resultData 0208 : ', resultData)
+    
+    session.commit()
+    result['code'] = '1'
+
+    return result

@@ -4,6 +4,7 @@ from flask import session as flaskSession
 from util import authDecorator
 from services.board import service as board_service
 from services.authority import service as authority_service
+from services.alarm import service as alarm_service
 
 @app.route('/test/renderPage')
 def test_renderPage():
@@ -78,6 +79,14 @@ def render_boardContent(board_content_id):
 		return redirect('/render/notice_board_content_deleted')
 
 	# print('resultData(render_boardContent) : ', data)
+
+	# =============== 0208 알람기능 테스트 ===============
+	alarmData = {}
+	alarmData['board_content_id'] = data['board_content_id']
+	alarmData['to_member_id'] = flaskSession.get('userData')['member_id']
+	alarm_service.alarm_read(alarmData)
+	# =============== 0208 알람기능 테스트 ===============
+
 	return render_template('boardContent.html', data=data)
 
 @app.route('/render/notice_board_content_deleted')
