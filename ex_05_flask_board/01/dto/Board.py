@@ -7,20 +7,18 @@ class Board(Base):
             'comment' : '게시판'
         }
 
-    board_content_id                      = Column(VARCHAR(100), primary_key=True, comment='') # 
-    board_content_pid                      = Column(VARCHAR(100), comment='') # 
+    board_content_id                      = Column(Integer, primary_key=True, autoincrement=True, comment='') # 
+    board_content_pid                      = Column(Integer, comment='') # 
     member_id                            = Column(VARCHAR(100), comment='') # 
     board_id                             = Column(VARCHAR(100), comment='') # 
     board_content_title                      = Column(VARCHAR(100), comment='') # 
     board_content_body                      = Column(VARCHAR(1000), comment='') # 
     board_content_regdatetime                      = Column(DATETIME, comment='') # 
     board_content_edtdatetime                      = Column(DATETIME, comment='') # 
-    board_content_num                      = Column(VARCHAR(100), comment='') # 
+    board_content_num                      = Column(Integer, comment='') # 
     board_content_deleted                      = Column(VARCHAR(10), comment='') # 
 
-    def __init__(self, boardContentId, **kwargs):
-        self.board_content_id = boardContentId
-
+    def __init__(self, **kwargs):
         self.board_content_pid             = kwargs.get('board_content_pid', None)
         self.member_id                     = kwargs.get('member_id', None)
         self.board_id                      = kwargs.get('board_id', None)
@@ -28,7 +26,6 @@ class Board(Base):
         self.board_content_body            = kwargs.get('board_content_body', None)
         self.board_content_regdatetime     = kwargs.get('board_content_regdatetime', None)
         self.board_content_edtdatetime     = kwargs.get('board_content_edtdatetime', None)
-        self.board_content_num             = kwargs.get('board_content_num', None)
         self.board_content_deleted         = kwargs.get('board_content_deleted', None)
 
     def __repr__(self):

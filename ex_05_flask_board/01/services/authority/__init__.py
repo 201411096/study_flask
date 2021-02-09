@@ -2,7 +2,7 @@ from services import app
 from flask import request, session, render_template, redirect
 from flask import session as flaskSession
 from services.member import service as member_service
-from services.board import service_ver2 as board_service
+from services.board import service as board_service
 from services.comment import service as comment_service
 from services.authority import service as authority_service
 from util import authDecorator

@@ -1,6 +1,5 @@
-# from dto.Board import *
+from dto.Board import *
 from dto.Alarm import *
-from dto.Board_ver2 import *
 from dto.BoardList import *
 from dto.Comment import *
 from dto.File import *
