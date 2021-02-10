@@ -12,6 +12,6 @@ def get_member(data):
     
     for row in rows:
         print(row)
-        resultData.append(row)
+        resultData.append(row._asdict())
     
     return resultData
