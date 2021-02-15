@@ -1,11 +1,16 @@
 1. rabbitmq server가 설치된 곳 까지 가서 cmd창 열기
     ㄴ windows terminal 설치하면 편함
+
 2. rabbitmq_management 활성화
     ㄴ C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.11\sbin> .\rabbitmq-plugins.bat enable rabbitmq_management
+
 3. rabbitmqctl add_user {username} {password}
     ㄴ C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.11\sbin> .\rabbitmqctl.bat add_user abc abc
+
 4. set_user_tags {username} administrator
     ㄴ .\rabbitmqctl set_user_tags abc administrator
+
 5. http://localhost:15672/
     ㄴ 복붙하면 https까지 붙어서 문제 생기는 경우가 있음
+    
 6. .\rabbitmqctl.bat set_permissions -p / abc ".*" ".*" ".*"
