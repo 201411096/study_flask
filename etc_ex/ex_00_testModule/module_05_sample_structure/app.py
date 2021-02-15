@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = '111'
 
-app.register_blueprint(blutprint_errorHandler)
+app.register_blueprint(blueprint_errorHandler)
 app.register_blueprint(blueprint_member)
 
 CORS(app)
@@ -19,6 +19,22 @@ def test_routing():
 @app.errorhandler(404)
 def _handler_404(e):
     return render_template('error/page_404.html')
+
+# errorhandler는 HTTP error code만 사용할 수 있음
+# @app.errorhandler(5555)
+# def _handler_5555(e):
+#     return render_template('error/page_5555.html')
+
+@app.route('/test/route/abort2')
+def test_aborting2():
+    print('test in app ...')
+    abort(500)
+    return 'testaborting...'
+
+# blueprint의 errorhandler와 분기가 되는지 확인
+@app.errorhandler(500)
+def _handler_500(e):
+    return render_template('error/page_500.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

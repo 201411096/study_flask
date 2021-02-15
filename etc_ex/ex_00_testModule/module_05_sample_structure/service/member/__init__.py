@@ -4,9 +4,7 @@ from dto.model import *
 
 def get_member(data):
     resultData = []
-
-    rows = getSession()\
-            .query(Member)\
+    rows = getSession().query(Member)\
             .with_entities(Member.member_id, Member.member_name)\
             .all()
     
