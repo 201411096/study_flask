@@ -9,7 +9,8 @@ def main():
     queue_name = 'queue_name_01'
     channel.queue_declare(queue=queue_name)
 
-    channel.basic_consume(queue=queue_name, on_message_callback=task1, auto_ack=True)
+    # channel.basic_consume(queue=queue_name, on_message_callback=task1, auto_ack=True)
+    channel.basic_consume(queue=queue_name, on_message_callback=task1)
 
     print(' [*] Waiting for messages. To exit press CTRL+C')
     channel.start_consuming()

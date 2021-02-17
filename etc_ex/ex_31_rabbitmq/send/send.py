@@ -11,7 +11,7 @@ channel.queue_declare(queue=queue_name)
 # myMessage = 'abcabc ... ...'
 # channel.basic_publish(exchange='', routing_key=queue_name, body=myMessage)
 
-myMessage = {"a":"aa", "b":"bb"}
+myMessage = {"c":"cc", "d":"dd"}
 myMessage = json.dumps(myMessage)
 channel.basic_publish(exchange='', routing_key=queue_name, body=myMessage)
 
