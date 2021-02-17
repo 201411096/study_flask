@@ -7,7 +7,7 @@
 
 # 1. for문 이용
 def gen():
-    for i in range(10000):
+    for i in range(100):
         yield i
 
 # test1
