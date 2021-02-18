@@ -16,42 +16,80 @@ def make_sample_data():
     result = {"data":"myData"}
     return result
 
-@app.route("/getQueueData")
-def getQueueData():
-    # def callBack(ch, method, properties, body):
-    #     print('body : ', body)
+@app.route("/getQueueDataList")
+def getQueueDataList():
+    auto_ack_flag = request.args.get('auto_ack', False)
+    if auto_ack_flag == 'True':
+        auto_ack_flag = True
     
-    def messageProcessing(connection, channel, messageList, queueName):
+    def getDataListFromMQ(queueName, auto_ack_flag):
+        messageList = []
+        credentials = pika.PlainCredentials(username='abc', password='abc')
+        connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.51', credentials=credentials))
+        channel = connection.channel()
+        
+        channel.queue_declare(queue=queueName)
         while True:
-            evt_method, evt_properties, evt_body = channel.basic_get(queueName)
+            evt_method, evt_properties, evt_body = channel.basic_get(queueName, auto_ack=auto_ack_flag)
             if evt_method is None:
-                print('evt_method is None ...')
                 connection.close()
                 break
             else:
-                print('evt_method is not None ...')
                 messageList.append(json.loads(evt_body) )
-        return messageList
-    messageList = []
+        return messageList    
+    queueName = 'queue_name_01'
+
+    messageList = getDataListFromMQ(queueName, auto_ack_flag)
+
+    result = {}
+    print('messageList : ', messageList)
+    result['data'] = messageList
+    return result
+
+@app.route("/getQueueData")
+def getQueueData():    
+    def getDataFromMQ(queueName):
+        returnData = None
+        credentials = pika.PlainCredentials(username='abc', password='abc')
+        connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.51', credentials=credentials))
+        channel = connection.channel()
+        
+        channel.queue_declare(queue=queueName)
+        evt_method, evt_properties, evt_body = channel.basic_get(queueName)
+        if evt_method is None:
+            connection.close()
+            returnData = json.loads('{}')
+        else:
+            returnData = json.loads(evt_body)
+            channel.basic_ack(evt_method.delivery_tag)
+        return returnData
+
+    queueName = 'queue_name_01'
+    message = getDataFromMQ(queueName)
+
+    result = {}
+    print('message : ', message)
+    result['data'] = message
+    return result
+
+# @app.route('/sendData', methods=["POST"])
+@app.route('/sendData')
+def sendData():
+    # requestData = request.get_json()
+    requestData = {"e":"ee", "e":"ee"}
 
     credentials = pika.PlainCredentials(username='abc', password='abc')
     connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.51', credentials=credentials))
     channel = connection.channel()
 
     queue_name = 'queue_name_01'
-    channel.queue_declare(queue=queue_name)
+    channel.queue_declare(queue=queue_name)    
 
-    # channel.basic_consume(queue=queue_name, on_message_callback=callBack)
-    
-    # channel.start_consuming()
-    # Thread(target=channel.start_consuming).start()
-    th = Thread(target=messageProcessing, args=[connection, channel, messageList, queue_name])
-    th.start()
-
-    th.join()
-    result = {}
-    print('messageList : ', messageList)
-    result['data'] = messageList
+    myMessage = requestData
+    myMessage = json.dumps(myMessage)
+    channel.basic_publish(exchange='', routing_key=queue_name, body=myMessage)
+    connection.close()
+    result = {"sendData":"complete"}
     return result
 
 if __name__ == '__main__':

@@ -3,21 +3,34 @@
     <head></head>
     <body>
         <div>sample.html...</div>
-        <button id='btn_01' >get_queueData</button>
+        <div id='button_container'>
+            <button id='btn_01'>get_queueDataList</button>
+            <button id='btn_02'>get_queueData</button>
+            <button id='btn_03'>get_queueDataList(auto_ack=True)</button>
+            <button id='btn_04'>sendData</button>
+        </div>
         <script>
             myFetch('/data');
-            document.querySelector('#btn_01').addEventListener('click', function(e){
-                myFetch('/getQueueData')
-            })
+            document.querySelector('#button_container').addEventListener('click', (e)=>{
+                if(e.target.matches('#btn_01')){
+                    myFetch('/getQueueDataList');
+                }else if(e.target.matches('#btn_02')){
+                    myFetch('/getQueueData');
+                }else if(e.target.matches('#btn_03')){
+                    myFetch('/getQueueDataList?auto_ack=True');
+                }else if(e.target.matches('#btn_04')){
+                    myFetch('/sendData');
+                }
+            });
             
             function myFetch(url){
                 fetch(url).then(
                     (res)=>(res.json())
                 ).then(
                     (data) => {
-                        console.log('=================================================================');
+                        console.log('================================');
                         console.log(data);
-                        console.log('=================================================================');
+                        console.log('================================');
                     }
                 )                
             }
