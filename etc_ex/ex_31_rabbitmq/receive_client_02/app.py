@@ -7,6 +7,12 @@ from threading import Thread
 app = Flask(__name__)
 CORS(app)
 
+myRabbitMQ_config = {
+    "username":"abc",
+    "password":"abc",
+    "hostip":"192.168.0.51"
+}
+
 @app.route('/')
 def render_template_sample():
     return render_template('sample.html')
@@ -24,8 +30,8 @@ def getQueueDataList():
     
     def getDataListFromMQ(queueName, auto_ack_flag):
         messageList = []
-        credentials = pika.PlainCredentials(username='abc', password='abc')
-        connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.51', credentials=credentials))
+        credentials = pika.PlainCredentials(username=myRabbitMQ_config['username'], password=myRabbitMQ_config['password'])
+        connection = pika.BlockingConnection(pika.ConnectionParameters(myRabbitMQ_config['hostip'], credentials=credentials))
         channel = connection.channel()
         
         channel.queue_declare(queue=queueName)
@@ -35,8 +41,8 @@ def getQueueDataList():
                 connection.close()
                 break
             else:
-                messageList.append(json.loads(evt_body) )
-        return messageList    
+                messageList.append(json.loads(evt_body))
+        return messageList
     queueName = 'queue_name_01'
 
     messageList = getDataListFromMQ(queueName, auto_ack_flag)
@@ -50,8 +56,8 @@ def getQueueDataList():
 def getQueueData():    
     def getDataFromMQ(queueName):
         returnData = None
-        credentials = pika.PlainCredentials(username='abc', password='abc')
-        connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.51', credentials=credentials))
+        credentials = pika.PlainCredentials(username=myRabbitMQ_config['username'], password=myRabbitMQ_config['password'])
+        connection = pika.BlockingConnection(pika.ConnectionParameters(myRabbitMQ_config['hostip'], credentials=credentials))
         channel = connection.channel()
         
         channel.queue_declare(queue=queueName)
@@ -76,10 +82,10 @@ def getQueueData():
 @app.route('/sendData')
 def sendData():
     # requestData = request.get_json()
-    requestData = {"e":"ee", "e":"ee"}
+    requestData = {"e":"ee", "f":"ff"}
 
-    credentials = pika.PlainCredentials(username='abc', password='abc')
-    connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.51', credentials=credentials))
+    credentials = pika.PlainCredentials(username=myRabbitMQ_config['username'], password=myRabbitMQ_config['password'])
+    connection = pika.BlockingConnection(pika.ConnectionParameters(myRabbitMQ_config['hostip'], credentials=credentials))
     channel = connection.channel()
 
     queue_name = 'queue_name_01'
@@ -91,6 +97,24 @@ def sendData():
     connection.close()
     result = {"sendData":"complete"}
     return result
+
+@app.route('/test/eventStream')
+def test_eventStream():
+    def wrapper_consume():
+        # while True:
+        for i in range(100):
+            yield 'a'
+    return Response(wrapper_consume(), mimetype='text/event-stream')
+
+@app.route('/test/eventStream2')
+def test_eventStream2():
+    import time
+    def wrapper_consume():
+        while True:
+            time.sleep(1)
+            yield 'a'
+    return Response(wrapper_consume(), mimetype='text/event-stream')
+
 
 if __name__ == '__main__':
     app.run(host="localhost", port="5000", debug=True)

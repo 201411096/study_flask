@@ -10,7 +10,10 @@
             <button id='btn_04'>sendData</button>
         </div>
         <script>
-            myFetch('/data');
+            let eventSource = new EventSource('/test/eventStream2');
+            eventSource.onmessage = function(event){
+                console.log(event.data);
+            }
             document.querySelector('#button_container').addEventListener('click', (e)=>{
                 if(e.target.matches('#btn_01')){
                     myFetch('/getQueueDataList');
