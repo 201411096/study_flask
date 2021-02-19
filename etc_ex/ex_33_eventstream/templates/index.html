@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div>index...</div>
+        <script>
+            let eventSource = new EventSource('/eventstream');
+            eventSource.onmessage = (event)=>{
+                console.log(event.data)
+            }
+            eventSource.addEventListener("open", (event)=>{
+                console.log("eventSource open ... ");
+            })
+            eventSource.addEventListener("message2", (event)=>{
+                console.log('message2 event_data : ', event.data);
+            });
+        
+        </script>
+    </body>
+</html>
