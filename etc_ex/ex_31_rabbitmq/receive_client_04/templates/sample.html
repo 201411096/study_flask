@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{{ url_for('static', filename='css/toastr.css') }}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div id='container'>
+            <div>
+                <input id='content_queuename' placeholder="queueName">
+                <button id='btn_00'>connect</button>
+            </div>
+            <div>
+                <input id='content_queuename_send' placeholder="queueName(channel)">
+                <input id='content_event' placeholder="type">
+                <input id='content_message' placeholder="data">
+                <button id='btn_01'>sendData</button>
+            </div>
+        </div>
+        <!-- jquery-3.2.1 -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <!-- toastr-2.1.1 -->
+        <script src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+        <script>
+            document.querySelector('#btn_00').addEventListener('click', (e)=>{
+                queueName = document.querySelector('#content_queuename').value;
+                let eventSource = new EventSource('/eventStream?auto_ack=True&queueName='+queueName);
+                eventSource.onmessage = function(event){
+                    console.log(event);
+                    console.log(event.data);
+                    toastMessage(event.data);
+                }
+            });
+
+            document.querySelector('#container').addEventListener('click', (e)=>{
+                if(e.target.matches('#btn_01')){
+                    dataObject = {
+                        "queueName" : document.querySelector('#content_queuename_send').value,
+                        "event" : document.querySelector('#content_event').value,
+                        "message" : document.querySelector('#content_message').value
+                    }
+                    myFetch('/sendData', dataObject);
+                }
+            });
+            
+            function myFetch(url, dataObject){
+                fetch(url, {
+                    method:"POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body : JSON.stringify(dataObject)
+                }).then(
+                    (res)=>(res.json())
+                ).then(
+                    (data) => {
+                        // console.log('================================');
+                        // console.log(data);
+                        // console.log('================================');
+                    }
+                )                
+            }
+
+            function toastMessage(messageContent){
+                console.log('make toastmessage ...');
+                toastr["info"](messageContent);
+                toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "rtl": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": false,
+                        "showDuration": 300,
+                        "hideDuration": 1000,
+                        "timeOut": 0,
+                        "extendedTimeOut": 0,
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "tapToDismiss": false
+                        }
+            }
+            
+        </script>
+    </body>
+</html>
