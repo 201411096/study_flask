@@ -27,6 +27,7 @@
                 eventSource.onmessage = function(event){
                     console.log(event);
                     console.log(event.data);
+                    // console.log(JSON.parse(event.data));
                     toastMessage(event.data);
                 }
             });
@@ -61,7 +62,6 @@
             }
 
             function toastMessage(messageContent){
-                console.log('make toastmessage ...');
                 toastr["info"](messageContent);
                 toastr.options = {
                         "closeButton": true,
