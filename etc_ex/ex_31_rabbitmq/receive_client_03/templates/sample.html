@@ -4,19 +4,30 @@
     <body>
         <div id='container'>
             <div>
+                <input id='content_queuename' placeholder="queueName">
+                <button id='btn_00'>connect</button>
+            </div>
+            <div>
+                <input id='content_queuename_send' placeholder="queueName(channel)">
                 <input id='content_event' placeholder="type">
                 <input id='content_message' placeholder="data">
                 <button id='btn_01'>sendData</button>
             </div>
         </div>
         <script>
-            let eventSource = new EventSource('/eventStream?auto_ack=True');
-            eventSource.onmessage = function(event){
-                console.log(event.data);
-            }
+            document.querySelector('#btn_00').addEventListener('click', (e)=>{
+                queueName = document.querySelector('#content_queuename').value;
+                let eventSource = new EventSource('/eventStream?auto_ack=True&queueName='+queueName);
+                eventSource.onmessage = function(event){
+                    console.log(event);
+                    console.log(event.data);
+                }
+            });
+
             document.querySelector('#container').addEventListener('click', (e)=>{
                 if(e.target.matches('#btn_01')){
                     dataObject = {
+                        "queueName" : document.querySelector('#content_queuename_send').value,
                         "event" : document.querySelector('#content_event').value,
                         "message" : document.querySelector('#content_message').value
                     }
@@ -35,9 +46,9 @@
                     (res)=>(res.json())
                 ).then(
                     (data) => {
-                        console.log('================================');
-                        console.log(data);
-                        console.log('================================');
+                        // console.log('================================');
+                        // console.log(data);
+                        // console.log('================================');
                     }
                 )                
             }

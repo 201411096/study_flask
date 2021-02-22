@@ -51,14 +51,13 @@ def getQueueDataList():
 
 @app.route('/sendData', methods=["POST"])
 def sendData():
-    # requestData = {"event":"my_event", "message":"my_message"}
     requestData = request.get_json()
 
     credentials = pika.PlainCredentials(username=myRabbitMQ_config['username'], password=myRabbitMQ_config['password'])
     connection = pika.BlockingConnection(pika.ConnectionParameters(myRabbitMQ_config['hostip'], credentials=credentials))
     channel = connection.channel()
 
-    queue_name = 'queue_name_01'
+    queue_name = requestData.get('queueName', None)    
     channel.queue_declare(queue=queue_name)    
 
     myMessage = requestData
@@ -85,19 +84,15 @@ def func_eventStream():
             else:
                 messageList.append(json.loads(evt_body))
         return messageList
-    def wrapper_consume(auto_ack_flag):
+    def wrapper_consume(auto_ack_flag, queueName):
         import time
         import traceback
-        queueName = 'queue_name_01'
         while True:
             try:
                 messageList = getDataListFromMQ(queueName, auto_ack_flag)
-                print(messageList)
                 if len(messageList) == 0:
-                    print('messageList\'s length : ', len(messageList))
                     yield 'event: {}\ndata: {}\n\n'
                 else:
-                    print('messageList\'s length : ', len(messageList))
                     for i in range(len(messageList)):
                         queueData = messageList[i]
                         yield 'event: {}\ndata: {}\n\n'.format(queueData.get('event', ''), queueData.get('message', ''))
@@ -106,9 +101,10 @@ def func_eventStream():
                 traceback.print_exc()
                 print('disconnected ...')
     auto_ack_flag = request.args.get('auto_ack', False)
+    queueName = request.args.get('queueName', None)
     if auto_ack_flag == 'True':
         auto_ack_flag = True                
-    return Response(wrapper_consume(auto_ack_flag), mimetype='text/event-stream')
+    return Response(wrapper_consume(auto_ack_flag, queueName), mimetype='text/event-stream')
 
 if __name__ == '__main__':
     app.run(host="localhost", port="5000", debug=True)
