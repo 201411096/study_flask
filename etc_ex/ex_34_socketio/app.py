@@ -20,7 +20,7 @@ def handle_message2(data):
     print('received message2: ' + data)
 
 @socketio.on('connect')
-def handle_message2():
+def test_connect():
     print('connect ...')
 
 @socketio.on('disconnect')
