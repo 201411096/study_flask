@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div id='container'>
+            <div>
+                <input id='content_01'>
+                <button id='btn_01'>sendData</button>
+            </div>
+            <div>
+                <input id='content_02'>
+                <button id='btn_02'>sendData</button>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            var socket = io();
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+            document.querySelector('#container').addEventListener('click', (e)=>{
+                if(e.target.matches('#btn_01')){
+                    messageContent = document.querySelector('#content_01').value;
+                    socket.emit('message', messageContent);
+                }else if(e.target.matches('#btn_02')){
+                    messageContent = document.querySelector('#content_02').value;
+                    socket.emit('message2', messageContent);
+                }
+            });
+        </script>
+    </body>
+</html>
