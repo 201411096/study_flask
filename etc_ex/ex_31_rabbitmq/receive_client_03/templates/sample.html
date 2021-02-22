@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div id='container'>
+            <div>
+                <input id='content_event' placeholder="type">
+                <input id='content_message' placeholder="data">
+                <button id='btn_01'>sendData</button>
+            </div>
+        </div>
+        <script>
+            let eventSource = new EventSource('/eventStream?auto_ack=True');
+            eventSource.onmessage = function(event){
+                console.log(event.data);
+            }
+            document.querySelector('#container').addEventListener('click', (e)=>{
+                if(e.target.matches('#btn_01')){
+                    dataObject = {
+                        "event" : document.querySelector('#content_event').value,
+                        "message" : document.querySelector('#content_message').value
+                    }
+                    myFetch('/sendData', dataObject);
+                }
+            });
+            
+            function myFetch(url, dataObject){
+                fetch(url, {
+                    method:"POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body : JSON.stringify(dataObject)
+                }).then(
+                    (res)=>(res.json())
+                ).then(
+                    (data) => {
+                        console.log('================================');
+                        console.log(data);
+                        console.log('================================');
+                    }
+                )                
+            }
+        </script>
+    </body>
+</html>
