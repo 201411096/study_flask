@@ -1,3 +1,5 @@
+# 데이터를 한번에 가져오지 못함 (queue에 3~4개의 데이터가 들어갔을 때도 2초에 하나씩 가져옴)
+
 from flask import Flask, render_template, Response
 app = Flask(__name__)
 import queue
@@ -15,16 +17,21 @@ def make_eventstream():
         import time
         import datetime
         import traceback
-        try:
-            queueData = myQueue.get()
+        while True:
             try:
-                yield 'event: {}\ndata: {}\n\n'.format(queueData.get('event', ''), queueData.get('message', ''))
+                time.sleep(2)
+                queueData = {}
+                if myQueue.empty():
+                    pass
+                else:
+                    queueData = myQueue.get_nowait()
+                    print('myQueueLen : ', myQueue.qsize())
+                try:
+                    yield 'event: {}\ndata: {}\n\n'.format(queueData.get('event', ''), queueData.get('message', ''))
+                except:
+                    yield 'event: {}\ndata: {}\n\n'
             except:
-                yield 'event: {}\ndata: {}\n\n'
-        except:
-            traceback.print_exc()
-        finally:
-            print('connection close ...')
+                traceback.print_exc()
 
     return Response(eventStream(), mimetype='text/event-stream')
 
