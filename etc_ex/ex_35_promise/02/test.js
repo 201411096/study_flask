@@ -1,7 +1,4 @@
-// Promise.resolve()
-// Promise.reject()
-// Promise.prototype.then()
-// Promise.prototype.catch()
+// Promise.prototype.finally()
 
 function divide(numA, numB){
     return new Promise( (resolve, reject) =>{
@@ -16,7 +13,11 @@ function divide(numA, numB){
 divide(8, 2)
 .then( (result) => {console.log("result(success) : ", result)} )
 .catch( (error) => {console.log("result(error) : ", error)} )
+.finally(function(){
+    console.log('finally ...');
+})
 
 divide(8, 0)
 .then( (result) => {console.log("result(success) : ", result)} )
 .catch( (error) => {console.log("result(error) : ", error)} )
+.finally(()=>{console.log('finally ...')})
