@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{{ url_for('static', filename='css/toastr.css') }}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div id='container'>
+            <div>
+                <input id='content_queuename' placeholder="queueName">
+                <button id='btn_00'>connect</button>
+            </div>
+            <div>
+                <input id='content_queuename_send' placeholder="queueName(channel)">
+                <input id='content_event' placeholder="type">
+                <input id='content_message' placeholder="data">
+                <button id='btn_01'>sendData</button>
+            </div>
+        </div>
+        <!-- socketio-3.1.1 -->
+        <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+        <!-- jquery-3.2.1 -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <!-- toastr-2.1.1 -->
+        <script src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+        <script>
+            document.querySelector('#btn_00').addEventListener('click', (e)=>{
+                var socket = io("http://192.168.0.51:5000");
+                socket.on('connect', function() {
+                    queueName = document.querySelector('#content_queuename').value;
+                    dataObject = {
+                        "queueName" : queueName,
+                        "auto_ack" : "True"
+                    }
+                    socket.emit('join_queue', dataObject);
+                });
+                socket.on('dataStream', function(data){
+                    console.log(data);
+                    // console.log(JSON.parse(data));
+                });
+            });            
+
+            document.querySelector('#container').addEventListener('click', (e)=>{
+                if(e.target.matches('#btn_01')){
+                    dataObject = {
+                        "queueName" : document.querySelector('#content_queuename_send').value,
+                        "event" : document.querySelector('#content_event').value,
+                        "message" : document.querySelector('#content_message').value
+                    }
+                    myFetch('/sendData', dataObject);
+                }
+            });
+            
+            function myFetch(url, dataObject){
+                fetch(url, {
+                    method:"POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body : JSON.stringify(dataObject)
+                }).then(
+                    (res)=>(res.json())
+                ).then(
+                    (data) => {
+                        console.log(data);
+                    }
+                )                
+            }
+
+            function toastMessage(messageContent){
+                toastr["info"](messageContent);
+                toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "rtl": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": false,
+                        "showDuration": 300,
+                        "hideDuration": 1000,
+                        "timeOut": 0,
+                        "extendedTimeOut": 0,
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "tapToDismiss": false
+                        }
+            }
+            
+        </script>
+    </body>
+</html>
