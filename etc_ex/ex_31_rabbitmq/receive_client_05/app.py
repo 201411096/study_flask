@@ -143,9 +143,13 @@ def join_queue(data):
         auto_ack_flag = True
 
     from threading import Thread
+    # 1. => doesn't work
     # th = Thread(target=getDataListFromMQAndSendThroughSocket, args=[socketio, queueName, auto_ack_flag])          # Thread.start() => socketio.start_background_task()
     # th.start()
-    socketio.start_background_task( (lambda a, b, c : getDataListFromMQAndSendThroughSocket(a, b, c)) (socketio, queueName, auto_ack_flag)  )
+    # 2. => using lambda
+    # socketio.start_background_task( (lambda a, b, c : getDataListFromMQAndSendThroughSocket(a, b, c)) (socketio, queueName, auto_ack_flag)  )
+    # 3. ...
+    socketio.start_background_task( target=getDataListFromMQAndSendThroughSocket, socketio=socketio, queueName=queueName, auto_ack_flag=auto_ack_flag)
 
 if __name__ == '__main__':
     socketio.run(app, host='192.168.0.51', port=5000, debug=True)
