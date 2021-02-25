@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <span id="span_connect"></span>
+        <ul id="ul_message"></ul>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script> -->
+        <script src="{{ url_for('static', filename='js/stomp.min.js') }}"></script>
+        <script>
+            var ws = null;
+            var client = null;
+            var subscription = null;
+            var callback = function (message) {
+                // 서버로부터 STOMP message를 받으먼 호출됨
+                if (message.body) {
+                    tempLi = document.createElement('li');
+                    tempLi.innerText = message.body;
+                    document.querySelector("#ul_message").append(tempLi);
+                } else {
+                    console.log("empty message");
+                }
+            };
+            var connectCallback = function () {
+                subscription = client.subscribe("/amq/queue/abc", callback);        // subscription = client.subscribe("/amq/queue/my_queue_name", callback);
+                document.querySelector("#span_connect").innerHTML = "connected";
+            };
+            var errorCallback = function (error) {
+                console.log(error);
+            };
+            ws = new WebSocket('ws://192.168.0.51:15674/ws');
+            client = Stomp.over(ws);
+            var id = "abc";
+            var pass = "abc";
+            client.connect(id, pass, connectCallback, errorCallback, '/');
+        </script>
+    </body>
+</html>

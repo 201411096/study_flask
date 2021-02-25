@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- reference https://blog.daum.net/celab/127 -->
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <span id="접속"></span>
+    <ul id="메세지들"></ul>
+    <script>
+        var ws = null;
+        var client = null;
+        var subscription = null;
+        $(document).ready(function () {
+            var callback = function (메세지) {
+                // 서버로 부터 한 STOMP 메세지 받으먼 호출됨
+                if (메세지.body) {
+                    $("#메세지들").append($("<li>" + 메세지.body + "</li>"));
+                } else {
+                    alert("빈 메세지");
+                }
+            };
+            var connectCallback = function () {
+                subscription = client.subscribe("/amq/queue/abc", callback);//큐명을 지정한경우 시 사용
+                // subscription = client.subscribe("/exchange/exg_fanout", callback);//exchanger를 지정한경우시 사용 
+                //-서버는 새 일시 큐를 만들어 binding 해줌.	
+                //참고 RabbitMQ STOMP Adapter>Destinations -https://www.rabbitmq.com/stomp.html
+                $("#접속").html("접속됨");
+            };
+            var errorCallback = function (error) {
+                //alert(error.headers.message);
+                console.log(error.headers);
+            };
+            ws = new WebSocket('ws://192.168.0.51:15674/ws');
+            // ws = new SockJS('http://127.0.0.1:15674/stomp');
+            client = Stomp.over(ws);
+            var id = "guest";
+            var pass = "guest";
+            client.connect(id, pass, connectCallback, errorCallback, '/');
+        });
+    </script>
+</body>
+</html>
