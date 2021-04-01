@@ -10,8 +10,10 @@ httpie 사용법
 
 HTTP메서드를 쓰지 않으면, 디폴트로 GET
 http GET http://localhost:8080/json_test
-http -v URI
+http GET "http://localhost:8080/json_test"
 
 송신 HTTP 프로토콜 데이터도 함께 출력
 http -v GET http://localhost:8080/json_test
+http -v GET "http://localhost:8080/json_test"
+
 --------------------------------------------------
