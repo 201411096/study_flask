@@ -1,9 +1,0 @@
-----------------------------------------
-01
-----------------------------------------
-dispatchevent
-
-detail property를 사용해야함(다른거 쓰면 안되는듯)
-
-var event = new CustomEvent('build', { detail: elem.dataset.time });
-----------------------------------------
