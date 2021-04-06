@@ -8,8 +8,10 @@
             <button id="btn_03" value='c'>test_c</button>
         </div>
         <script>
+            //var hostPort = 'http://192.168.0.51';
+            var hostPort = 'http://localhost';
             document.querySelector('#btn_group').addEventListener('click', function(e){
-                fetch('http://192.168.0.51:5000/' + e.target.value ).then(res => res.json())
+                fetch(hostPort+':5000/' + e.target.value ).then(res => res.json())
                 .then((data) => {
                     console.log('check fetchData ...');
                     console.log(data);

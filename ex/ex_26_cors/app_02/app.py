@@ -1,7 +1,8 @@
 from flask import Flask, Response, request, jsonify, render_template
 from flask_cors import CORS, cross_origin
 
-appHost = '192.168.0.51'
+# appHost = '192.168.0.51'
+appHost = 'localhost'
 appPort = '3000'
 
 app = Flask(__name__)

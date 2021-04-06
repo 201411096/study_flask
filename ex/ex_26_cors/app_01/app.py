@@ -1,7 +1,8 @@
 from flask import Flask, Response, request, jsonify, render_template, make_response, Response
 from flask_cors import CORS, cross_origin
 
-appHost = '192.168.0.51'
+# appHost = '192.168.0.51'
+appHost = 'localhost'
 appPort = '5000'
 
 app = Flask(__name__)
@@ -21,7 +22,8 @@ def test_b():
     return {"b":"bb"}
 
 @app.route('/c')
-@cross_origin(origins='http://192.168.0.51:3000')
+@cross_origin(origins='http://localhost:3000')
+# @cross_origin(origins='http://192.168.0.51:3000')
 # @cross_origin(origins='http://192.168.0.51:30000') # 못받아옴
 def test_c():
     return {"c":"cc"}
