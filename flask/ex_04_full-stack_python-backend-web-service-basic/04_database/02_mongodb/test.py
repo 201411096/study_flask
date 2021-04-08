@@ -6,6 +6,16 @@ ip_address = 'localhost'
 connection = pymongo.MongoClient()
 connection = pymongo.MongoClient('mongodb://%s' % (ip_address))
 
+"""
+Database(db) -> Collection(table) -> Document(row?)
+
+use database_name -> 해당 database_name을 가진 db가 없다면 생성
+db.createCollection -> collection 생성
+db.collection.insert([{}, {}])
+
+"""
+
+
 blog_session_db = connection.blog_session_db    # connection.database_name
 blog_ab = blog_session_db.blog_ab               # connection.database_name.table_name
 
