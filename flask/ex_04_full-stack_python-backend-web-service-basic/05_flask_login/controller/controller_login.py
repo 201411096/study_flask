@@ -5,6 +5,11 @@ import datetime
 
 bp_login = Blueprint('bp_login', __name__)
 
+"""
+Blueprint.name (ex bp_login)
+
+url_for( <Blueprint.name>.<function_name> )
+"""
 @bp_login.route('/login')
 def login():
     user_email = request.args.get('user_email')
@@ -12,9 +17,9 @@ def login():
     user = User.create(user_email, blog_id)
 
     login_user(user, remember=True, duration=datetime.timedelta(days=365))
-
-    # return render_template('index.html')
-    return redirect('/render/sample')
+    
+    return redirect(url_for('bp_login.render_sample'))
+    # return redirect('/render/sample')
 
 @bp_login.route('/logout')
 def logout():
