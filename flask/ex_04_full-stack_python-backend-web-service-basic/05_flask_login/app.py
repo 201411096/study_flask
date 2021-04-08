@@ -33,6 +33,7 @@ def load_user(user_id):
 @app.before_request
 def before_request():
     if 'client_id' not in session:
+        # HTTP_X_REAL_IP : 실제 함수
         session['client_id'] = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 
 # 로그인을 하지 않은 채로, @login_requried decorator가 붙어있는 요청을 할 때

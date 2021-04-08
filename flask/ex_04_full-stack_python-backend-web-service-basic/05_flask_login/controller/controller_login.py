@@ -15,7 +15,8 @@ def login():
     user_email = request.args.get('user_email')
     blog_id = request.args.get('blog_id')
     user = User.create(user_email, blog_id)
-
+    
+    # remember: session이 만료된 후 사용자를 기억할지..
     login_user(user, remember=True, duration=datetime.timedelta(days=365))
     
     return redirect(url_for('bp_login.render_sample'))
