@@ -1,4 +1,7 @@
 {
+    // vscode html5 emmet not working : (default setting : django-html -> html)
+    "files.associations": {"*html":"html"},
+
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.linting.pylintArgs": [
