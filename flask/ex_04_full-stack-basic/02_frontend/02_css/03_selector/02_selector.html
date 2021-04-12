@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 
+        1. 후손 셀렉터(Descendant Selector)             : 스페이스로 표시
+        2. 자식 셀렉터(Child Selector)                  : >로 표시
+        3. 인접 형제 셀렉터(Adjacent Sibling Selector)  : +로 표시
+            ㄴ 동일 레벨에 위치하면서, 바로 뒤에 있어야 가능
+        4. 일반 형제 셀렉터(General Sibling Selector)   : ~로 표시
+            ㄴ 동일 레벨에 위치하면서, 뒤에 위치하면 가능
+
+        5. 가상 클래스 셀렉터(Pseudo-Class Selector)
+            ㄴ 요소에 특정 이벤트 발생시를 선택하는 문법
+            ㄴ ex) h1 태그 요소에 마우스가 올라갔을 때
+            ㄴ 종류
+                ㄴ 1. link
+                ㄴ 2. visited
+                ㄴ 3. hover
+                ㄴ 4. active
+                ㄴ 5. focus
+
+        6. UI Element States Pseudo-Class
+            ㄴ enabled          
+            ㄴ disabled         
+            ㄴ checked          
+            ㄴ indeterminated   : UI 셀렉터가 결정되지 않은 상태
+
+        7. 정합성 체크 셀렉터(validity pseudo-class)
+            ㄴ valid    : 정합성이 검증된 input 또는 form 요소 선택
+            ㄴ invalid  : 정합성 검증이 실패한 input 또는 form 요소 선택
+            ㄴ 종류
+                ㄴ 크로스 브라우징 이슈 문제로, required, pattern 정도만 쓰는게 좋음
+
+        8. 가상 요소 셀렉터(Pseudo-Element Selector)
+            ㄴ 다른 가상 셀렉터와 달리 두개의 콜론을 사용함
+            ㄴ 종류
+                ㄴ first-letter
+                ㄴ first-line
+                ㄴ after
+                ㄴ before
+                ㄴ selection
+     -->
+    <style>
+        p:nth-child(2n-1){color:blue}
+        p:nth-last-child(2n-1){color:red}
+    </style>
+</head>
+<body>
+    <h2>contents ...</h2>
+    <p>contents ...</p>
+    <h2>contents ...</h2>
+    <p>contents ...</p>
+    <p>contents ...</p>
+    <p>contents ...</p>
+    <p>contents ...</p>
+    <p>contents ...</p>
+    <p>contents ...</p>
+    <p>contents ...</p>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 
+        [속성~=값] : 값이 포함되는 경우 (공백으로 분리되면서..)
+        [속성|=값] : 값과 같거나, 값으로 시작하면서 -문자가 곧바로 뒤에 따라 붙는 경우
+        [속성^=값] : 값으로 시작하는 경우
+        [속성$=값] : 값으로 끝나는 겨우
+        [속성*=값] : 값이 포함되는 경우
+     -->
+    <style>
+        *{
+            color:blue;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        h1{
+            color:red;
+        }
+        [data-value]{
+            color:green;
+        }
+        [data-value="abcd"]{
+            color:cyan;
+        }
+        [data-value ~="cde"]{
+            color:gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>contents ...</h1>
+    <h2>contents ...</h2>
+    <h3>contents ...</h3>
+    <h4>contents ...</h4>
+    <p data-value="abc">contents ...</p>
+    <p data-value="abcd">contents ...</p>
+    <p data-value="abcd cde">contents ...</p>
+    <p data-value="cde abc">contents ...</p>
+</body>
+</html>
