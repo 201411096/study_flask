@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div.content-box{
+            width: 600px;
+            height: 140px;
+            background-color: yellow;
+            border: 20px solid orange;
+            box-sizing: content-box;
+        }
+        div.border-box{
+            width: 600px;
+            height: 140px;
+            background-color: yellow;
+            border: 20px solid orange;
+            box-sizing: border-box;
+        }
+        
+    </style>
+    <!-- 
+        width / height
+            ㄴ box-sizing (property)
+                ㄴ content-box  -> content
+                ㄴ border-box   -> content + padding + border
+            ㄴ width / height 포함, 모든 box model 관련 프로퍼티(margin, padding, border, box-sizing)는 상속되지 않음
+            ㄴ 일반적인 사용법
+                *, *::before, after{
+                    box-sizing:border-box;
+                }
+     -->
+</head>
+<body>
+    <div class="content-box">
+        content-box
+    </div>
+    <div class="border-box">
+        border-box
+    </div>
+</body>
+</html>
