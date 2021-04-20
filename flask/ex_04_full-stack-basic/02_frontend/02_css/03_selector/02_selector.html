@@ -13,7 +13,7 @@
         4. 일반 형제 셀렉터(General Sibling Selector)   : ~로 표시
             ㄴ 동일 레벨에 위치하면서, 뒤에 위치하면 가능
 
-        5. 가상 클래스 셀렉터(Pseudo-Class Selector)
+        5-1. 가상 클래스 셀렉터(Pseudo-Class Selector)
             ㄴ 요소에 특정 이벤트 발생시를 선택하는 문법
             ㄴ ex) h1 태그 요소에 마우스가 올라갔을 때
             ㄴ 종류
@@ -23,19 +23,32 @@
                 ㄴ 4. active
                 ㄴ 5. focus
 
-        6. UI Element States Pseudo-Class
+        5-2. UI Element States Pseudo-Class
             ㄴ enabled          
             ㄴ disabled         
             ㄴ checked          
             ㄴ indeterminated   : UI 셀렉터가 결정되지 않은 상태
 
-        7. 정합성 체크 셀렉터(validity pseudo-class)
+        5-3. 구조 가상 클래스 셀렉터(Structured Pseudo-Class)
+            ㄴ first-child
+            ㄴ last-child
+            ㄴ nth-child(n)
+            ㄴ nth-last-child(n)
+            ㄴ first-of-type
+            ㄴ last-of-type
+            ㄴ nth-of-type(n)
+            ㄴ nth-last-of-type(n)
+
+        5-4. 부정 셀렉터(Negation Pseudo-Class)
+            ㄴ not
+
+        5-5. 정합성 체크 셀렉터(Validity Pseudo-Class)
             ㄴ valid    : 정합성이 검증된 input 또는 form 요소 선택
             ㄴ invalid  : 정합성 검증이 실패한 input 또는 form 요소 선택
             ㄴ 종류
                 ㄴ 크로스 브라우징 이슈 문제로, required, pattern 정도만 쓰는게 좋음
 
-        8. 가상 요소 셀렉터(Pseudo-Element Selector)
+        6. 가상 요소 셀렉터(Pseudo-Element Selector)
             ㄴ 다른 가상 셀렉터와 달리 두개의 콜론을 사용함
             ㄴ 종류
                 ㄴ first-letter
