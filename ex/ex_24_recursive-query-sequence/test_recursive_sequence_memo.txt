@@ -1,0 +1,1 @@
+concat 할 때 casting이 없을 경우 문제가 생길 수도 있음
